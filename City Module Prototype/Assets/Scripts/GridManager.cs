@@ -60,7 +60,14 @@ public class GridManager : MonoBehaviour
 
         float gridWidth = cols * tileSize;
         float gridHeight = rows * tileSize;
-        transform.position = new Vector2(-gridWidth / 2 + tileSize / 2, gridHeight / 2 - tileSize / 2);
+        
+        float tmp1 = -gridWidth / 2 - tileSize;
+        float tmp2 = gridHeight / 2 - tileSize;
+        Debug.Log(tmp1);
+        Debug.Log(tmp2);
+        
+        transform.position = new Vector2(tmp1, tmp2);
+        //transform.position = new Vector2(-6f, 2f);
     }
 
     private void BuildArray()
