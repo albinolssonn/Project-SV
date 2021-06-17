@@ -4,26 +4,42 @@ using UnityEngine;
 
 public class Cell
 {
-    private int signal;
+    private int signalStr;
     private ArrayList cellContent = new ArrayList();
-    
-    
-    public int getSignal()
+    private readonly int xCoord; 
+    private readonly int yCoord; 
+
+    public Cell(int xCoord, int yCoord) 
     {
-        return signal; 
+        this.xCoord = xCoord;
+        this.yCoord = yCoord;
+        signalStr = 0;
     }
 
-    public void setSignal(int signal)
+    
+    
+    public int GetSignalStr()
     {
-        this.signal = signal; 
+        return signalStr; 
     }
 
-    public ArrayList getCellContent()
+    public void SetSignalStr(int signalStr)
+    {
+        this.signalStr = signalStr; 
+    }
+
+    public ArrayList GetCellContent()
     {
         return cellContent; 
     }
 
-    public void addCellContent (int content)
+    public void GetCoordinates(out int xOut, out int yOut)
+    {
+        xOut = xCoord;
+        yOut = yCoord; 
+    }
+
+    public void AddCellContent (int content)
     {
         cellContent.Add(content); 
     }

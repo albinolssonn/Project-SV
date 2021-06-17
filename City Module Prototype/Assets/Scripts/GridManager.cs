@@ -9,26 +9,24 @@ public class GridManager : MonoBehaviour
     private float tileSize = 1.2F;
 
     private Cell[,] gridArray;
-    private Dictionary<Cell, GameObject> cellToTile; 
+    private Dictionary<Cell, GameObject> cellToTile;
+
+    private float[] gray = new float[] { 0.5f, 0.5f, 0.5f, 0.75f };
+    private float[] lightOrange = new float[] { 1f, 1f, 0.425f, 0.75f };
+    //private float[] red = new float[] { 1f, 0.276f, 0.231f, 0.75f };
+    //private float[] green = new float[] { 0.23f, 1f, 0.325f, 0.75f };
 
 
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
-        cellToTile = new Dictionary<Cell, GameObject>(); 
+        cellToTile = new Dictionary<Cell, GameObject>();
         gridArray = new Cell[rows, cols];
         BuildArray();
         GenerateGrid();
-
-
-        setTileColor(gridArray[1, 1], "red");
-        setTileColor(gridArray[1, 2], "green");
-        setTileColor(gridArray[2, 2], "blue");
-
-
-
     }
+
 
     // Update is called once per frame
     void Update()
@@ -45,7 +43,7 @@ public class GridManager : MonoBehaviour
             for (int col = 0; col < cols; col++)
             {
                 GameObject tile = (GameObject)Instantiate(referenceTile, transform);
-               
+
 
                 cellToTile[gridArray[row, col]] = tile;
 
@@ -60,14 +58,8 @@ public class GridManager : MonoBehaviour
 
         float gridWidth = cols * tileSize;
         float gridHeight = rows * tileSize;
-        
-        float tmp1 = -gridWidth / 2 - tileSize;
-        float tmp2 = gridHeight / 2 - tileSize;
-        Debug.Log(tmp1);
-        Debug.Log(tmp2);
-        
-        transform.position = new Vector2(tmp1, tmp2);
-        //transform.position = new Vector2(-6f, 2f);
+
+        transform.position = new Vector2(-gridWidth / 2 - tileSize, gridHeight / 2 - tileSize);
     }
 
     private void BuildArray()
@@ -76,29 +68,77 @@ public class GridManager : MonoBehaviour
         {
             for (int col = 0; col < cols; col++)
             {
-                gridArray[row, col] = new Cell(); 
+                gridArray[row, col] = new Cell(col, row);
             }
         }
     }
 
-
-    private void setTileColor(Cell cell, string color)
+    private void SetTileColor(Cell cell, float[] rgbt)
     {
         var tileRenderer = cellToTile[cell].GetComponent<Renderer>();
-        switch (color)
-        {
-            case "red":
-                tileRenderer.material.SetColor("_Color", Color.red);
-                break;
-            case "green":
-                tileRenderer.material.SetColor("_Color", Color.green);
-                break;
-            case "blue":
-                tileRenderer.material.SetColor("_Color", Color.blue);
-                break;
 
-        } 
+        tileRenderer.material.SetColor("_Color", new Color(rgbt[0], rgbt[1], rgbt[2], rgbt[3])); 
     }
 
+    public ArrayList GetNearbyCells(int x, int y)
+    {
+        Cell cell = gridArray[y, x];
+
+        ArrayList neighbours = new ArrayList(); 
+
+        cell.GetCoordinates(out x, out y); 
+
+        if(x > 0)
+        {
+            neighbours.Add(gridArray[y, x - 1]); 
+        } 
+
+        if(x < cols - 1)
+        {
+            neighbours.Add(gridArray[y, x + 1]);
+        }
+
+        if(y > 0)
+        {
+            neighbours.Add(gridArray[y - 1, x]);
+        }
+
+        if(y < rows - 1)
+        {
+            neighbours.Add(gridArray[y + 1, x]);
+        }
+
+        if(x > 0 && y > 0)
+        {
+            neighbours.Add(gridArray[y - 1, x - 1]);
+        }
+
+        if (x < cols - 1 && y > 0)
+        {
+            neighbours.Add(gridArray[y - 1, x + 1]);
+        }
+
+        if (x < cols - 1 && y < rows - 1)
+        {
+            neighbours.Add(gridArray[y + 1, x + 1]);
+        }
+
+        if (x > 0 && y < rows - 1)
+        {
+            neighbours.Add(gridArray[y + 1, x - 1]);
+        }
+
+        return neighbours;
+    }
     
+    public int GetRows()
+    {
+        return rows;
+    }
+
+    public int GetCols()
+    {
+        return cols;
+    }
+
 }
