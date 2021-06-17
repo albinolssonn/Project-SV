@@ -29,8 +29,8 @@ public class TestCell
     {
         Cell cell = new Cell(1, 1);
 
-        int x, y;
-        cell.GetCoordinates(out x, out y);
+        int x = cell.GetX();
+        int y = cell.GetY();
 
         Assert.AreEqual(x, 1);
         Assert.AreEqual(y, 1);

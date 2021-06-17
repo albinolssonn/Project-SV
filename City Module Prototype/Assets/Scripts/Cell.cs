@@ -33,10 +33,14 @@ public class Cell
         return cellContent; 
     }
 
-    public void GetCoordinates(out int xOut, out int yOut)
+    public int GetX()
     {
-        xOut = xCoord;
-        yOut = yCoord; 
+        return xCoord;
+    }
+
+    public int GetY()
+    {
+        return yCoord;
     }
 
     public void AddCellContent (int content)
