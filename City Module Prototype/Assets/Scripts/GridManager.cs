@@ -22,9 +22,9 @@ public class GridManager : MonoBehaviour
     public void Start()
     {
         cellToTile = new Dictionary<Cell, GameObject>();
-        gridArray = new Cell[rows, cols];
-        BuildArray();
+        gridArray = GridUtils.BuildArray(rows, cols);
         GenerateGrid();
+
     }
 
 
@@ -62,17 +62,7 @@ public class GridManager : MonoBehaviour
         transform.position = new Vector2(-gridWidth / 2 - tileSize, gridHeight / 2 - tileSize);
     }
 
-    private void BuildArray()
-    {
-        for (int row = 0; row < rows; row++)
-        {
-            for (int col = 0; col < cols; col++)
-            {
-                gridArray[row, col] = new Cell(col, row);
-            }
-        }
-    }
-
+    
     private void SetTileColor(Cell cell, float[] rgbt)
     {
         var tileRenderer = cellToTile[cell].GetComponent<Renderer>();
@@ -80,56 +70,7 @@ public class GridManager : MonoBehaviour
         tileRenderer.material.SetColor("_Color", new Color(rgbt[0], rgbt[1], rgbt[2], rgbt[3])); 
     }
 
-    public ArrayList GetNearbyCells(int x, int y)
-    {
-        Cell cell = gridArray[y, x];
-
-        ArrayList neighbours = new ArrayList(); 
-
-        cell.GetCoordinates(out x, out y); 
-
-        if(x > 0)
-        {
-            neighbours.Add(gridArray[y, x - 1]); 
-        } 
-
-        if(x < cols - 1)
-        {
-            neighbours.Add(gridArray[y, x + 1]);
-        }
-
-        if(y > 0)
-        {
-            neighbours.Add(gridArray[y - 1, x]);
-        }
-
-        if(y < rows - 1)
-        {
-            neighbours.Add(gridArray[y + 1, x]);
-        }
-
-        if(x > 0 && y > 0)
-        {
-            neighbours.Add(gridArray[y - 1, x - 1]);
-        }
-
-        if (x < cols - 1 && y > 0)
-        {
-            neighbours.Add(gridArray[y - 1, x + 1]);
-        }
-
-        if (x < cols - 1 && y < rows - 1)
-        {
-            neighbours.Add(gridArray[y + 1, x + 1]);
-        }
-
-        if (x > 0 && y < rows - 1)
-        {
-            neighbours.Add(gridArray[y + 1, x - 1]);
-        }
-
-        return neighbours;
-    }
+    
     
     public int GetRows()
     {
