@@ -25,18 +25,6 @@ public class TestCell
     }
 
     [Test]
-    public void GetCoordinates_Test()
-    {
-        Cell cell = new Cell(1, 1);
-
-        int x = cell.GetX();
-        int y = cell.GetY();
-
-        Assert.AreEqual(x, 1);
-        Assert.AreEqual(y, 1);
-    }
-
-    [Test]
     public void GetCellContent_Test()
     {
         Cell cell = new Cell(3, 2);
@@ -47,6 +35,18 @@ public class TestCell
 
         Assert.AreEqual(cell.GetCellContent()[0], 3);
         Assert.AreEqual(cell.GetCellContent()[1], 5);
+    }
+
+    [Test]
+    public void GetCoordinates_Test()
+    {
+        Cell cell = new Cell(1, 1);
+
+        int x = cell.GetX();
+        int y = cell.GetY();
+
+        Assert.AreEqual(x, 1);
+        Assert.AreEqual(y, 1);
     }
 
    [Test]

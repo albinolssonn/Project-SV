@@ -48,15 +48,4 @@ public class Cell
         cellContent.Add(content); 
     }
 
-    // Remove Method
-
-
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
 }
