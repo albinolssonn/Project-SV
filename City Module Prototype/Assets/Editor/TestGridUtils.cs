@@ -7,6 +7,25 @@ using System;
 
 public class TestGridUtils
 {
+
+    [Test]
+    public void BuildArray_Test()
+    {
+        var grid = GridUtils.BuildArray(10, 5);
+        int rows = grid.GetLength(0);
+        int cols = grid.GetLength(1);
+        Assert.AreEqual(rows, 10);
+        Assert.AreEqual(cols, 5);
+        
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                Assert.IsTrue(grid[row, col].GetType() == typeof(Cell));
+            }
+        }
+    }
+
     [Test]
     public void GetNearbyCells_Test()
     {

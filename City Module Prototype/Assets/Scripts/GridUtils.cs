@@ -19,16 +19,14 @@ public static class GridUtils
     }
 
 
-    public static ArrayList GetNearbyCells(int xIn, int yIn, Cell[,] gridArray)
+    public static ArrayList GetNearbyCells(int x, int y, Cell[,] gridArray)
     {
-        Cell cell = gridArray[yIn, xIn];
+        Cell cell = gridArray[y, x];
         int rows = gridArray.GetLength(0);
         int cols = gridArray.GetLength(1);
 
         ArrayList neighbours = new ArrayList();
 
-        int x = cell.GetX();
-        int y = cell.GetY();
 
         if (x > 0)
         {
