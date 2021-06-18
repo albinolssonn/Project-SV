@@ -7,17 +7,20 @@ public class Cell
     private int signalStr;
     private ArrayList cellContent = new ArrayList();
     private readonly int xCoord; 
-    private readonly int yCoord; 
+    private readonly int yCoord;
+    private readonly GridManager grid;
 
     public Cell(int xCoord, int yCoord) 
     {
         this.xCoord = xCoord;
         this.yCoord = yCoord;
         signalStr = 0;
+        grid = GameObject.FindGameObjectsWithTag("Grid")[0].GetComponent<GridManager>();
+
     }
 
-    
-    
+
+
     public int GetSignalStr()
     {
         return signalStr; 
@@ -25,14 +28,27 @@ public class Cell
 
     public void SetSignalStr(int signalStr)
     {
-        this.signalStr = signalStr; 
+        this.signalStr = signalStr;
+        if(8 <= signalStr && signalStr <= 10)
+        {
+            grid.SetTileColor(this, Colors.green);
+        } else if (5 <= signalStr && signalStr <= 7)
+        {
+            grid.SetTileColor(this, Colors.lightOrange);
+        } else if (3 <= signalStr && signalStr <= 4)
+        {
+            grid.SetTileColor(this, Colors.red);
+        } else if (signalStr <= 2)
+        {
+            grid.SetTileColor(this, Colors.gray);
+        }
     }
 
     public void SetSignalIfHigher(int signalStr)
     {
         if(this.signalStr < signalStr)
         {
-            this.signalStr = signalStr;
+            SetSignalStr(signalStr);
         }
     }
 

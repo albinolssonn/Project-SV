@@ -14,15 +14,7 @@ public class TestCell
         Assert.AreEqual(cell.GetSignalStr(), 0);
     }
 
-    [Test]
-    public void SetSignalStr_Test()
-    {
-        Cell cell = new Cell(3, 6);
-        Assert.AreEqual(cell.GetSignalStr(), 0);
-
-        cell.SetSignalStr(5);
-        Assert.AreEqual(cell.GetSignalStr(), 5);
-    }
+    
 
     [Test]
     public void GetCellContent_Test()

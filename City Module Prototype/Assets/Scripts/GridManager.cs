@@ -11,10 +11,7 @@ public class GridManager : MonoBehaviour
     private Cell[,] gridArray;
     private Dictionary<Cell, GameObject> cellToTile;
 
-    private float[] gray = new float[] { 0.5f, 0.5f, 0.5f, 0.75f };
-    private float[] lightOrange = new float[] { 1f, 1f, 0.425f, 0.75f };
-    //private float[] red = new float[] { 1f, 0.276f, 0.231f, 0.75f };
-    //private float[] green = new float[] { 0.23f, 1f, 0.325f, 0.75f };
+    
 
 
 
@@ -63,7 +60,7 @@ public class GridManager : MonoBehaviour
     }
 
     
-    private void SetTileColor(Cell cell, float[] rgbt)
+    public void SetTileColor(Cell cell, float[] rgbt)
     {
         var tileRenderer = cellToTile[cell].GetComponent<Renderer>();
 
