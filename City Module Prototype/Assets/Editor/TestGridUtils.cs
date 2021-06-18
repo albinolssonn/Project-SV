@@ -33,7 +33,7 @@ public class TestGridUtils
         int cols = 5;
         //cellToTile = new Dictionary<Cell, GameObject>();
         Cell[,] gridArray = GridUtils.BuildArray(rows, cols);
-        ArrayList neighbours;
+        List<Cell> neighbours;
         
         
         neighbours = GridUtils.GetNearbyCells(0, 0, gridArray);
@@ -76,7 +76,7 @@ public class TestGridUtils
 
 
 
-    private bool Search(ArrayList list, Cell target)
+    private bool Search(List<Cell> list, Cell target)
     {
         bool found = false;
         foreach (Cell elem in list)
