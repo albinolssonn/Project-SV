@@ -28,6 +28,14 @@ public class Cell
         this.signalStr = signalStr; 
     }
 
+    public void SetSignalIfHigher(int signalStr)
+    {
+        if(this.signalStr < signalStr)
+        {
+            this.signalStr = signalStr;
+        }
+    }
+
     public ArrayList GetCellContent()
     {
         return cellContent; 
