@@ -11,7 +11,7 @@ public class TestCell
     {
         Cell cell = new Cell(5, 1);
 
-        Assert.AreEqual(cell.GetSignalStr(), 0);
+        Assert.AreEqual(0, cell.GetSignalStr());
     }
 
     
@@ -20,7 +20,7 @@ public class TestCell
     public void GetCellContent_Test()
     {
         Cell cell = new Cell(3, 2);
-        Assert.AreEqual(cell.GetCellContent().Count, 0);
+        Assert.AreEqual(0, cell.GetCellContent().Count);
 
         Module a = new House();
         Module b = new Hospital(); 
@@ -28,8 +28,8 @@ public class TestCell
         cell.AddCellContent(a);
         cell.AddCellContent(b);
 
-        Assert.AreEqual(cell.GetCellContent()[0], a);
-        Assert.AreEqual(cell.GetCellContent()[1], b);
+        Assert.AreEqual(a, cell.GetCellContent()[0]);
+        Assert.AreEqual(b, cell.GetCellContent()[1]);
     }
 
     [Test]
@@ -40,21 +40,21 @@ public class TestCell
         int x = cell.GetX();
         int y = cell.GetY();
 
-        Assert.AreEqual(x, 1);
-        Assert.AreEqual(y, 1);
+        Assert.AreEqual(1, x);
+        Assert.AreEqual(1, y);
     }
 
    [Test]
    public void AddCellContent_Test()
     {
         Cell cell = new Cell(3, 2);
-        Assert.AreEqual(cell.GetCellContent().Count, 0);
+        Assert.AreEqual(0, cell.GetCellContent().Count);
 
         cell.AddCellContent(new House());
-        Assert.AreEqual(cell.GetCellContent().Count, 1);
+        Assert.AreEqual(1, cell.GetCellContent().Count);
         
         cell.AddCellContent(new Hospital());
-        Assert.AreEqual(cell.GetCellContent().Count, 2);
+        Assert.AreEqual(2, cell.GetCellContent().Count);
     }
 
     

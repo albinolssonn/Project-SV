@@ -29,7 +29,7 @@ public class Cell
     public void SetSignalStr(int signalStr)
     {
         this.signalStr = signalStr;
-        if(8 <= signalStr && signalStr <= 10)
+        /*if(8 <= signalStr && signalStr <= 10)
         {
             grid.SetTileColor(this, Colors.green);
         } else if (5 <= signalStr && signalStr <= 7)
@@ -41,15 +41,17 @@ public class Cell
         } else if (signalStr <= 2)
         {
             grid.SetTileColor(this, Colors.gray);
-        }
+        }*/
     }
 
-    public void SetSignalIfHigher(int signalStr)
+    public bool SetSignalIfHigher(int signalStr)
     {
         if(this.signalStr < signalStr)
         {
             SetSignalStr(signalStr);
+            return true;
         }
+        return false;
     }
 
     public List<Module> GetCellContent()
@@ -69,7 +71,8 @@ public class Cell
 
     public void AddCellContent (Module content)
     {
-        cellContent.Add(content); 
+        cellContent.Add(content);
+
     }
 
 }

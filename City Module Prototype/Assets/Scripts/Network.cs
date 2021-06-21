@@ -2,24 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BFS
+public class Network
 {
     private readonly List<Direction> directions; 
     private Cell[,] gridArray;
     
-    public BFS()
+    public Network()
     {
         directions = new List<Direction>() { new North(), new NorthEast(), new East(), new SouthEast(), new South(), new SouthWest(), new West(), new NorthWest() };
     }
 
 
-    public void BFSearch(Cell[,] gridArray, int startX, int startY)
+    public void BuildNetwork(Cell[,] gridArray, int startY, int startX)
     {
         this.gridArray = gridArray;
-        Cell startCell = gridArray[startX, startY];
-        int startingStrength = startCell.GetSignalStr();
+        Cell startCell = gridArray[startY, startX];
+        int startingStrength = GetNewStr(startCell, 11);
 
-        HashSet<Cell> neighbours = new HashSet<Cell>(GridUtils.GetNearbyCells(startCell.GetX(), startCell.GetY(), gridArray));
+        startCell.SetSignalStr(startingStrength);
+
+
 
         foreach (Direction direction in directions)
         {
@@ -35,15 +37,17 @@ public class BFS
         {
             if (dir.correctDirection(nextCell, currentCell))
             {
-                nextCell.SetSignalIfHigher(GetNewStr(nextCell, currentCell.GetSignalStr()));
-                Traverse(dir, nextCell);
+                if(nextCell.SetSignalIfHigher(GetNewStr(nextCell, currentCell.GetSignalStr())))
+                {
+                    Traverse(dir, nextCell);
+                }
             }
         }
     }
 
-    public int GetNewStr(Cell cell, int signalStr)
+    private int GetNewStr(Cell cell, int signalStr)
     {
-        int newStr = signalStr;
+        int newStr = signalStr - 1;
 
         foreach (Module content in cell.GetCellContent())
         {

@@ -14,8 +14,8 @@ public class TestGridUtils
         var grid = GridUtils.BuildArray(10, 5);
         int rows = grid.GetLength(0);
         int cols = grid.GetLength(1);
-        Assert.AreEqual(rows, 10);
-        Assert.AreEqual(cols, 5);
+        Assert.AreEqual(10, rows);
+        Assert.AreEqual(5, cols);
         
         for (int row = 0; row < rows; row++)
         {
@@ -37,31 +37,31 @@ public class TestGridUtils
         
         
         neighbours = GridUtils.GetNearbyCells(0, 0, gridArray);
-        Assert.AreEqual(neighbours.Count, 3);
+        Assert.AreEqual(3, neighbours.Count);
         Assert.IsTrue(Search(neighbours, new Cell(1, 0)));
         Assert.IsTrue(Search(neighbours, new Cell(1, 1)));
         Assert.IsTrue(Search(neighbours, new Cell(0, 1)));
 
         neighbours = GridUtils.GetNearbyCells(4, 4, gridArray);
-        Assert.AreEqual(neighbours.Count, 3);
+        Assert.AreEqual(3, neighbours.Count);
         Assert.IsTrue(Search(neighbours, new Cell(3, 4)));
         Assert.IsTrue(Search(neighbours, new Cell(4, 3)));
         Assert.IsTrue(Search(neighbours, new Cell(3, 3)));
 
         neighbours = GridUtils.GetNearbyCells(0, 4, gridArray);
-        Assert.AreEqual(neighbours.Count, 3);
+        Assert.AreEqual(3, neighbours.Count);
         Assert.IsTrue(Search(neighbours, new Cell(0, 3)));
         Assert.IsTrue(Search(neighbours, new Cell(1, 4)));
         Assert.IsTrue(Search(neighbours, new Cell(1, 3)));
 
         neighbours = GridUtils.GetNearbyCells(4, 0, gridArray);
-        Assert.AreEqual(neighbours.Count, 3);
+        Assert.AreEqual(3, neighbours.Count);
         Assert.IsTrue(Search(neighbours, new Cell(3, 0)));
         Assert.IsTrue(Search(neighbours, new Cell(4, 1)));
         Assert.IsTrue(Search(neighbours, new Cell(3, 1)));
 
         neighbours = GridUtils.GetNearbyCells(2, 2, gridArray);
-        Assert.AreEqual(neighbours.Count, 8);
+        Assert.AreEqual(8, neighbours.Count);
         Assert.IsTrue(Search(neighbours, new Cell(2, 1)));
         Assert.IsTrue(Search(neighbours, new Cell(3, 1)));
         Assert.IsTrue(Search(neighbours, new Cell(3, 2)));

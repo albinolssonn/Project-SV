@@ -8,16 +8,6 @@ public abstract class Module
 
 }
 
-
-
-public class Empty : Module
-{
-    public override int modifier()
-    {
-        return 0;
-    }
-}
-
 public class Park : Module
 {
     public override int modifier()
@@ -63,6 +53,14 @@ public class FireDepartment : Module
     public override int modifier()
     {
         return -1;
+    }
+}
+
+public class Antenna : Module
+{
+    public override int modifier()
+    {
+        return 0;
     }
 }
 
