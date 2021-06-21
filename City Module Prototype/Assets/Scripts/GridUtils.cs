@@ -12,14 +12,14 @@ public static class GridUtils
         {
             for (int col = 0; col < cols; col++)
             {
-                gridArray[row, col] = new Cell(col, row);
+                gridArray[row, col] = new Cell(row, col);
             }
         }
         return gridArray;
     }
 
 
-    public static List<Cell> GetNearbyCells(int x, int y, Cell[,] gridArray)
+    public static List<Cell> GetNearbyCells(int y, int x, Cell[,] gridArray)
     {
         Cell cell = gridArray[y, x];
         int rows = gridArray.GetLength(0);

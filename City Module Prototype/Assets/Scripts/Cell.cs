@@ -9,8 +9,9 @@ public class Cell
     private readonly int xCoord; 
     private readonly int yCoord;
     private readonly GridManager grid;
+    private int maxHeight; 
 
-    public Cell(int xCoord, int yCoord) 
+    public Cell(int yCoord, int xCoord) 
     {
         this.xCoord = xCoord;
         this.yCoord = yCoord;
@@ -72,7 +73,12 @@ public class Cell
     public void AddCellContent (Module content)
     {
         cellContent.Add(content);
+        maxHeight = System.Math.Max(maxHeight, content.height()); 
+    }
 
+    public int GetMaxHeight()
+    {
+        return maxHeight;
     }
 
 }

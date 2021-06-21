@@ -6,6 +6,7 @@ public class Network
 {
     private readonly List<Direction> directions; 
     private Cell[,] gridArray;
+    private Cell startCell; 
     
     public Network()
     {
@@ -16,10 +17,8 @@ public class Network
     public void BuildNetwork(Cell[,] gridArray, int startY, int startX)
     {
         this.gridArray = gridArray;
-        Cell startCell = gridArray[startY, startX];
-        int startingStrength = GetNewStr(startCell, 11);
-
-        startCell.SetSignalStr(startingStrength);
+        startCell = gridArray[startY, startX];
+        startCell.SetSignalStr(10);
 
 
 
@@ -31,16 +30,14 @@ public class Network
    
     private void Traverse(Direction dir, Cell currentCell)
     {
-        List<Cell> neighbours = GridUtils.GetNearbyCells(currentCell.GetX(), currentCell.GetY(), gridArray);
+        List<Cell> neighbours = GridUtils.GetNearbyCells(currentCell.GetY(), currentCell.GetX(), gridArray);
 
         foreach (Cell nextCell in neighbours)
         {
-            if (dir.correctDirection(nextCell, currentCell))
+            if (dir.correctDirection(nextCell, currentCell) &&
+                nextCell.SetSignalIfHigher(GetNewStr(nextCell, currentCell.GetSignalStr())))
             {
-                if(nextCell.SetSignalIfHigher(GetNewStr(nextCell, currentCell.GetSignalStr())))
-                {
-                    Traverse(dir, nextCell);
-                }
+                Traverse(dir, nextCell);
             }
         }
     }
@@ -52,6 +49,11 @@ public class Network
         foreach (Module content in cell.GetCellContent())
         {
             newStr += content.modifier();
+        }
+
+        if(startCell.GetMaxHeight() < cell.GetMaxHeight())
+        {
+            newStr += -2; 
         }
 
         return newStr;
@@ -74,7 +76,7 @@ public class North : Direction
 {
     public override bool correctDirection(Cell nextCell, Cell currentCell)
     {
-        return nextCell.GetY() < currentCell.GetY();
+        return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() == currentCell.GetX();
     }
 }
 
@@ -90,7 +92,7 @@ public class East : Direction
 {
     public override bool correctDirection(Cell nextCell, Cell currentCell)
     {
-        return nextCell.GetX() > currentCell.GetX();
+        return nextCell.GetX() > currentCell.GetX() && nextCell.GetY() == currentCell.GetY();
     }
 }
 
@@ -106,7 +108,7 @@ public class South : Direction
 {
     public override bool correctDirection(Cell nextCell, Cell currentCell)
     {
-        return nextCell.GetY() >= currentCell.GetY();
+        return nextCell.GetY() > currentCell.GetY() && nextCell.GetX() == currentCell.GetX();
     }
 }
 
@@ -122,7 +124,7 @@ public class West : Direction
 {
     public override bool correctDirection(Cell nextCell, Cell currentCell)
     {
-        return nextCell.GetX() < currentCell.GetX();
+        return nextCell.GetX() < currentCell.GetX() && nextCell.GetY() == currentCell.GetY();
     }
 }
 
