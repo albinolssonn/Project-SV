@@ -41,13 +41,18 @@ public class BFS
         }
     }
 
-
-
-    //THIS METHOD IS TO BE REPLACED WITH THE ONE FROM THE NETWORK CLASS
-    private int GetNewStr(Cell cell, int signalStr)
+    public int GetNewStr(Cell cell, int signalStr)
     {
-        return signalStr - 1;
+        int newStr = signalStr;
+
+        foreach (Module content in cell.GetCellContent())
+        {
+            newStr += content.modifier();
+        }
+
+        return newStr;
     }
+
 }
 
 

@@ -22,11 +22,14 @@ public class TestCell
         Cell cell = new Cell(3, 2);
         Assert.AreEqual(cell.GetCellContent().Count, 0);
 
-        cell.AddCellContent(3);
-        cell.AddCellContent(5);
+        Module a = new House();
+        Module b = new Hospital(); 
 
-        Assert.AreEqual(cell.GetCellContent()[0], 3);
-        Assert.AreEqual(cell.GetCellContent()[1], 5);
+        cell.AddCellContent(a);
+        cell.AddCellContent(b);
+
+        Assert.AreEqual(cell.GetCellContent()[0], a);
+        Assert.AreEqual(cell.GetCellContent()[1], b);
     }
 
     [Test]
@@ -47,10 +50,10 @@ public class TestCell
         Cell cell = new Cell(3, 2);
         Assert.AreEqual(cell.GetCellContent().Count, 0);
 
-        cell.AddCellContent(3);
+        cell.AddCellContent(new House());
         Assert.AreEqual(cell.GetCellContent().Count, 1);
         
-        cell.AddCellContent(5);
+        cell.AddCellContent(new Hospital());
         Assert.AreEqual(cell.GetCellContent().Count, 2);
     }
 

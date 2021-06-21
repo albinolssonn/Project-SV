@@ -5,7 +5,7 @@ using UnityEngine;
 public class Cell
 {
     private int signalStr;
-    private ArrayList cellContent = new ArrayList();
+    private List<Module> cellContent = new List<Module>();
     private readonly int xCoord; 
     private readonly int yCoord;
     private readonly GridManager grid;
@@ -52,7 +52,7 @@ public class Cell
         }
     }
 
-    public ArrayList GetCellContent()
+    public List<Module> GetCellContent()
     {
         return cellContent; 
     }
@@ -67,7 +67,7 @@ public class Cell
         return yCoord;
     }
 
-    public void AddCellContent (int content)
+    public void AddCellContent (Module content)
     {
         cellContent.Add(content); 
     }
