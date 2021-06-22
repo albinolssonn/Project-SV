@@ -5,19 +5,21 @@ using UnityEngine;
 public class Cell
 {
     private int signalStr;
-    private List<Module> cellContent = new List<Module>();
+    private List<Module> cellContent;
     private readonly int xCoord; 
     private readonly int yCoord;
     private readonly GridManager grid;
-    private int maxHeight; 
+    private int maxHeight;
+    private bool hasAntenna; 
 
     public Cell(int yCoord, int xCoord) 
     {
         this.xCoord = xCoord;
         this.yCoord = yCoord;
         signalStr = 0;
+        hasAntenna = false;
         grid = GameObject.FindGameObjectsWithTag("Grid")[0].GetComponent<GridManager>();
-
+        cellContent = new List<Module>(); 
     }
 
 
@@ -27,23 +29,16 @@ public class Cell
         return signalStr; 
     }
 
+    public bool HasAntenna()
+    {
+        return hasAntenna;
+    }
+
     public void SetSignalStr(int signalStr)
     {
         this.signalStr = signalStr;
         
-        /*if(8 <= signalStr && signalStr <= 10)
-        {
-            grid.SetTileColor(this, Colors.green);
-        } else if (5 <= signalStr && signalStr <= 7)
-        {
-            grid.SetTileColor(this, Colors.lightOrange);
-        } else if (3 <= signalStr && signalStr <= 4)
-        {
-            grid.SetTileColor(this, Colors.red);
-        } else if (signalStr <= 2)
-        {
-            grid.SetTileColor(this, Colors.gray);
-        }*/
+        
     }
 
     public bool SetSignalIfHigher(int signalStr)
@@ -73,6 +68,11 @@ public class Cell
 
     public void AddCellContent (Module content)
     {
+        if(content is Antenna)
+        {
+            hasAntenna = true; 
+        }
+
         cellContent.Add(content);
         maxHeight = System.Math.Max(maxHeight, content.height()); 
     }

@@ -7,6 +7,9 @@ public class GridManager : MonoBehaviour
     private int rows = 5;
     private int cols = 8;
     private float tileSize = 1.2F;
+    public SignalBarScript coverageBar; 
+
+    private Network network; 
 
     private Cell[,] gridArray;
     private Dictionary<Cell, GameObject> cellToTile;
@@ -21,6 +24,8 @@ public class GridManager : MonoBehaviour
         cellToTile = new Dictionary<Cell, GameObject>();
         gridArray = GridUtils.BuildArray(rows, cols);
         GenerateGrid();
+        coverageBar.SetCoverage(0);
+        network = new Network(); 
 
     }
 
@@ -28,7 +33,38 @@ public class GridManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
 
+    }
+
+    //Call this method each time a module is placed on the grid.
+    public void UpdateNetwork()
+    {
+        foreach (Cell cell in gridArray)
+        {
+            cell.SetSignalStr(0);
+        }
+
+        foreach (Cell cell in gridArray)
+        {
+            if (cell.HasAntenna())
+            {
+                network.BuildNetwork(gridArray, cell.GetY(), cell.GetX()); 
+            }
+        }
+
+        float total = 0;
+        float count = 0;
+        foreach (Cell cell in gridArray)
+        {
+            total += cell.GetSignalStr();
+
+            SetTileColor(cell, cell.GetSignalStr());
+
+            count++;
+        }
+
+        coverageBar.SetCoverage(total/count); 
     }
 
     private void GenerateGrid()
@@ -60,9 +96,26 @@ public class GridManager : MonoBehaviour
     }
 
     
-    public void SetTileColor(Cell cell, float[] rgbt)
+    public void SetTileColor(Cell cell, int signalStr)
     {
         var tileRenderer = cellToTile[cell].GetComponent<Renderer>();
+        float[] rgbt;
+        if (8 <= signalStr)
+        {
+            rgbt = Colors.green;
+        }
+        else if (5 <= signalStr)
+        {
+            rgbt = Colors.lightOrange;
+        }
+        else if (3 <= signalStr)
+        {
+            rgbt = Colors.red;
+        }
+        else
+        {
+            rgbt = Colors.gray;
+        }
 
         tileRenderer.material.SetColor("_Color", new Color(rgbt[0], rgbt[1], rgbt[2], rgbt[3])); 
     }
