@@ -10,7 +10,7 @@ public class Network
     
     public Network()
     {
-        directions = new List<Direction>() { new North(), new NorthEast(), new East(), new SouthEast(), new South(), new SouthWest(), new West(), new NorthWest() };
+        directions = new List<Direction>() { new North_NorthEast(), new East_NorthEast(), new East_SouthEast(), new South_SouthEast(), new South_SouthWest(), new West_SouthWest(), new West_NorthWest(), new North_NorthWest() };
     }
 
 
@@ -34,9 +34,9 @@ public class Network
 
         foreach (Cell nextCell in neighbours)
         {
-            if (dir.correctDirection(nextCell, currentCell) &&
-                nextCell.SetSignalIfHigher(GetNewStr(nextCell, currentCell.GetSignalStr())))
+            if (dir.correctDirection(nextCell, currentCell))
             {
+                nextCell.SetSignalIfHigher(GetNewStr(nextCell, currentCell.GetSignalStr()));
                 Traverse(dir, nextCell);
             }
         }
@@ -72,66 +72,66 @@ public abstract class Direction
 }
 
 
-public class North : Direction
+public class North_NorthEast : Direction
 {
     public override bool correctDirection(Cell nextCell, Cell currentCell)
     {
-        return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() == currentCell.GetX();
+        return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() >= currentCell.GetX();
     }
 }
 
-public class NorthEast : Direction
+public class  East_NorthEast : Direction
 {
     public override bool correctDirection(Cell nextCell, Cell currentCell)
     {
-        return nextCell.GetX() >= currentCell.GetX() && nextCell.GetY() <= currentCell.GetY();
+        return nextCell.GetY() <= currentCell.GetY() && nextCell.GetX() > currentCell.GetX();
     }
 }
 
-public class East : Direction
+public class East_SouthEast : Direction
 {
     public override bool correctDirection(Cell nextCell, Cell currentCell)
     {
-        return nextCell.GetX() > currentCell.GetX() && nextCell.GetY() == currentCell.GetY();
+        return nextCell.GetX() > currentCell.GetX() && nextCell.GetY() >= currentCell.GetY();
     }
 }
 
-public class SouthEast : Direction
+public class South_SouthEast : Direction
 {
     public override bool correctDirection(Cell nextCell, Cell currentCell)
     {
-        return nextCell.GetX() >= currentCell.GetX() && nextCell.GetY() >= currentCell.GetY();
+        return nextCell.GetX() >= currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
     }
 }
 
-public class South : Direction
+public class South_SouthWest : Direction
 {
     public override bool correctDirection(Cell nextCell, Cell currentCell)
     {
-        return nextCell.GetY() > currentCell.GetY() && nextCell.GetX() == currentCell.GetX();
+        return nextCell.GetY() > currentCell.GetY() && nextCell.GetX() <= currentCell.GetX();
     }
 }
 
-public class SouthWest : Direction
+public class West_SouthWest : Direction
 {
     public override bool correctDirection(Cell nextCell, Cell currentCell)
     {
-        return nextCell.GetY() >= currentCell.GetY() && nextCell.GetX() <= currentCell.GetX();
+        return nextCell.GetX() < currentCell.GetX() && nextCell.GetY() >= currentCell.GetY();
     }
 }
 
-public class West : Direction
+public class West_NorthWest : Direction
 {
     public override bool correctDirection(Cell nextCell, Cell currentCell)
     {
-        return nextCell.GetX() < currentCell.GetX() && nextCell.GetY() == currentCell.GetY();
+        return nextCell.GetX() < currentCell.GetX() && nextCell.GetY() <= currentCell.GetY();
     }
 }
 
-public class NorthWest : Direction
+public class North_NorthWest : Direction
 {
     public override bool correctDirection(Cell nextCell, Cell currentCell)
     {
-        return nextCell.GetY() <= currentCell.GetY() && nextCell.GetX() <= currentCell.GetX();
+        return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() <= currentCell.GetX();
     }
 }

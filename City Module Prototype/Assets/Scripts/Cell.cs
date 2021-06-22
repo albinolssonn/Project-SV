@@ -30,6 +30,7 @@ public class Cell
     public void SetSignalStr(int signalStr)
     {
         this.signalStr = signalStr;
+        
         /*if(8 <= signalStr && signalStr <= 10)
         {
             grid.SetTileColor(this, Colors.green);
