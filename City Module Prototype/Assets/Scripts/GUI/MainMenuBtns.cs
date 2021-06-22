@@ -7,7 +7,7 @@ public class MainMenuBtns : MonoBehaviour
 {
     public void Start_btn()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); 
+        SceneManager.LoadScene("CityModule"); 
     }
 
     public void Settings_btn()
@@ -17,6 +17,7 @@ public class MainMenuBtns : MonoBehaviour
 
     public void Quit_btn()
     {
-        Debug.Log("I Clicked Quit!"); 
+        Debug.Log("Quit Game"); 
+        Application.Quit(); 
     }
 }
