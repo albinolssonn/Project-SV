@@ -55,6 +55,11 @@ public class TestCell
         
         cell.AddCellContent(new Hospital());
         Assert.AreEqual(2, cell.GetCellContent().Count);
+
+        Assert.IsFalse(cell.HasAntenna());
+        cell.AddCellContent(new Antenna());
+        Assert.AreEqual(3, cell.GetCellContent().Count);
+        Assert.IsTrue(cell.HasAntenna());
     }
 
     

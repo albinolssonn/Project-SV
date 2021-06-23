@@ -7,7 +7,7 @@ public class GridManager : MonoBehaviour
     private int rows = 5;
     private int cols = 8;
     private float tileSize = 1.2F;
-    public SignalBarScript coverageBar; 
+    public SignalBarScript coverageBar;
 
     private Network network; 
 
@@ -31,11 +31,42 @@ public class GridManager : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-       
+        if (Input.GetMouseButtonDown(0))
+        {
+
+            Camera cam = Camera.main;
+            Vector3 worldPoint = Input.mousePosition;
+            worldPoint.z = Mathf.Abs(cam.transform.position.z);
+            Vector3 mouseWorldPosition = cam.ScreenToWorldPoint(worldPoint);
+            mouseWorldPosition.z = 0f;
+
+            GetXY(mouseWorldPosition, out int x, out int y);
+            if(x >= 0 && y <= 0 && x < cols && y > -rows)
+            {
+                Instantiate(Resources.Load("Modules/Antenna"), GetWorldPosition(x, y), Quaternion.identity);
+                gridArray[-y, x].AddCellContent(new Antenna());
+                UpdateNetwork();
+            }
+           
+        }
 
     }
+
+    private Vector3 GetWorldPosition(int x, int y)
+    {
+        return new Vector3(x, y) * tileSize;
+    }
+
+    private void GetXY(Vector3 worldPosition, out int x, out int y)
+    {
+
+        x = Mathf.FloorToInt(worldPosition.x / tileSize);
+        y = Mathf.FloorToInt(worldPosition.y / tileSize);
+
+    }
+
 
     //Call this method each time a module is placed on the grid.
     public void UpdateNetwork()
@@ -49,7 +80,7 @@ public class GridManager : MonoBehaviour
         {
             if (cell.HasAntenna())
             {
-                network.BuildNetwork(gridArray, cell.GetY(), cell.GetX()); 
+                network.BuildNetwork(gridArray, cell.GetY(), cell.GetX());
             }
         }
 
@@ -69,7 +100,7 @@ public class GridManager : MonoBehaviour
 
     private void GenerateGrid()
     {
-        GameObject referenceTile = (GameObject)Instantiate(Resources.Load("Square"));
+        GameObject referenceTile = (GameObject)Instantiate(Resources.Load("Modules/Square"));
 
         for (int row = 0; row < rows; row++)
         {
@@ -92,13 +123,15 @@ public class GridManager : MonoBehaviour
         float gridWidth = cols * tileSize;
         float gridHeight = rows * tileSize;
 
-        transform.position = new Vector2(-gridWidth / 2 - tileSize, gridHeight / 2 - tileSize);
+        //transform.position = new Vector2(-gridWidth / 2 - tileSize, gridHeight / 2 - tileSize);
     }
 
     
     public void SetTileColor(Cell cell, int signalStr)
     {
-        var tileRenderer = cellToTile[cell].GetComponent<Renderer>();
+        var tileRendererArray = cellToTile[cell].GetComponentsInChildren<Renderer>();
+        var tileRenderer = tileRendererArray[0];
+        
         float[] rgbt;
         if (8 <= signalStr)
         {
@@ -118,8 +151,7 @@ public class GridManager : MonoBehaviour
         }
 
         tileRenderer.material.SetColor("_Color", new Color(rgbt[0], rgbt[1], rgbt[2], rgbt[3])); 
-    }
-
+    } 
     
     
     public int GetRows()
