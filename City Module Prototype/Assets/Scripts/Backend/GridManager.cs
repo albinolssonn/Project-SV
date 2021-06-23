@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    private int rows = 5;
-    private int cols = 8;
-    private float tileSize = 1.2F;
+    private int rows = 10;
+    private int cols = 10;
+    private float tileSize = 110F;
     public SignalBarScript coverageBar;
     private Module toBePlaced; 
 
@@ -29,9 +29,13 @@ public class GridManager : MonoBehaviour
         gridArray = GridUtils.BuildArray(rows, cols);
         GenerateGrid();
         coverageBar.SetCoverage(0);
-        network = new Network(); 
+        network = new Network();
+
+        transform.parent.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
+        transform.localScale = new Vector3(0.6f, 0.6f, 1f);
 
     }
+
 
 
     // Update is called once per frame
@@ -48,10 +52,13 @@ public class GridManager : MonoBehaviour
 
             GetXY(mouseWorldPosition, out int x, out int y);
 
-            if(x >= 0 && y <= 0 && x < cols && y > -rows)
+
+            if(x >= 0 && y >= 0 && x < cols && y < rows)
             {
-                Instantiate(Resources.Load(toBePlaced.GetResourcePath()), GetWorldPosition(x, y), Quaternion.identity);
-                gridArray[-y, x].AddCellContent(toBePlaced);
+                GameObject tmpObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()), cellToTile[gridArray[y, x]].transform.position, Quaternion.identity);
+                tmpObject.transform.SetParent(cellToTile[gridArray[y, x]].transform);
+
+                gridArray[y, x].AddCellContent(toBePlaced);
                 UpdateNetwork();
             }
 
@@ -64,16 +71,12 @@ public class GridManager : MonoBehaviour
 
     }
 
-    private Vector3 GetWorldPosition(int x, int y)
-    {
-        return new Vector3(x, y) * tileSize;
-    }
 
     private void GetXY(Vector3 worldPosition, out int x, out int y)
     {
-
-        x = Mathf.FloorToInt(worldPosition.x / tileSize);
-        y = Mathf.FloorToInt(worldPosition.y / tileSize);
+        var tmp = transform.InverseTransformPoint(worldPosition);
+        x = Mathf.FloorToInt(tmp[0] / tileSize);
+        y = -Mathf.FloorToInt(tmp[1] / tileSize);
 
     }
 
@@ -117,26 +120,29 @@ public class GridManager : MonoBehaviour
             for (int col = 0; col < cols; col++)
             {
                 GameObject tile = (GameObject)Instantiate(referenceTile, transform);
-
-
+                tile.transform.SetParent(this.transform);
+                Debug.Log(tile.transform.parent);
                 cellToTile[gridArray[row, col]] = tile;
 
                 float posX = col * tileSize;
                 float posY = row * -tileSize;
 
-                tile.transform.position = new Vector2(posX, posY);
+                tile.transform.localPosition = new Vector2(posX, posY);
             }
         }
 
-        Destroy(referenceTile);
 
         float gridWidth = cols * tileSize;
         float gridHeight = rows * tileSize;
 
-        //transform.position = new Vector2(-gridWidth / 2 - tileSize, gridHeight / 2 - tileSize);
+
+        transform.localPosition = new Vector2(-gridWidth / 4, gridHeight / 4);
+
+        Destroy(referenceTile);
+
     }
 
-    
+
     public void SetTileColor(Cell cell, int signalStr)
     {
         var tileRendererArray = cellToTile[cell].GetComponentsInChildren<Renderer>();

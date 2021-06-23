@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2340179367608923286
+--- !u!1 &3225470441602135289
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5280180813602044482}
+  - component: {fileID: 5042950222039595565}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -16,27 +16,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5280180813602044482
+--- !u!4 &5042950222039595565
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2340179367608923286}
+  m_GameObject: {fileID: 3225470441602135289}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.6, y: -0.8, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -1510.7214, y: -92.80223, z: 0}
+  m_LocalScale: {x: 100, y: 100, z: 1}
   m_Children:
-  - {fileID: 5938900248444371131}
+  - {fileID: 6832495770956005588}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1659150313957335458
+--- !u!1001 &1998662073018950093
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 5280180813602044482}
+    m_TransformParent: {fileID: 5042950222039595565}
     m_Modifications:
     - target: {fileID: 1403240090572891281, guid: 6c43d41e4e110a74386bda8672cf3bb6, type: 3}
       propertyPath: m_Name
@@ -88,8 +88,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c43d41e4e110a74386bda8672cf3bb6, type: 3}
---- !u!4 &5938900248444371131 stripped
+--- !u!4 &6832495770956005588 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5002736283674878233, guid: 6c43d41e4e110a74386bda8672cf3bb6, type: 3}
-  m_PrefabInstance: {fileID: 1659150313957335458}
+  m_PrefabInstance: {fileID: 1998662073018950093}
   m_PrefabAsset: {fileID: 0}
