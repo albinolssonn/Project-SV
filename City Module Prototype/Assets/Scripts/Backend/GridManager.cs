@@ -51,7 +51,7 @@ public class GridManager : MonoBehaviour
             if(x >= 0 && y <= 0 && x < cols && y > -rows)
             {
                 Instantiate(Resources.Load(toBePlaced.GetResourcePath()), GetWorldPosition(x, y), Quaternion.identity);
-                gridArray[-y, x].AddCellContent(new Antenna());
+                gridArray[-y, x].AddCellContent(toBePlaced);
                 UpdateNetwork();
             }
 

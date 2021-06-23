@@ -24,7 +24,7 @@ public class Park : Module
 
     public override string GetResourcePath()
     {
-        return "Resources/Park"; 
+        return "Modules/Park"; 
     }
 }
 
@@ -42,7 +42,7 @@ public class House : Module
 
     public override string GetResourcePath()
     {
-        return "Resources/House";
+        return "Modules/House";
     }
 }
 
@@ -60,7 +60,7 @@ public class TallBuilding : Module
 
     public override string GetResourcePath()
     {
-        return "Resources/TallBuilding";
+        return "Modules/TallBuilding";
     }
 }
 
@@ -78,7 +78,7 @@ public class Hospital : Module
 
     public override string GetResourcePath()
     {
-        return "Resources/Hospital";
+        return "Modules/Hospital";
     }
 }
 
@@ -96,7 +96,7 @@ public class PoliceStation: Module
 
     public override string GetResourcePath()
     {
-        return "Resources/PoliceStation";
+        return "Modules/PoliceStation";
     }
 }
 
@@ -114,7 +114,7 @@ public class FireDepartment : Module
 
     public override string GetResourcePath()
     {
-        return "Resources/FireDepartment";
+        return "Modules/FireDepartment";
     }
 }
 
