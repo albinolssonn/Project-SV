@@ -8,6 +8,7 @@ public class GridManager : MonoBehaviour
     private int cols = 8;
     private float tileSize = 1.2F;
     public SignalBarScript coverageBar;
+    private Module toBePlaced; 
 
     private Network network; 
 
@@ -15,7 +16,10 @@ public class GridManager : MonoBehaviour
     private Dictionary<Cell, GameObject> cellToTile;
 
     
-
+    public void SetToBePlaced(Module toBePlaced)
+    {
+        this.toBePlaced = toBePlaced; 
+    }
 
 
     // Start is called before the first frame update
@@ -33,9 +37,9 @@ public class GridManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && toBePlaced != null)
         {
-
+            
             Camera cam = Camera.main;
             Vector3 worldPoint = Input.mousePosition;
             worldPoint.z = Mathf.Abs(cam.transform.position.z);
@@ -43,11 +47,17 @@ public class GridManager : MonoBehaviour
             mouseWorldPosition.z = 0f;
 
             GetXY(mouseWorldPosition, out int x, out int y);
+
             if(x >= 0 && y <= 0 && x < cols && y > -rows)
             {
-                Instantiate(Resources.Load("Modules/Antenna"), GetWorldPosition(x, y), Quaternion.identity);
+                Instantiate(Resources.Load(toBePlaced.GetResourcePath()), GetWorldPosition(x, y), Quaternion.identity);
                 gridArray[-y, x].AddCellContent(new Antenna());
                 UpdateNetwork();
+            }
+
+            if (!Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                toBePlaced = null; //TODO Make this if-clause work.
             }
            
         }

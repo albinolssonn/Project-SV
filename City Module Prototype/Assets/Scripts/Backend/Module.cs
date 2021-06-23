@@ -5,7 +5,8 @@ using UnityEngine;
 public abstract class Module
 {
     public abstract int modifier();
-    public abstract int height(); 
+    public abstract int height();
+    public abstract string GetResourcePath(); 
 
 }
 
@@ -20,6 +21,11 @@ public class Park : Module
     {
         return 0; 
     }
+
+    public override string GetResourcePath()
+    {
+        return "Resources/Park"; 
+    }
 }
 
 public class House : Module
@@ -32,6 +38,11 @@ public class House : Module
     public override int height()
     {
         return 1;
+    }
+
+    public override string GetResourcePath()
+    {
+        return "Resources/House";
     }
 }
 
@@ -46,6 +57,11 @@ public class TallBuilding : Module
     {
         return 3;
     }
+
+    public override string GetResourcePath()
+    {
+        return "Resources/TallBuilding";
+    }
 }
 
 public class Hospital : Module
@@ -58,6 +74,11 @@ public class Hospital : Module
     public override int height()
     {
         return 2;
+    }
+
+    public override string GetResourcePath()
+    {
+        return "Resources/Hospital";
     }
 }
 
@@ -72,6 +93,11 @@ public class PoliceStation: Module
     {
         return 2;
     }
+
+    public override string GetResourcePath()
+    {
+        return "Resources/PoliceStation";
+    }
 }
 
 public class FireDepartment : Module
@@ -85,6 +111,11 @@ public class FireDepartment : Module
     {
         return 2;
     }
+
+    public override string GetResourcePath()
+    {
+        return "Resources/FireDepartment";
+    }
 }
 
 public class Antenna : Module
@@ -97,6 +128,11 @@ public class Antenna : Module
     public override int height()
     {
         return 0;
+    }
+
+    public override string GetResourcePath()
+    {
+        return "Modules/Antenna";
     }
 }
 
