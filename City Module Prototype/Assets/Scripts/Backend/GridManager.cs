@@ -55,6 +55,7 @@ public class GridManager : MonoBehaviour
         {
             shiftHeldDown = false;
             toBePlaced = null;
+            toBeRemoved = null;
         }
 
         if (Input.GetMouseButtonDown(0))
