@@ -68,6 +68,7 @@ public class GridManager : MonoBehaviour
                 GameObject tmpObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()), cellToTile[gridArray[y, x]].transform.position, Quaternion.identity);
                 tmpObject.transform.SetParent(cellToTile[gridArray[y, x]].transform);
                 tmpObject.transform.localScale = newScale;
+                toBePlaced.visualObject = tmpObject;
 
                 gridArray[y, x].AddCellContent(toBePlaced);
                 UpdateNetwork();
@@ -79,6 +80,7 @@ public class GridManager : MonoBehaviour
             } else
             {
                 shiftHeldDown = true;
+                toBePlaced = toBePlaced.Copy();
             }
            
         }
@@ -135,7 +137,6 @@ public class GridManager : MonoBehaviour
             {
                 GameObject tile = (GameObject)Instantiate(referenceTile, transform);
                 tile.transform.SetParent(this.transform);
-                Debug.Log(tile.transform.parent);
                 cellToTile[gridArray[row, col]] = tile;
 
                 float posX = col * tileSize;
@@ -181,9 +182,23 @@ public class GridManager : MonoBehaviour
         }
 
         tileRenderer.material.SetColor("_Color", new Color(rgbt[0], rgbt[1], rgbt[2], rgbt[3])); 
-    } 
-    
-    
+    }
+
+    public void ResetGrid()
+    {
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                gridArray[row, col].ClearCellContent();
+                gridArray[row, col].SetSignalStr(0);
+
+            }
+        }
+        UpdateNetwork();
+    }
+
+
     public int GetRows()
     {
         return rows;

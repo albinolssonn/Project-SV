@@ -39,6 +39,14 @@ public class PauseMenu : MonoBehaviour
         GameIsPaused = true;
     }
 
+    public void Reset_btn()
+    {
+        GridManager grid = GameObject.FindGameObjectsWithTag("Grid")[0].GetComponent<GridManager>();
+        grid.ResetGrid();
+        Resume();
+
+    }
+
     public void Quit_btn()
     {
         Debug.Log("Quit Application");

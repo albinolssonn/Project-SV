@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -82,4 +83,14 @@ public class Cell
         return maxHeight;
     }
 
+    public void ClearCellContent()
+    {
+        foreach (Module module in cellContent)
+        {
+            GameObject.Destroy(module.visualObject);
+        }
+        hasAntenna = false;
+        maxHeight = 0;
+        cellContent = new List<Module>();
+    }
 }

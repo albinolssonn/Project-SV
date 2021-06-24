@@ -47,6 +47,11 @@ public class Network
     {
         int newStr = signalStr - 1;
 
+        if (cell.Equals(startCell))
+        {
+            return newStr;
+        }
+
         foreach (Module content in cell.GetCellContent())
         {
             newStr += content.modifier();
