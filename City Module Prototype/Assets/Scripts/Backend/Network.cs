@@ -17,8 +17,9 @@ public class Network
     public void BuildNetwork(Cell[,] gridArray, int startY, int startX)
     {
         this.gridArray = gridArray;
+        int baseStationStr = 10;
         startCell = gridArray[startY, startX];
-        startCell.SetSignalStr(10);
+        startCell.SetSignalStr(baseStationStr);
 
 
 
@@ -36,7 +37,7 @@ public class Network
         {
             if (dir.correctDirection(nextCell, currentCell))
             {
-                nextCell.SetSignalIfHigher(GetNewStr(nextCell, currentCell.GetSignalStr()));
+                nextCell.SetSignalIfHigher(GetNewStr(currentCell, currentCell.GetSignalStr()));
                 Traverse(dir, nextCell);
             }
         }

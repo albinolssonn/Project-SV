@@ -8,12 +8,13 @@ public class GridManager : MonoBehaviour
     private int cols = 10;
     private float tileSize = 110F;
     public SignalBarScript coverageBar;
-    private Module toBePlaced; 
-
+    private Module toBePlaced;
+    private Vector3 newScale;
     private Network network; 
-
     private Cell[,] gridArray;
     private Dictionary<Cell, GameObject> cellToTile;
+
+    private bool shiftHeldDown;
 
     
     public void SetToBePlaced(Module toBePlaced)
@@ -30,10 +31,12 @@ public class GridManager : MonoBehaviour
         GenerateGrid();
         coverageBar.SetCoverage(0);
         network = new Network();
+        newScale = new Vector3(0.6f, 0.6f, 1f);
+        shiftHeldDown = false;
 
         transform.parent.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
-        transform.localScale = new Vector3(0.6f, 0.6f, 1f);
-
+        transform.localScale = newScale;
+        UpdateNetwork();
     }
 
 
@@ -41,6 +44,13 @@ public class GridManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        
+        if (!Input.GetKey(KeyCode.LeftShift) && shiftHeldDown)
+        {
+            shiftHeldDown = false;
+            toBePlaced = null;
+        }
+
         if (Input.GetMouseButtonDown(0) && toBePlaced != null)
         {
             
@@ -57,14 +67,18 @@ public class GridManager : MonoBehaviour
             {
                 GameObject tmpObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()), cellToTile[gridArray[y, x]].transform.position, Quaternion.identity);
                 tmpObject.transform.SetParent(cellToTile[gridArray[y, x]].transform);
+                tmpObject.transform.localScale = newScale;
 
                 gridArray[y, x].AddCellContent(toBePlaced);
                 UpdateNetwork();
             }
 
-            if (!Input.GetKeyDown(KeyCode.LeftShift))
+            if (!Input.GetKey(KeyCode.LeftShift))
             {
-                toBePlaced = null; //TODO Make this if-clause work.
+                toBePlaced = null;
+            } else
+            {
+                shiftHeldDown = true;
             }
            
         }
