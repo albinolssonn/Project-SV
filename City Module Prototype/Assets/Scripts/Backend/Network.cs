@@ -54,7 +54,7 @@ public class Network
 
         foreach (Module content in cell.GetCellContent())
         {
-            newStr += content.modifier();
+            newStr += content.Modifier();
         }
 
         if(startCell.GetMaxHeight() < cell.GetMaxHeight())

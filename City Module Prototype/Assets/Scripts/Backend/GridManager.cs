@@ -9,6 +9,7 @@ public class GridManager : MonoBehaviour
     private float tileSize = 110F;
     public SignalBarScript coverageBar;
     private Module toBePlaced;
+    private Module toBeRemoved;
     private Vector3 newScale;
     private Network network; 
     private Cell[,] gridArray;
@@ -20,6 +21,11 @@ public class GridManager : MonoBehaviour
     public void SetToBePlaced(Module toBePlaced)
     {
         this.toBePlaced = toBePlaced; 
+    }
+
+    public void SetToBeRemoved(Module toBeRemoved)
+    {
+        this.toBeRemoved = toBeRemoved;
     }
 
 
@@ -51,40 +57,78 @@ public class GridManager : MonoBehaviour
             toBePlaced = null;
         }
 
-        if (Input.GetMouseButtonDown(0) && toBePlaced != null)
+        if (Input.GetMouseButtonDown(0))
         {
-            
-            Camera cam = Camera.main;
-            Vector3 worldPoint = Input.mousePosition;
-            worldPoint.z = Mathf.Abs(cam.transform.position.z);
-            Vector3 mouseWorldPosition = cam.ScreenToWorldPoint(worldPoint);
-            mouseWorldPosition.z = 0f;
 
-            GetXY(mouseWorldPosition, out int x, out int y);
-
-
-            if(x >= 0 && y >= 0 && x < cols && y < rows)
+            if (toBePlaced != null)
             {
-                GameObject tmpObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()), cellToTile[gridArray[y, x]].transform.position, Quaternion.identity);
-                tmpObject.transform.SetParent(cellToTile[gridArray[y, x]].transform);
-                tmpObject.transform.localScale = newScale;
-                toBePlaced.visualObject = tmpObject;
-
-                gridArray[y, x].AddCellContent(toBePlaced);
-                UpdateNetwork();
+                AddModule();
             }
-
-            if (!Input.GetKey(KeyCode.LeftShift))
+            else if(toBeRemoved != null)
             {
-                toBePlaced = null;
-            } else
-            {
-                shiftHeldDown = true;
-                toBePlaced = toBePlaced.Copy();
+                RemoveModule();
             }
-           
+        }
+    }
+
+    public void AddModule()
+    {
+        ClickedCell(out int y, out int x);
+        if (x >= 0 && y >= 0 && x < cols && y < rows)
+        {
+            GameObject tmpObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()), cellToTile[gridArray[y, x]].transform.position, Quaternion.identity);
+            tmpObject.transform.SetParent(cellToTile[gridArray[y, x]].transform);
+            tmpObject.transform.localScale = newScale;
+            toBePlaced.visualObject = tmpObject;
+
+            gridArray[y, x].AddCellContent(toBePlaced);
+            UpdateNetwork();
         }
 
+        if (!Input.GetKey(KeyCode.LeftShift))
+        {
+            toBePlaced = null;
+        }
+        else
+        {
+            shiftHeldDown = true;
+            toBePlaced = toBePlaced.Copy();
+        }
+    }
+
+
+    public void RemoveModule()
+    {
+        if (Input.GetMouseButtonDown(0) && toBeRemoved != null)
+        {
+            ClickedCell(out int y, out int x);
+
+            if (x >= 0 && y >= 0 && x < cols && y < rows)
+            {
+                gridArray[y, x].RemoveCellContent(toBeRemoved);
+                UpdateNetwork();
+            }
+        }
+
+        if (!Input.GetKey(KeyCode.LeftShift))
+        {
+            toBeRemoved = null;
+        }
+        else
+        {
+            shiftHeldDown = true;
+        }
+    }
+
+    private void ClickedCell(out int y, out int x)
+    {
+        Camera cam = Camera.main;
+        Vector3 worldPoint = Input.mousePosition;
+        worldPoint.z = Mathf.Abs(cam.transform.position.z);
+        Vector3 mouseWorldPosition = cam.ScreenToWorldPoint(worldPoint);
+        mouseWorldPosition.z = 0f;
+
+        GetXY(mouseWorldPosition, out x, out y);
     }
 
 
@@ -183,6 +227,8 @@ public class GridManager : MonoBehaviour
 
         tileRenderer.material.SetColor("_Color", new Color(rgbt[0], rgbt[1], rgbt[2], rgbt[3])); 
     }
+
+    
 
     public void ResetGrid()
     {

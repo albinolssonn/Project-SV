@@ -6,8 +6,8 @@ public abstract class Module
 {
     public GameObject visualObject;
 
-    public abstract int modifier();
-    public abstract int height();
+    public abstract int Modifier();
+    public abstract int Height();
     public abstract string GetResourcePath();
     public abstract Module Copy();
 }
@@ -15,12 +15,12 @@ public abstract class Module
 public class Park : Module
 {
 
-    public override int modifier()
+    public override int Modifier()
     {
         return 0;
     }
 
-    public override int height()
+    public override int Height()
     {
         return 0; 
     }
@@ -39,12 +39,12 @@ public class Park : Module
 public class House : Module
 {
 
-    public override int modifier()
+    public override int Modifier()
     {
         return -1;
     }
 
-    public override int height()
+    public override int Height()
     {
         return 1;
     }
@@ -63,12 +63,12 @@ public class House : Module
 public class TallBuilding : Module
 {
 
-    public override int modifier()
+    public override int Modifier()
     {
         return -2;
     }
 
-    public override int height()
+    public override int Height()
     {
         return 3;
     }
@@ -87,12 +87,12 @@ public class TallBuilding : Module
 public class Hospital : Module
 {
 
-    public override int modifier()
+    public override int Modifier()
     {
         return -2;
     }
 
-    public override int height()
+    public override int Height()
     {
         return 2;
     }
@@ -111,12 +111,12 @@ public class Hospital : Module
 public class PoliceStation: Module
 {
 
-    public override int modifier()
+    public override int Modifier()
     {
         return -1;
     }
 
-    public override int height()
+    public override int Height()
     {
         return 2;
     }
@@ -135,12 +135,12 @@ public class PoliceStation: Module
 public class FireDepartment : Module
 {
 
-    public override int modifier()
+    public override int Modifier()
     {
         return -1;
     }
 
-    public override int height()
+    public override int Height()
     {
         return 2;
     }
@@ -159,12 +159,12 @@ public class FireDepartment : Module
 public class Antenna : Module
 {
 
-    public override int modifier()
+    public override int Modifier()
     {
         return 0;
     }
 
-    public override int height()
+    public override int Height()
     {
         return 0;
     }

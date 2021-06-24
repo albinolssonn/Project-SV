@@ -75,12 +75,40 @@ public class Cell
         }
 
         cellContent.Add(content);
-        maxHeight = System.Math.Max(maxHeight, content.height()); 
+        maxHeight = System.Math.Max(maxHeight, content.Height()); 
     }
 
     public int GetMaxHeight()
     {
         return maxHeight;
+    }
+
+    public void RemoveCellContent(Module module)
+    {
+        List<Module> newList = new List<Module>();
+        foreach (Module elem in cellContent)
+        {
+            if(elem.GetType() == module.GetType())
+            {
+                GameObject.Destroy(elem.visualObject);
+            } else
+            {
+                newList.Add(elem);
+            }
+        }
+        cellContent = newList;
+
+        if (module is Antenna)
+        {
+            hasAntenna = false;
+        }
+
+        int newMax = 0;
+        foreach (Module elem in cellContent)
+        {
+            newMax = System.Math.Max(newMax, elem.Height());
+        }
+        maxHeight = newMax;
     }
 
     public void ClearCellContent()

@@ -17,14 +17,20 @@ public class BuildingPlacer : MonoBehaviour
         grid.SetToBePlaced(new Antenna()); 
     }
 
+    public void RemoveAntenna_Btn()
+    {
+        grid.SetToBeRemoved(new Antenna());
+    }
+
     public void House_Btn()
     {
         grid.SetToBePlaced(new House());
     }
 
-
-
-
+    public void RemoveHouse_Btn()
+    {
+        grid.SetToBeRemoved(new House());
+    }
 
 
 }
