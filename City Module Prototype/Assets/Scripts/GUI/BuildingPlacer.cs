@@ -12,6 +12,8 @@ public class BuildingPlacer : MonoBehaviour
 
     }
 
+    //------------------------------------------------------
+
     public void Antenna_Btn()
     {
         grid.SetToBePlaced(new Antenna()); 
@@ -22,6 +24,8 @@ public class BuildingPlacer : MonoBehaviour
         grid.SetToBeRemoved(new Antenna());
     }
 
+    //------------------------------------------------------
+
     public void House_Btn()
     {
         grid.SetToBePlaced(new House());
@@ -31,6 +35,33 @@ public class BuildingPlacer : MonoBehaviour
     {
         grid.SetToBeRemoved(new House());
     }
+
+    //------------------------------------------------------
+
+    public void TallBuilding_Btn()
+    {
+        grid.SetToBePlaced(new TallBuilding());
+    }
+
+    public void RemoveTallBuilding_Btn()
+    {
+        grid.SetToBeRemoved(new TallBuilding());
+    }
+
+    //------------------------------------------------------
+
+    public void Park_Btn()
+    {
+        grid.SetToBePlaced(new Park());
+    }
+
+    public void RemovePark_Btn()
+    {
+        grid.SetToBeRemoved(new Park());
+    }
+
+    //------------------------------------------------------
+
 
 
 }

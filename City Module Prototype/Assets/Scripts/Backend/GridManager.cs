@@ -205,9 +205,8 @@ public class GridManager : MonoBehaviour
 
     public void SetTileColor(Cell cell, int signalStr)
     {
-        var tileRendererArray = cellToTile[cell].GetComponentsInChildren<Renderer>();
-        var tileRenderer = tileRendererArray[0];
-        
+        var tileRenderer = cellToTile[cell].transform.GetChild(0).GetComponent<Renderer>();
+
         float[] rgbt;
         if (8 <= signalStr)
         {
@@ -227,6 +226,7 @@ public class GridManager : MonoBehaviour
         }
 
         tileRenderer.material.SetColor("_Color", new Color(rgbt[0], rgbt[1], rgbt[2], rgbt[3])); 
+
     }
 
     
