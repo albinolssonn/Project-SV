@@ -62,6 +62,41 @@ public class BuildingPlacer : MonoBehaviour
 
     //------------------------------------------------------
 
+    public void Hospital_Btn()
+    {
+        grid.SetToBePlaced(new Hospital());
+    }
+
+    public void RemoveHospital_Btn()
+    {
+        grid.SetToBeRemoved(new Hospital());
+    }
+
+    //------------------------------------------------------
+
+    public void PoliceStation_Btn()
+    {
+        grid.SetToBePlaced(new PoliceStation());
+    }
+
+    public void RemovePoliceStation_Btn()
+    {
+        grid.SetToBeRemoved(new PoliceStation());
+    }
+
+    //------------------------------------------------------
+
+    public void FireDepartment_Btn()
+    {
+        grid.SetToBePlaced(new FireDepartment());
+    }
+
+    public void RemoveFireDepartment_Btn()
+    {
+        grid.SetToBeRemoved(new FireDepartment());
+    }
+
+    //------------------------------------------------------
 
 
 }
