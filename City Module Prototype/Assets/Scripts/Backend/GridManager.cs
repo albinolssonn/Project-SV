@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * This class manages the grid which one place modules and visualizes the network on.
+ */
 public class GridManager : MonoBehaviour
 {
     private int rows = 10;
@@ -17,16 +20,6 @@ public class GridManager : MonoBehaviour
 
     private bool shiftHeldDown;
 
-    
-    public void SetToBePlaced(Module toBePlaced)
-    {
-        this.toBePlaced = toBePlaced; 
-    }
-
-    public void SetToBeRemoved(Module toBeRemoved)
-    {
-        this.toBeRemoved = toBeRemoved;
-    }
 
 
     // Start is called before the first frame update
@@ -45,12 +38,10 @@ public class GridManager : MonoBehaviour
         UpdateNetwork();
     }
 
-
-
-    // Update is called once per frame
+    // Update is called once per frame. It checks if the mouse has been clicked to place down a module.
     private void Update()
     {
-        
+
         if (!Input.GetKey(KeyCode.LeftShift) && shiftHeldDown)
         {
             shiftHeldDown = false;
@@ -65,14 +56,47 @@ public class GridManager : MonoBehaviour
             {
                 AddModule();
             }
-            else if(toBeRemoved != null)
+            else if (toBeRemoved != null)
             {
                 RemoveModule();
             }
         }
     }
 
-    public void AddModule()
+
+    /*
+     * When clicking a button to place a module, the module type to be placed should be set in the variable 'toBePlaced'.
+     * If one wants to place an Antenna, then set 'toBePlaced' to 'new Antenna()'.
+     * 
+     * Module toBePlaced: An instance of the object one wants to place on the next mousclick.
+     * 
+     * Returns: Nothing.
+     */
+    public void SetToBePlaced(Module toBePlaced)
+    {
+        this.toBePlaced = toBePlaced; 
+    }
+
+
+    /*
+     * When clicking a button to remove a module, the module type to be removed should be set in the variable 'toBeRemoved'.
+     * If one wants to remove an Antenna, then set 'toBeRemoved' to 'new Antenna()'.
+     * 
+     * Module toBeRemoved: An instance of the object one wants to remove on the next mousclick.
+     * 
+     * Returns: Nothing.
+     */
+    public void SetToBeRemoved(Module toBeRemoved)
+    {
+        this.toBeRemoved = toBeRemoved;
+    }
+
+    /*
+     * Helper-method which places a module on the clicked cell of the type that was set in the variable 'toBePlaced'.
+     * 
+     * Returns: Nothing.
+     */
+    private void AddModule()
     {
         ClickedCell(out int y, out int x);
         if (x >= 0 && y >= 0 && x < cols && y < rows)
@@ -97,7 +121,11 @@ public class GridManager : MonoBehaviour
         }
     }
 
-
+    /*
+     * Helper-method which removes a module on the clicked cell of the type that was set in the variable 'toBeRemoved'.
+     * 
+     * Returns: Nothing.
+     */
     public void RemoveModule()
     {
         if (Input.GetMouseButtonDown(0) && toBeRemoved != null)
@@ -121,6 +149,13 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    /*
+     * Helper-method which locates which cell was clicked and sets the y and x to the correct grid-coordinates.
+     * 
+     * out int y: This variable will be set to the y value of the grid corresponding to the position clicked with the mouse.
+     * 
+     * out int x: This variable will be set to the x value of the grid corresponding to the position clicked with the mouse.
+     */
     private void ClickedCell(out int y, out int x)
     {
         Camera cam = Camera.main;
@@ -129,11 +164,19 @@ public class GridManager : MonoBehaviour
         Vector3 mouseWorldPosition = cam.ScreenToWorldPoint(worldPoint);
         mouseWorldPosition.z = 0f;
 
-        GetXY(mouseWorldPosition, out x, out y);
+        GetXY(mouseWorldPosition, out y, out x);
     }
 
-
-    private void GetXY(Vector3 worldPosition, out int x, out int y)
+    /*
+     * Helper-method which translates the world position clicked with the mouse to y- and x- coordinates.
+     * 
+     * Vector3 worldPosition: The position in world coordinates.
+     * 
+     * out int y: This variable will be set to the y value of the grid corresponding to the position worldPosition.
+     * 
+     * out int x: This variable will be set to the x value of the grid corresponding to the position worldPosition.
+     */
+    private void GetXY(Vector3 worldPosition, out int y, out int x)
     {
         var tmp = transform.InverseTransformPoint(worldPosition);
         x = Mathf.FloorToInt(tmp[0] / tileSize);
@@ -142,7 +185,11 @@ public class GridManager : MonoBehaviour
     }
 
 
-    //Call this method each time a module is placed on the grid.
+    /*
+     * This method updates the network by rebuilding it using the Network class and then setting each tile to their correct color.
+     * 
+     * Returns: Nothing.
+     */
     public void UpdateNetwork()
     {
         foreach (Cell cell in gridArray)
@@ -164,7 +211,7 @@ public class GridManager : MonoBehaviour
         {
             total += (float)cell.GetSignalStr();
 
-            SetTileColor(cell, cell.GetSignalStr());
+            SetTileColor(cell);
 
             count++;
         }
@@ -172,6 +219,12 @@ public class GridManager : MonoBehaviour
         coverageBar.SetCoverage(total/count); 
     }
 
+    /*
+     * This method builds and displays the visual grid of tiles on the screen and saves them in the dictionary cellToTile, 
+     * mapping each cell to their corresponding visual tile to be reachable later.
+     * 
+     * Returns: Nothing.
+     */
     private void GenerateGrid()
     {
         GameObject referenceTile = (GameObject)Instantiate(Resources.Load("Modules/Square"));
@@ -199,13 +252,19 @@ public class GridManager : MonoBehaviour
         transform.localPosition = new Vector2(-gridWidth / 4, gridHeight / 4);
 
         Destroy(referenceTile);
-
     }
 
-
-    public void SetTileColor(Cell cell, double signalStr)
+    /*
+     * This method sets the color of a given cell's tile based on cell's signal strength.
+     * 
+     * Cell cell: The cell corresponding to the tile one wants to change color of.
+     * 
+     * Returns: Nothing.
+     */
+    public void SetTileColor(Cell cell)
     {
         var tileRenderer = cellToTile[cell].transform.GetChild(0).GetComponent<Renderer>();
+        var signalStr = cell.GetSignalStr();
 
         float[] rgbt;
         if (8 <= signalStr)
@@ -229,8 +288,10 @@ public class GridManager : MonoBehaviour
 
     }
 
-    
-
+    /*
+     * This method resets the entire grid by emptying every cell of content, 
+     * setting every cell's signal strength to zero and then updating the network.
+     */
     public void ResetGrid()
     {
         for (int row = 0; row < rows; row++)
@@ -245,12 +306,21 @@ public class GridManager : MonoBehaviour
         UpdateNetwork();
     }
 
-
+    /*
+     * Returns the number of rows of the grid.
+     * 
+     * Returns: Number of rows of the grid as an int.
+     */
     public int GetRows()
     {
         return rows;
     }
 
+    /*
+     * Returns the number of columns of the grid.
+     * 
+     * Returns: Number of cols of the grid as an int.
+     */
     public int GetCols()
     {
         return cols;

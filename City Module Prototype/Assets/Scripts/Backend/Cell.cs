@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * This class represents a cell in the grid.
+ */
 public class Cell
 {
     private double signalStr;
@@ -24,17 +27,27 @@ public class Cell
     }
 
 
-
+    /*
+     * Returns: the signal strength of this cell as a 'double'.
+     */
     public double GetSignalStr()
     {
         return signalStr; 
     }
 
+    /*
+     * Returns: A if this cell has an Antenna in it or not as a 'bool'.
+     */
     public bool HasAntenna()
     {
         return hasAntenna;
     }
 
+    /*
+     * This method sets the signal strength of this cell.
+     * 
+     * double signalStr: the value which the variable 'signalStr' should be set to.
+     */
     public void SetSignalStr(double signalStr)
     {
         this.signalStr = signalStr;
@@ -42,31 +55,51 @@ public class Cell
         
     }
 
-    public bool SetSignalIfHigher(double signalStr)
+    /*
+     * This method sets the signal strength of this cell to a new value ONLY if the new value is larger.
+     * 
+     * Returns: Nothing.
+     */
+    public void SetSignalIfHigher(double signalStr)
     {
         if(this.signalStr < signalStr)
         {
             SetSignalStr(signalStr);
-            return true;
         }
-        return false;
     }
 
+    /*
+     * Returns: The variable cellContent.
+     */
     public List<Module> GetCellContent()
     {
         return cellContent; 
     }
 
+    /*
+     * Returns: The variable xCoord.
+     */
     public int GetX()
     {
         return xCoord;
     }
 
+    /*
+     * Returns: The variable yCoord.
+     */
     public int GetY()
     {
         return yCoord;
     }
 
+    /*
+     * This method adds a module to the List<Module> cellContent and sets the max height of this module
+     * cell to the height of the module if the new height is higher than any previous.
+     * 
+     * Module content: The 'Module' object which one wants to add to this cell.
+     * 
+     * Returns: Nothing.
+     */
     public void AddCellContent (Module content)
     {
         if(content is Antenna)
@@ -78,11 +111,22 @@ public class Cell
         maxHeight = System.Math.Max(maxHeight, content.Height()); 
     }
 
+    /*
+     * Returns: The max height of any modules placed in this cell.
+     */
     public int GetMaxHeight()
     {
         return maxHeight;
     }
 
+    /*
+     * This method removes every instance of the given 'Module' type from this cell and sets the variable 'maxHeight' to its new correct value.
+     * Example, RemoveCellContent(new House()) to remove every House from this cell.
+     * 
+     * Module module: The module type one wants to remove from this cell.
+     * 
+     * Returns: Nothing.
+     */
     public void RemoveCellContent(Module module)
     {
         List<Module> newList = new List<Module>();
@@ -111,6 +155,11 @@ public class Cell
         maxHeight = newMax;
     }
 
+    /*
+     * This method clears the cell of all modules it contains, as well as resets every variable dependent on the modules in it.
+     * 
+     * Returns: Nothing.
+     */
     public void ClearCellContent()
     {
         foreach (Module module in cellContent)

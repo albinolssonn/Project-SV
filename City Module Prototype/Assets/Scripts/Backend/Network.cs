@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//This class is used to build the network of the grid of the type Cell[,] handed to the class in the method BuildNetwork().
+//The network is "built" by assigning the correct signal strength to each cell depedning on the distance and modules in between the cell and the best antenna.
 public class Network
 {
     private readonly List<Direction> directions; 
@@ -13,7 +16,18 @@ public class Network
         directions = new List<Direction>() { new North_NorthEast(), new East_NorthEast(), new East_SouthEast(), new South_SouthEast(), new South_SouthWest(), new West_SouthWest(), new West_NorthWest(), new North_NorthWest() };
     }
 
-
+    /*
+     * This method should be called upon once for each cell that contains an Antenna, with startX and startY being the coordinates for said cell.
+     * It spreads the network from the cell gridArray[startY, startX] with the signal strength of that cell.
+     * 
+     * Cell[,] gridArray: This is the grid the method will spread the network across.
+     * 
+     * int startY: This is the y-coordinate which the method will use as origin for the spread.
+     * 
+     * int startX: This is the x-coordinate which the method will use as origin for the spread.
+     * 
+     * Returns: Nothing.
+     */
     public void BuildNetwork(Cell[,] gridArray, int startY, int startX)
     {
         this.gridArray = gridArray;
@@ -28,7 +42,19 @@ public class Network
             Traverse(direction, startCell);
         }
     }
-   
+
+
+    /*
+     * This helper-method is called to perform a recursive breadth-first search to spread the network accordingly.
+     * 
+     * Direction dir: In which direction this iteration of the search is searching in. 
+     *                Possible directions are those defined each as a separate class at the bottom of this file.
+     * 
+     * Cell currentCell: The current cell in the iteration.
+     * 
+     *
+     * Returns: Nothing.
+     */
     private void Traverse(Direction dir, Cell currentCell)
     {
         List<Cell> neighbours = GridUtils.GetNearbyCells(currentCell.GetY(), currentCell.GetX(), gridArray);
@@ -43,6 +69,16 @@ public class Network
         }
     }
 
+
+    /*
+     * This helper-method is called to calculate how much of the signal 'cell' will block for those behind it.
+     * 
+     * Cell cell: The cell which is blocking the signal.
+     * 
+     * double signalStr: The current strength of the signal passing through the cell.
+     * 
+     * Returns: The resulting signal strenght that passes through the tile 'cell'.
+     */
     private double GetNewStr(Cell cell, double signalStr)
     {
         double newStr = signalStr - 1;
@@ -71,7 +107,10 @@ public class Network
 
 
 
-
+/*
+ * These below are the possible direction of which the signal can traverse through the system.
+ * Note: The y-axis of the coordinate system is inverted. Going north results in decrease in y, going east results in increase in x.
+ */
 public abstract class Direction
 {
     public abstract bool correctDirection(Cell nextCell, Cell currentCell);

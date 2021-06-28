@@ -2,9 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * This class contains utitilies used by the gridManager. The reason these are in a class of their own is to be able to run automatic tests on them
+ * without having to start the entire program.
+ */
 public static class GridUtils
 {
-
+    /*
+     * Fills a nested array of (rows x cols) with instances of Cell.
+     * 
+     * int rows: number of rows for resulting grid.
+     * 
+     * int cols: number of cols for resulting grid.
+     * 
+     * Returns: A nested array Cell[,] which is (rows x cols) large.
+     */
     public static Cell[,] BuildArray(int rows, int cols)
     {
         Cell[,] gridArray = new Cell[rows, cols];
@@ -19,6 +31,17 @@ public static class GridUtils
     }
 
 
+    /*
+     * Gets a list of all neighbouring cells to the cell at gridArray[y,x].
+     * 
+     * int y: The y-coordinate for the origin cell.
+     * 
+     * int x: The x-coordinate for the origin cell.
+     * 
+     * Cell[,]: The grid to apply the coordinates to.
+     * 
+     * Returns: A List<Cell> containing all the neighbouring cells for the one at gridArray[y,x].
+     */
     public static List<Cell> GetNearbyCells(int y, int x, Cell[,] gridArray)
     {
         Cell cell = gridArray[y, x];

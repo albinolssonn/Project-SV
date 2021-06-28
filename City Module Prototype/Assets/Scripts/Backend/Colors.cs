@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * This class contains the color codes for the colors used in the program.
+ */
 public static class Colors
 {
 

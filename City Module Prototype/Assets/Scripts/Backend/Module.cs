@@ -2,13 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * This class is used to represent the different modules guests will be able to place upon a city tile.
+ */
 public abstract class Module
 {
+    /*
+     * This is the GameObject which is visualized on the screen for the user.
+     */
     public GameObject visualObject;
 
+    /*
+     * Returns: The amount of which the module blocks the signal.
+     */
     public abstract int Modifier();
+
+    /*
+     * Returns: the height value of the model.
+     */
     public abstract int Height();
+
+    /*
+     * Returns: The path where the resource for the visual model is located on the device.
+     *          Should be: "Modules/MODELNAME" where MODELNAME is the filename of the resource.
+     */
     public abstract string GetResourcePath();
+    
+    /*
+     * Returns a new instance of the object.
+     */
     public abstract Module Copy();
 }
 
