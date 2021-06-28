@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Cell
 {
-    private int signalStr;
+    private double signalStr;
     private List<Module> cellContent;
     private readonly int xCoord; 
     private readonly int yCoord;
@@ -25,7 +25,7 @@ public class Cell
 
 
 
-    public int GetSignalStr()
+    public double GetSignalStr()
     {
         return signalStr; 
     }
@@ -35,14 +35,14 @@ public class Cell
         return hasAntenna;
     }
 
-    public void SetSignalStr(int signalStr)
+    public void SetSignalStr(double signalStr)
     {
         this.signalStr = signalStr;
         
         
     }
 
-    public bool SetSignalIfHigher(int signalStr)
+    public bool SetSignalIfHigher(double signalStr)
     {
         if(this.signalStr < signalStr)
         {

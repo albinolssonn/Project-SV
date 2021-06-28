@@ -43,9 +43,9 @@ public class Network
         }
     }
 
-    private int GetNewStr(Cell cell, int signalStr)
+    private double GetNewStr(Cell cell, double signalStr)
     {
-        int newStr = signalStr - 1;
+        double newStr = signalStr - 1;
 
         if (cell.Equals(startCell))
         {

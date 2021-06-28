@@ -1,16 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI; 
 
 public class SignalBarScript : MonoBehaviour
 {
 
-    public Slider slider; 
+    public Slider slider;
+    public TMP_Text text;
 
     public void SetCoverage(float signalStr)
     {
-        slider.value = signalStr; 
+        slider.value = signalStr;
+        text.text = signalStr.ToString();
     }
     
 }

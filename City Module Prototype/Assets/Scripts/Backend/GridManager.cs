@@ -162,7 +162,7 @@ public class GridManager : MonoBehaviour
         float count = 0;
         foreach (Cell cell in gridArray)
         {
-            total += cell.GetSignalStr();
+            total += (float)cell.GetSignalStr();
 
             SetTileColor(cell, cell.GetSignalStr());
 
@@ -203,7 +203,7 @@ public class GridManager : MonoBehaviour
     }
 
 
-    public void SetTileColor(Cell cell, int signalStr)
+    public void SetTileColor(Cell cell, double signalStr)
     {
         var tileRenderer = cellToTile[cell].transform.GetChild(0).GetComponent<Renderer>();
 
