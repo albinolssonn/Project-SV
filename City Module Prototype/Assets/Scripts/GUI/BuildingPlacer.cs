@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * This class contains the functionality of every button used to place and remove modules on the grid.
+ */
 public class BuildingPlacer : MonoBehaviour
 {
     GridManager grid;

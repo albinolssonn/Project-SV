@@ -2,6 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI; 
 
+/*
+ * This class contains the functionality of any statistic bars visualized.
+ */
 public class SignalBarScript : MonoBehaviour
 {
 

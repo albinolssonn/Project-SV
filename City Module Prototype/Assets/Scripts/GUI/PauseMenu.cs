@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/*
+ * This class contains the functionality used for the pause menu (ESC).
+ */
 public class PauseMenu : MonoBehaviour
 {
     public static bool GameIsPaused = false;
