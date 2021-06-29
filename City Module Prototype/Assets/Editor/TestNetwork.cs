@@ -6,120 +6,7 @@ using NUnit.Framework;
 public class TestNetwork
 {
 
-    /*Depricated test. Unreasonable big, too high maintenance. Available if needed.
-     * [Test]
-    public void BigTown_Test()
-    {
-        Network searcher = new Network();
-        int rows = 5;
-        int cols = 5;
-        Cell[,] gridArray = GridUtils.BuildArray(rows, cols);
-
-        gridArray[0, 0].AddCellContent(new House());
-        gridArray[0, 0].AddCellContent(new House());
-
-        gridArray[0, 1].AddCellContent(new House());
-        gridArray[0, 1].AddCellContent(new House());
-
-        gridArray[0, 2].AddCellContent(new House());
-        gridArray[0, 2].AddCellContent(new House());
-        gridArray[0, 2].AddCellContent(new House());
-
-        gridArray[0, 3].AddCellContent(new TallBuilding());
-        gridArray[0, 3].AddCellContent(new TallBuilding());
-
-        gridArray[0, 4].AddCellContent(new House());
-
-        gridArray[1, 0].AddCellContent(new House());
-        gridArray[1, 0].AddCellContent(new House());
-
-        gridArray[1, 1].AddCellContent(new House());
-        gridArray[1, 1].AddCellContent(new House());
-
-        gridArray[1, 2].AddCellContent(new House());
-        gridArray[1, 2].AddCellContent(new House());
-
-        gridArray[1, 3].AddCellContent(new Park());
-
-        gridArray[1, 4].AddCellContent(new House());
-
-        gridArray[2, 0].AddCellContent(new House());
-        gridArray[2, 0].AddCellContent(new House());
-        gridArray[2, 0].AddCellContent(new House());
-
-        gridArray[2, 1].AddCellContent(new Park());
-
-        gridArray[2, 2].AddCellContent(new Park());
-        gridArray[2, 2].AddCellContent(new Antenna());
-
-        gridArray[2, 3].AddCellContent(new Park());
-
-        gridArray[2, 4].AddCellContent(new House());
-        gridArray[2, 4].AddCellContent(new House());
-
-        gridArray[3, 0].AddCellContent(new TallBuilding());
-        gridArray[3, 0].AddCellContent(new TallBuilding());
-
-        gridArray[3, 1].AddCellContent(new Hospital());
-
-        gridArray[3, 2].AddCellContent(new PoliceStation());
-
-        gridArray[3, 4].AddCellContent(new House());
-        gridArray[3, 4].AddCellContent(new House());
-        gridArray[3, 4].AddCellContent(new House());
-        gridArray[3, 4].AddCellContent(new House());
-
-        gridArray[4, 0].AddCellContent(new TallBuilding());
-
-        gridArray[4, 2].AddCellContent(new FireDepartment());
-
-        gridArray[4, 3].AddCellContent(new TallBuilding());
-        gridArray[4, 3].AddCellContent(new TallBuilding());
-
-        gridArray[4, 4].AddCellContent(new House());
-        gridArray[4, 4].AddCellContent(new House());
-        gridArray[4, 4].AddCellContent(new House());
-        gridArray[4, 4].AddCellContent(new House());
-        gridArray[4, 4].AddCellContent(new House());
-
-        searcher.BuildNetwork(gridArray, 2, 2);
-
-        for (int row = 0; row < rows; row++)
-        {
-            Debug.Log(gridArray[row, 0].GetSignalStr() + "   " + gridArray[row, 1].GetSignalStr() + "   " + gridArray[row, 2].GetSignalStr() + "   " + gridArray[row, 3].GetSignalStr() + "   " + gridArray[row, 4].GetSignalStr());
-            
-        }
-
-        Assert.AreEqual(0, gridArray[0, 0].GetSignalStr());
-        Assert.AreEqual(0, gridArray[0, 1].GetSignalStr());
-        Assert.AreEqual(0, gridArray[0, 2].GetSignalStr());
-        Assert.AreEqual(2, gridArray[0, 3].GetSignalStr());
-        Assert.AreEqual(5, gridArray[0, 4].GetSignalStr());
-
-        Assert.AreEqual(4, gridArray[1, 0].GetSignalStr());
-        Assert.AreEqual(5, gridArray[1, 1].GetSignalStr());
-        Assert.AreEqual(5, gridArray[1, 2].GetSignalStr());
-        Assert.AreEqual(9, gridArray[1, 3].GetSignalStr());
-        Assert.AreEqual(5, gridArray[1, 4].GetSignalStr());
-
-        Assert.AreEqual(3, gridArray[2, 0].GetSignalStr());
-        Assert.AreEqual(9, gridArray[2, 1].GetSignalStr());
-        Assert.AreEqual(10, gridArray[2, 2].GetSignalStr());
-        Assert.AreEqual(9, gridArray[2, 3].GetSignalStr());
-        Assert.AreEqual(4, gridArray[2, 4].GetSignalStr());
-
-        Assert.AreEqual(2, gridArray[3, 0].GetSignalStr());
-        Assert.AreEqual(5, gridArray[3, 1].GetSignalStr());
-        Assert.AreEqual(6, gridArray[3, 2].GetSignalStr());
-        Assert.AreEqual(9, gridArray[3, 3].GetSignalStr());
-        Assert.AreEqual(2, gridArray[3, 4].GetSignalStr());
-
-        Assert.AreEqual(0, gridArray[4, 0].GetSignalStr());
-        Assert.AreEqual(5, gridArray[4, 1].GetSignalStr());
-        Assert.AreEqual(2, gridArray[4, 2].GetSignalStr());
-        Assert.AreEqual(2, gridArray[4, 3].GetSignalStr());
-        Assert.AreEqual(1, gridArray[4, 4].GetSignalStr());
-    }*/
+    private int maxStr = 10; 
 
 
     [Test]
@@ -150,7 +37,7 @@ public class TestNetwork
 
         gridArray[2, 2].AddCellContent(new Park());
 
-        searcher.BuildNetwork(gridArray, 1, 0);
+        searcher.BuildNetwork(gridArray, 1, 0, maxStr);
 
         Debug.Log(gridArray[0, 0].GetSignalStr() + "  " + gridArray[0, 1].GetSignalStr() + "  " + gridArray[0, 2].GetSignalStr());
         Debug.Log(gridArray[1, 0].GetSignalStr() + "  " + gridArray[1, 1].GetSignalStr() + "  " + gridArray[1, 2].GetSignalStr());
@@ -223,7 +110,7 @@ public class TestNetwork
 
 
 
-        searcher.BuildNetwork(gridArray, 1, 1);
+        searcher.BuildNetwork(gridArray, 1, 1, maxStr);
 
         for (int row = 0; row < rows; row++)
         {
@@ -289,7 +176,7 @@ public class TestNetwork
 
         gridArray[2, 2].AddCellContent(new House());
 
-        searcher.BuildNetwork(gridArray, 2, 0);
+        searcher.BuildNetwork(gridArray, 2, 0, maxStr);
 
         for (int row = 0; row < rows; row++)
         {
@@ -344,7 +231,7 @@ public class TestNetwork
         gridArray[2, 2].AddCellContent(new Park());
 
 
-        searcher.BuildNetwork(gridArray, 1, 2);
+        searcher.BuildNetwork(gridArray, 1, 2, maxStr);
 
         for (int row = 0; row < rows; row++)
         {
@@ -703,6 +590,121 @@ public class TestNetwork
         Assert.AreEqual(6, gridArray[4, 2].GetSignalStr());
     }
     */
+
+    /*Depricated test. Unreasonable big, too high maintenance. Available if needed.
+    * [Test]
+   public void BigTown_Test()
+   {
+       Network searcher = new Network();
+       int rows = 5;
+       int cols = 5;
+       Cell[,] gridArray = GridUtils.BuildArray(rows, cols);
+
+       gridArray[0, 0].AddCellContent(new House());
+       gridArray[0, 0].AddCellContent(new House());
+
+       gridArray[0, 1].AddCellContent(new House());
+       gridArray[0, 1].AddCellContent(new House());
+
+       gridArray[0, 2].AddCellContent(new House());
+       gridArray[0, 2].AddCellContent(new House());
+       gridArray[0, 2].AddCellContent(new House());
+
+       gridArray[0, 3].AddCellContent(new TallBuilding());
+       gridArray[0, 3].AddCellContent(new TallBuilding());
+
+       gridArray[0, 4].AddCellContent(new House());
+
+       gridArray[1, 0].AddCellContent(new House());
+       gridArray[1, 0].AddCellContent(new House());
+
+       gridArray[1, 1].AddCellContent(new House());
+       gridArray[1, 1].AddCellContent(new House());
+
+       gridArray[1, 2].AddCellContent(new House());
+       gridArray[1, 2].AddCellContent(new House());
+
+       gridArray[1, 3].AddCellContent(new Park());
+
+       gridArray[1, 4].AddCellContent(new House());
+
+       gridArray[2, 0].AddCellContent(new House());
+       gridArray[2, 0].AddCellContent(new House());
+       gridArray[2, 0].AddCellContent(new House());
+
+       gridArray[2, 1].AddCellContent(new Park());
+
+       gridArray[2, 2].AddCellContent(new Park());
+       gridArray[2, 2].AddCellContent(new Antenna());
+
+       gridArray[2, 3].AddCellContent(new Park());
+
+       gridArray[2, 4].AddCellContent(new House());
+       gridArray[2, 4].AddCellContent(new House());
+
+       gridArray[3, 0].AddCellContent(new TallBuilding());
+       gridArray[3, 0].AddCellContent(new TallBuilding());
+
+       gridArray[3, 1].AddCellContent(new Hospital());
+
+       gridArray[3, 2].AddCellContent(new PoliceStation());
+
+       gridArray[3, 4].AddCellContent(new House());
+       gridArray[3, 4].AddCellContent(new House());
+       gridArray[3, 4].AddCellContent(new House());
+       gridArray[3, 4].AddCellContent(new House());
+
+       gridArray[4, 0].AddCellContent(new TallBuilding());
+
+       gridArray[4, 2].AddCellContent(new FireDepartment());
+
+       gridArray[4, 3].AddCellContent(new TallBuilding());
+       gridArray[4, 3].AddCellContent(new TallBuilding());
+
+       gridArray[4, 4].AddCellContent(new House());
+       gridArray[4, 4].AddCellContent(new House());
+       gridArray[4, 4].AddCellContent(new House());
+       gridArray[4, 4].AddCellContent(new House());
+       gridArray[4, 4].AddCellContent(new House());
+
+       searcher.BuildNetwork(gridArray, 2, 2);
+
+       for (int row = 0; row < rows; row++)
+       {
+           Debug.Log(gridArray[row, 0].GetSignalStr() + "   " + gridArray[row, 1].GetSignalStr() + "   " + gridArray[row, 2].GetSignalStr() + "   " + gridArray[row, 3].GetSignalStr() + "   " + gridArray[row, 4].GetSignalStr());
+
+       }
+
+       Assert.AreEqual(0, gridArray[0, 0].GetSignalStr());
+       Assert.AreEqual(0, gridArray[0, 1].GetSignalStr());
+       Assert.AreEqual(0, gridArray[0, 2].GetSignalStr());
+       Assert.AreEqual(2, gridArray[0, 3].GetSignalStr());
+       Assert.AreEqual(5, gridArray[0, 4].GetSignalStr());
+
+       Assert.AreEqual(4, gridArray[1, 0].GetSignalStr());
+       Assert.AreEqual(5, gridArray[1, 1].GetSignalStr());
+       Assert.AreEqual(5, gridArray[1, 2].GetSignalStr());
+       Assert.AreEqual(9, gridArray[1, 3].GetSignalStr());
+       Assert.AreEqual(5, gridArray[1, 4].GetSignalStr());
+
+       Assert.AreEqual(3, gridArray[2, 0].GetSignalStr());
+       Assert.AreEqual(9, gridArray[2, 1].GetSignalStr());
+       Assert.AreEqual(10, gridArray[2, 2].GetSignalStr());
+       Assert.AreEqual(9, gridArray[2, 3].GetSignalStr());
+       Assert.AreEqual(4, gridArray[2, 4].GetSignalStr());
+
+       Assert.AreEqual(2, gridArray[3, 0].GetSignalStr());
+       Assert.AreEqual(5, gridArray[3, 1].GetSignalStr());
+       Assert.AreEqual(6, gridArray[3, 2].GetSignalStr());
+       Assert.AreEqual(9, gridArray[3, 3].GetSignalStr());
+       Assert.AreEqual(2, gridArray[3, 4].GetSignalStr());
+
+       Assert.AreEqual(0, gridArray[4, 0].GetSignalStr());
+       Assert.AreEqual(5, gridArray[4, 1].GetSignalStr());
+       Assert.AreEqual(2, gridArray[4, 2].GetSignalStr());
+       Assert.AreEqual(2, gridArray[4, 3].GetSignalStr());
+       Assert.AreEqual(1, gridArray[4, 4].GetSignalStr());
+   }*/
 
 }
 

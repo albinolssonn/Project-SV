@@ -28,10 +28,9 @@ public class Network
      * 
      * Returns: Nothing.
      */
-    public void BuildNetwork(Cell[,] gridArray, int startY, int startX)
+    public void BuildNetwork(Cell[,] gridArray, int startY, int startX, double baseStationStr)
     {
         this.gridArray = gridArray;
-        int baseStationStr = 10;
         startCell = gridArray[startY, startX];
         startCell.SetSignalStr(baseStationStr);
 

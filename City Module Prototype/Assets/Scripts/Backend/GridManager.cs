@@ -7,9 +7,9 @@ using UnityEngine;
  */
 public class GridManager : MonoBehaviour
 {
-    private int rows = 10;
-    private int cols = 10;
-    private float tileSize = 110F;
+    private int rows;
+    private int cols;
+    private float tileSize;
     public SignalBarScript coverageBar;
     private Module toBePlaced;
     private Module toBeRemoved;
@@ -17,6 +17,8 @@ public class GridManager : MonoBehaviour
     private Network network; 
     private Cell[,] gridArray;
     private Dictionary<Cell, GameObject> cellToTile;
+    private double maxSignalStr;
+    private Colors colors; 
 
     private bool shiftHeldDown;
 
@@ -25,13 +27,25 @@ public class GridManager : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
+        maxSignalStr = 10;
+        rows = 10;
+        cols = 10;
+        tileSize = 110F;
+        shiftHeldDown = false;
+        network = new Network();
+
         cellToTile = new Dictionary<Cell, GameObject>();
         gridArray = GridUtils.BuildArray(rows, cols);
-        GenerateGrid();
-        coverageBar.SetCoverage(0);
-        network = new Network();
+        colors = new Colors(maxSignalStr);
         newScale = new Vector3(0.6f, 0.6f, 1f);
-        shiftHeldDown = false;
+        
+        
+
+
+        GenerateGrid();
+        coverageBar.SetCoverage(0, colors);
+        
+        
 
         transform.parent.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
         transform.localScale = newScale;
@@ -105,7 +119,7 @@ public class GridManager : MonoBehaviour
             tmpObject.transform.SetParent(cellToTile[gridArray[y, x]].transform);
             tmpObject.transform.localScale = newScale;
             toBePlaced.visualObject = tmpObject;
-            tmpObject.layer = LayerMask.NameToLayer("Module"); 
+            SetLayerRecursive(tmpObject, LayerMask.NameToLayer("Module"));
 
             gridArray[y, x].AddCellContent(toBePlaced);
             UpdateNetwork();
@@ -119,6 +133,23 @@ public class GridManager : MonoBehaviour
         {
             shiftHeldDown = true;
             toBePlaced = toBePlaced.Copy();
+        }
+    }
+
+    private void SetLayerRecursive(GameObject currentObject, int newLayer)
+    {
+        currentObject.layer = newLayer;
+
+        foreach (Transform child in currentObject.transform)
+        {
+            child.gameObject.layer = newLayer;
+
+            Transform grandChildren = child.GetComponentInChildren<Transform>();
+
+            if(grandChildren != null)
+            {
+                SetLayerRecursive(child.gameObject, newLayer);
+            }
         }
     }
 
@@ -202,7 +233,7 @@ public class GridManager : MonoBehaviour
         {
             if (cell.HasAntenna())
             {
-                network.BuildNetwork(gridArray, cell.GetY(), cell.GetX());
+                network.BuildNetwork(gridArray, cell.GetY(), cell.GetX(), maxSignalStr);
             }
         }
 
@@ -217,7 +248,7 @@ public class GridManager : MonoBehaviour
             count++;
         }
 
-        coverageBar.SetCoverage(total/count); 
+        coverageBar.SetCoverage(total/count, colors); 
     }
 
     /*
@@ -268,22 +299,16 @@ public class GridManager : MonoBehaviour
         var signalStr = cell.GetSignalStr();
 
         float[] rgbt;
-        if (8 <= signalStr)
+        if (1 <= signalStr)
         {
-            rgbt = Colors.green;
-        }
-        else if (5 <= signalStr)
-        {
-            rgbt = Colors.lightOrange;
-        }
-        else if (3 <= signalStr)
-        {
-            rgbt = Colors.red;
+            rgbt = colors.GetGradientColor(signalStr); 
         }
         else
         {
-            rgbt = Colors.gray;
+            rgbt = colors.gray;
         }
+
+        Debug.Log(rgbt[0] + " " + rgbt[1] + " " + rgbt[2] + " " + rgbt[3]);
 
         tileRenderer.material.SetColor("_Color", new Color(rgbt[0], rgbt[1], rgbt[2], rgbt[3])); 
 
