@@ -105,6 +105,7 @@ public class GridManager : MonoBehaviour
             tmpObject.transform.SetParent(cellToTile[gridArray[y, x]].transform);
             tmpObject.transform.localScale = newScale;
             toBePlaced.visualObject = tmpObject;
+            tmpObject.layer = LayerMask.NameToLayer("Module"); 
 
             gridArray[y, x].AddCellContent(toBePlaced);
             UpdateNetwork();
