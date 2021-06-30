@@ -12,9 +12,11 @@ public class Cell
     private List<Module> cellContent;
     private readonly int xCoord; 
     private readonly int yCoord;
-    private readonly GridManager grid;
     private int maxHeight;
-    private bool hasAntenna; 
+    private bool hasAntenna;
+
+    private Direction signalDirection;
+    private bool signalDirDiagonal;
 
     public Cell(int yCoord, int xCoord) 
     {
@@ -22,8 +24,25 @@ public class Cell
         this.yCoord = yCoord;
         signalStr = 0;
         hasAntenna = false;
-        grid = GameObject.FindGameObjectsWithTag("Grid")[0].GetComponent<GridManager>();
         cellContent = new List<Module>(); 
+    }
+
+
+    /*
+     * Returns: Which direction the signal for this cell came from.
+     */
+    public Direction GetSignalDir()
+    {
+        return signalDirection;
+    }
+
+
+    /*
+     * Returns: If the signal came to this sell via a diagonal.
+     */
+    public bool GetSignalDirDiagonal()
+    {
+        return signalDirDiagonal;
     }
 
 
@@ -36,7 +55,7 @@ public class Cell
     }
 
     /*
-     * Returns: A if this cell has an Antenna in it or not as a 'bool'.
+     * Returns: If this cell has an Antenna in it or not as a 'bool'.
      */
     public bool HasAntenna()
     {
@@ -48,9 +67,9 @@ public class Cell
      * 
      * double signalStr: the value which the variable 'signalStr' should be set to.
      */
-    public void SetSignalStr(double signalStr)
+    public void ResetSignalStr()
     {
-        this.signalStr = signalStr;
+        this.signalStr = 0;
         
         
     }
@@ -60,11 +79,13 @@ public class Cell
      * 
      * Returns: Nothing.
      */
-    public void SetSignalIfHigher(double signalStr)
+    public void SetSignalIfHigher(double signalStr, Direction cameFrom, bool wasDiagonal)
     {
         if(this.signalStr < signalStr)
         {
-            SetSignalStr(signalStr);
+            this.signalStr = signalStr;
+            signalDirection = cameFrom;
+            signalDirDiagonal = wasDiagonal;
         }
     }
 

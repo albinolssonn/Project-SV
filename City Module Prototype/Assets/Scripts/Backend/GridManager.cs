@@ -21,6 +21,7 @@ public class GridManager : MonoBehaviour
     private Colors colors; 
 
     private bool shiftHeldDown;
+    private bool createNetworkArrows;
 
 
 
@@ -32,6 +33,7 @@ public class GridManager : MonoBehaviour
         cols = 10;
         tileSize = 110F;
         shiftHeldDown = false;
+        createNetworkArrows = false;
         network = new Network();
 
         cellToTile = new Dictionary<Cell, GameObject>();
@@ -226,7 +228,7 @@ public class GridManager : MonoBehaviour
     {
         foreach (Cell cell in gridArray)
         {
-            cell.SetSignalStr(0);
+            cell.ResetSignalStr();
         }
 
         foreach (Cell cell in gridArray)
@@ -244,6 +246,10 @@ public class GridManager : MonoBehaviour
             total += (float)cell.GetSignalStr();
 
             SetTileColor(cell);
+            if (createNetworkArrows)
+            {
+                CreateNetworkflowArrows(cell);
+            }
 
             count++;
         }
@@ -314,6 +320,20 @@ public class GridManager : MonoBehaviour
 
     }
 
+    private void CreateNetworkflowArrows(Cell cell)
+    {
+        GameObject tile = (GameObject)Instantiate(Resources.Load(cell.GetSignalDir().GetDirectionArrowResource(cell.GetSignalDirDiagonal())));
+
+
+        tile.transform.SetParent(this.transform);
+        cellToTile[gridArray[cell.GetY(), cell.GetX()]] = tile;
+
+        float posX = cell.GetX() * tileSize;
+        float posY = cell.GetY() * -tileSize;
+
+        tile.transform.localPosition = new Vector2(posX, posY);
+    }
+
     /*
      * This method resets the entire grid by emptying every cell of content, 
      * setting every cell's signal strength to zero and then updating the network.
@@ -325,7 +345,7 @@ public class GridManager : MonoBehaviour
             for (int col = 0; col < cols; col++)
             {
                 gridArray[row, col].ClearCellContent();
-                gridArray[row, col].SetSignalStr(0);
+                gridArray[row, col].ResetSignalStr();
 
             }
         }

@@ -32,7 +32,7 @@ public class Network
     {
         this.gridArray = gridArray;
         startCell = gridArray[startY, startX];
-        startCell.SetSignalStr(baseStationStr);
+        startCell.SetSignalIfHigher(baseStationStr, startCell.GetSignalDir(), startCell.GetSignalDirDiagonal());
 
 
 
@@ -54,16 +54,16 @@ public class Network
      *
      * Returns: Nothing.
      */
-    private void Traverse(Direction dir, Cell currentCell)
+    private void Traverse(Direction direction, Cell currentCell)
     {
         List<Cell> neighbours = GridUtils.GetNearbyCells(currentCell.GetY(), currentCell.GetX(), gridArray);
 
         foreach (Cell nextCell in neighbours)
         {
-            if (dir.correctDirection(nextCell, currentCell))
+            if (direction.CorrectDirection(nextCell, currentCell, out bool diagonal))
             {
-                nextCell.SetSignalIfHigher(GetNewStr(currentCell, currentCell.GetSignalStr()));
-                Traverse(dir, nextCell);
+                nextCell.SetSignalIfHigher(GetNewStr(currentCell, currentCell.GetSignalStr()), direction, diagonal);
+                Traverse(direction, nextCell);
             }
         }
     }
@@ -112,70 +112,154 @@ public class Network
  */
 public abstract class Direction
 {
-    public abstract bool correctDirection(Cell nextCell, Cell currentCell);
+    public abstract bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal);
+
+    public abstract string GetDirectionArrowResource(bool diagonal);
+
 }
 
 
 public class North_NorthEast : Direction
 {
-    public override bool correctDirection(Cell nextCell, Cell currentCell)
+    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
+        diagonal = nextCell.GetY() < currentCell.GetY() && nextCell.GetX() > currentCell.GetX();
         return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() >= currentCell.GetX();
     }
+
+    public override string GetDirectionArrowResource(bool diagonal)
+    {
+        if (diagonal)
+        {
+            return "Graphics/ArrowNorthEast";
+        }
+        return "Graphics/ArrowNorth";
+    }
+
 }
 
 public class  East_NorthEast : Direction
 {
-    public override bool correctDirection(Cell nextCell, Cell currentCell)
+    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
+        diagonal = nextCell.GetY() < currentCell.GetY() && nextCell.GetX() > currentCell.GetX();
         return nextCell.GetY() <= currentCell.GetY() && nextCell.GetX() > currentCell.GetX();
+    }
+
+    public override string GetDirectionArrowResource(bool diagonal)
+    {
+        if (diagonal)
+        {
+            return "Graphics/ArrowNorthEast";
+        }
+        return "Graphics/ArrowEast";
     }
 }
 
 public class East_SouthEast : Direction
 {
-    public override bool correctDirection(Cell nextCell, Cell currentCell)
+    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
+        diagonal = nextCell.GetX() > currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
         return nextCell.GetX() > currentCell.GetX() && nextCell.GetY() >= currentCell.GetY();
+    }
+
+    public override string GetDirectionArrowResource(bool diagonal)
+    {
+        if (diagonal)
+        {
+            return "Graphics/ArrowSouthEast";
+        }
+        return "Graphics/ArrowEast";
     }
 }
 
 public class South_SouthEast : Direction
 {
-    public override bool correctDirection(Cell nextCell, Cell currentCell)
+    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
+        diagonal = nextCell.GetX() > currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
         return nextCell.GetX() >= currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
+    }
+
+    public override string GetDirectionArrowResource(bool diagonal)
+    {
+        if (diagonal)
+        {
+            return "Graphics/ArrowSouthEast";
+        }
+        return "Graphics/ArrowSouth";
     }
 }
 
 public class South_SouthWest : Direction
 {
-    public override bool correctDirection(Cell nextCell, Cell currentCell)
+    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
+        diagonal = nextCell.GetY() > currentCell.GetY() && nextCell.GetX() < currentCell.GetX();
         return nextCell.GetY() > currentCell.GetY() && nextCell.GetX() <= currentCell.GetX();
+    }
+
+    public override string GetDirectionArrowResource(bool diagonal)
+    {
+        if (diagonal)
+        {
+            return "Graphics/ArrowSouthWest";
+        }
+        return "Graphics/ArrowSouth";
     }
 }
 
 public class West_SouthWest : Direction
 {
-    public override bool correctDirection(Cell nextCell, Cell currentCell)
+    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
+        diagonal = nextCell.GetX() < currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
         return nextCell.GetX() < currentCell.GetX() && nextCell.GetY() >= currentCell.GetY();
+    }
+
+    public override string GetDirectionArrowResource(bool diagonal)
+    {
+        if (diagonal)
+        {
+            return "Graphics/ArrowSouthWest";
+        }
+        return "Graphics/ArrowWest";
     }
 }
 
 public class West_NorthWest : Direction
 {
-    public override bool correctDirection(Cell nextCell, Cell currentCell)
+    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
+        diagonal = nextCell.GetX() < currentCell.GetX() && nextCell.GetY() < currentCell.GetY();
         return nextCell.GetX() < currentCell.GetX() && nextCell.GetY() <= currentCell.GetY();
+    }
+
+    public override string GetDirectionArrowResource(bool diagonal)
+    {
+        if (diagonal)
+        {
+            return "Graphics/ArrowNorthWest";
+        }
+        return "Graphics/ArrowWest";
     }
 }
 
 public class North_NorthWest : Direction
 {
-    public override bool correctDirection(Cell nextCell, Cell currentCell)
+    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
+        diagonal = nextCell.GetY() < currentCell.GetY() && nextCell.GetX() < currentCell.GetX();
         return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() <= currentCell.GetX();
+    }
+
+    public override string GetDirectionArrowResource(bool diagonal)
+    {
+        if (diagonal)
+        {
+            return "Graphics/ArrowNorthWest";
+        }
+        return "Graphics/ArrowNorth";
     }
 }
