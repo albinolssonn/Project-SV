@@ -280,13 +280,7 @@ public class GridManager : MonoBehaviour
 
         DestroyNetworkFlow();
 
-        foreach (Cell cell in gridArray)
-        {
-            if (cell.HasAntenna())
-            {
-                network.BuildNetwork(gridArray, cell.GetY(), cell.GetX(), maxSignalStr);
-            }
-        }
+        network.BuildNetwork(gridArray, maxSignalStr);
 
 
         float total = 0;
