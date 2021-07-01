@@ -14,8 +14,28 @@ public class Network
         directions = new List<Direction>() { new North_NorthEast(), new East_NorthEast(), new East_SouthEast(), new South_SouthEast(), new South_SouthWest(), new West_SouthWest(), new West_NorthWest(), new North_NorthWest() };
     }
 
+    
     /*
-     * This method should be called upon once for each cell that contains an Antenna, with startX and startY being the coordinates for said cell.
+     * This method builds the network based on the grid and the base station strength provided.
+     * 
+     * Cell[,] gridArray: The grid to build the network across.
+     * 
+     * double baseStationStr: The strength of which a basestation send a signal.
+     */
+    public void BuildNetwork(Cell[,] gridArray, double baseStationStr)
+    {
+        foreach (Cell cell in gridArray)
+        {
+            if (cell.HasAntenna())
+            {
+                BuildNetworkFromCell(gridArray, cell.GetY(), cell.GetX(), baseStationStr);
+            }
+        }
+    }
+
+
+    /*
+     * This helper-method should be called upon once for each cell that contains an Antenna, with startX and startY being the coordinates for said cell.
      * It spreads the network from the cell gridArray[startY, startX] with the signal strength of that cell.
      * 
      * Cell[,] gridArray: This is the grid the method will spread the network across.
@@ -26,7 +46,7 @@ public class Network
      * 
      * Returns: Nothing.
      */
-    public void BuildNetwork(Cell[,] gridArray, int startY, int startX, double baseStationStr)
+    private void BuildNetworkFromCell(Cell[,] gridArray, int startY, int startX, double baseStationStr)
     {
         this.gridArray = gridArray;
         startCell = gridArray[startY, startX];
@@ -36,7 +56,7 @@ public class Network
 
         foreach (Direction direction in directions)
         {
-            Traverse(direction, startCell);
+            Traverse(direction, startCell, startCell.GetSignalStr());
         }
     }
 
@@ -52,7 +72,7 @@ public class Network
      *
      * Returns: Nothing.
      */
-    private void Traverse(Direction direction, Cell currentCell)
+    private void Traverse(Direction direction, Cell currentCell, double currentSignalStr)
     {
         List<Cell> neighbours = GridUtils.GetNearbyCells(currentCell.GetY(), currentCell.GetX(), gridArray);
 
@@ -60,8 +80,9 @@ public class Network
         {
             if (direction.CorrectDirection(nextCell, currentCell, out bool diagonal))
             {
-                nextCell.SetSignalIfHigher(GetNewStr(currentCell, currentCell.GetSignalStr()), direction, diagonal);
-                Traverse(direction, nextCell);
+                double nextSignalStr = GetNewStr(currentCell, currentSignalStr);
+                nextCell.SetSignalIfHigher(nextSignalStr, direction, diagonal);
+                Traverse(direction, nextCell, nextSignalStr);
             }
         }
     }
