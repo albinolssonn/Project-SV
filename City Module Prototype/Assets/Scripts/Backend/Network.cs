@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 //This class is used to build the network of the grid of the type Cell[,] handed to the class in the method BuildNetwork().
@@ -32,7 +30,7 @@ public class Network
     {
         this.gridArray = gridArray;
         startCell = gridArray[startY, startX];
-        startCell.SetSignalIfHigher(baseStationStr, startCell.GetSignalDir(), startCell.GetSignalDirDiagonal());
+        startCell.SetSignalIfHigher(baseStationStr, new Origin(), false);
 
 
 
@@ -114,7 +112,12 @@ public abstract class Direction
 {
     public abstract bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal);
 
-    public abstract string GetDirectionArrowResource(bool diagonal);
+    public abstract float GetDirectionArrowRotation(bool diagonal);
+
+    public virtual string GetResourcePath()
+    {
+        return "Modules/Arrow";
+    }
 
 }
 
@@ -127,13 +130,13 @@ public class North_NorthEast : Direction
         return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() >= currentCell.GetX();
     }
 
-    public override string GetDirectionArrowResource(bool diagonal)
+    public override float GetDirectionArrowRotation(bool diagonal)
     {
         if (diagonal)
         {
-            return "Graphics/ArrowNorthEast";
+            return 315;
         }
-        return "Graphics/ArrowNorth";
+        return 0;
     }
 
 }
@@ -146,13 +149,13 @@ public class  East_NorthEast : Direction
         return nextCell.GetY() <= currentCell.GetY() && nextCell.GetX() > currentCell.GetX();
     }
 
-    public override string GetDirectionArrowResource(bool diagonal)
+    public override float GetDirectionArrowRotation(bool diagonal)
     {
         if (diagonal)
         {
-            return "Graphics/ArrowNorthEast";
+            return 315;
         }
-        return "Graphics/ArrowEast";
+        return 270;
     }
 }
 
@@ -164,13 +167,13 @@ public class East_SouthEast : Direction
         return nextCell.GetX() > currentCell.GetX() && nextCell.GetY() >= currentCell.GetY();
     }
 
-    public override string GetDirectionArrowResource(bool diagonal)
+    public override float GetDirectionArrowRotation(bool diagonal)
     {
         if (diagonal)
         {
-            return "Graphics/ArrowSouthEast";
+            return 225;
         }
-        return "Graphics/ArrowEast";
+        return 270;
     }
 }
 
@@ -182,13 +185,13 @@ public class South_SouthEast : Direction
         return nextCell.GetX() >= currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
     }
 
-    public override string GetDirectionArrowResource(bool diagonal)
+    public override float GetDirectionArrowRotation(bool diagonal)
     {
         if (diagonal)
         {
-            return "Graphics/ArrowSouthEast";
+            return 225;
         }
-        return "Graphics/ArrowSouth";
+        return 180;
     }
 }
 
@@ -200,13 +203,13 @@ public class South_SouthWest : Direction
         return nextCell.GetY() > currentCell.GetY() && nextCell.GetX() <= currentCell.GetX();
     }
 
-    public override string GetDirectionArrowResource(bool diagonal)
+    public override float GetDirectionArrowRotation(bool diagonal)
     {
         if (diagonal)
         {
-            return "Graphics/ArrowSouthWest";
+            return 135;
         }
-        return "Graphics/ArrowSouth";
+        return 180;
     }
 }
 
@@ -218,13 +221,13 @@ public class West_SouthWest : Direction
         return nextCell.GetX() < currentCell.GetX() && nextCell.GetY() >= currentCell.GetY();
     }
 
-    public override string GetDirectionArrowResource(bool diagonal)
+    public override float GetDirectionArrowRotation(bool diagonal)
     {
         if (diagonal)
         {
-            return "Graphics/ArrowSouthWest";
+            return 135;
         }
-        return "Graphics/ArrowWest";
+        return 90;
     }
 }
 
@@ -236,13 +239,13 @@ public class West_NorthWest : Direction
         return nextCell.GetX() < currentCell.GetX() && nextCell.GetY() <= currentCell.GetY();
     }
 
-    public override string GetDirectionArrowResource(bool diagonal)
+    public override float GetDirectionArrowRotation(bool diagonal)
     {
         if (diagonal)
         {
-            return "Graphics/ArrowNorthWest";
+            return 45;
         }
-        return "Graphics/ArrowWest";
+        return 90;
     }
 }
 
@@ -254,12 +257,31 @@ public class North_NorthWest : Direction
         return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() <= currentCell.GetX();
     }
 
-    public override string GetDirectionArrowResource(bool diagonal)
+    public override float GetDirectionArrowRotation(bool diagonal)
     {
         if (diagonal)
         {
-            return "Graphics/ArrowNorthWest";
+            return 45;
         }
-        return "Graphics/ArrowNorth";
+        return 0;
     }
+}
+
+public class Origin : Direction
+{
+    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override float GetDirectionArrowRotation(bool diagonal)
+    {
+        return 0;
+    }
+
+    public override string GetResourcePath()
+    {
+        return "Modules/Dot";
+    }
+
 }

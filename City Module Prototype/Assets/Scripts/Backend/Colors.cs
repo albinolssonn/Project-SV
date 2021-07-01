@@ -28,5 +28,3 @@ public class Colors
         return new float[4] { rValue, gValue, 0f, 0.50f }; 
     }
 }
-
-// -((maxSignalStr - 1) / 2) + 2 + ((maxSignalStr - 1) /2)

@@ -18,6 +18,8 @@ public class Cell
     private Direction signalDirection;
     private bool signalDirDiagonal;
 
+    public static readonly string resourcePath = "Modules/Square";
+
     public Cell(int yCoord, int xCoord) 
     {
         this.xCoord = xCoord;
@@ -69,8 +71,9 @@ public class Cell
      */
     public void ResetSignalStr()
     {
-        this.signalStr = 0;
-        
+        signalStr = 0;
+        signalDirDiagonal = false;
+        signalDirection = null;
         
     }
 
@@ -81,6 +84,11 @@ public class Cell
      */
     public void SetSignalIfHigher(double signalStr, Direction cameFrom, bool wasDiagonal)
     {
+        if(cameFrom == null)
+        {
+            throw new ArgumentException("cameFrom was null.");
+        }
+
         if(this.signalStr < signalStr)
         {
             this.signalStr = signalStr;

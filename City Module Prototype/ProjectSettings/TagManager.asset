@@ -48,3 +48,6 @@ TagManager:
   - name: Module
     uniqueID: 4091762847
     locked: 0
+  - name: Module Add-On
+    uniqueID: 3508958771
+    locked: 0

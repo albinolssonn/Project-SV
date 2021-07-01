@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class ToggleScript : MonoBehaviour
 {
-    private bool toggle; 
+    private GridManager gridManager;
+
+    public void Start()
+    {
+        gridManager = GameObject.FindGameObjectsWithTag("Grid")[0].GetComponent<GridManager>();
+    }
 
     public void ShowNetworkDirection()
     {
-        toggle = !toggle;
-        Debug.Log(toggle); 
+        gridManager.ToggleCreateNetworkArrows();
     }
 }

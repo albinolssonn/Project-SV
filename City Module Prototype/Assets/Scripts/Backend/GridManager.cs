@@ -17,6 +17,7 @@ public class GridManager : MonoBehaviour
     private Network network; 
     private Cell[,] gridArray;
     private Dictionary<Cell, GameObject> cellToTile;
+    private List<GameObject> networkFlow;
     private double maxSignalStr;
     private Colors colors; 
 
@@ -35,6 +36,7 @@ public class GridManager : MonoBehaviour
         shiftHeldDown = false;
         createNetworkArrows = false;
         network = new Network();
+        networkFlow = new List<GameObject>();
 
         cellToTile = new Dictionary<Cell, GameObject>();
         gridArray = GridUtils.BuildArray(rows, cols);
@@ -77,6 +79,16 @@ public class GridManager : MonoBehaviour
                 RemoveModule();
             }
         }
+    }
+
+
+    /*
+     * 
+     */
+    public void ToggleCreateNetworkArrows()
+    {
+        createNetworkArrows = !createNetworkArrows;
+        UpdateNetwork();
     }
 
 
@@ -226,10 +238,9 @@ public class GridManager : MonoBehaviour
      */
     public void UpdateNetwork()
     {
-        foreach (Cell cell in gridArray)
-        {
-            cell.ResetSignalStr();
-        }
+        ResetNetwork();
+
+        DestroyNetworkFlow();
 
         foreach (Cell cell in gridArray)
         {
@@ -239,6 +250,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
+
         float total = 0;
         float count = 0;
         foreach (Cell cell in gridArray)
@@ -246,15 +258,24 @@ public class GridManager : MonoBehaviour
             total += (float)cell.GetSignalStr();
 
             SetTileColor(cell);
+
             if (createNetworkArrows)
             {
-                CreateNetworkflowArrows(cell);
+                CreateNetworkFlow(cell);
             }
 
             count++;
         }
 
         coverageBar.SetCoverage(total/count, colors); 
+    }
+
+    private void ResetNetwork()
+    {
+        foreach (Cell cell in gridArray)
+        {
+            cell.ResetSignalStr();
+        }
     }
 
     /*
@@ -265,14 +286,14 @@ public class GridManager : MonoBehaviour
      */
     private void GenerateGrid()
     {
-        GameObject referenceTile = (GameObject)Instantiate(Resources.Load("Modules/Square"));
+        GameObject referenceTile = (GameObject)Instantiate(Resources.Load(Cell.resourcePath));
 
         for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < cols; col++)
             {
                 GameObject tile = (GameObject)Instantiate(referenceTile, transform);
-                tile.transform.SetParent(this.transform);
+                tile.transform.SetParent(transform);
                 cellToTile[gridArray[row, col]] = tile;
 
                 float posX = col * tileSize;
@@ -314,24 +335,44 @@ public class GridManager : MonoBehaviour
             rgbt = colors.gray;
         }
 
-        Debug.Log(rgbt[0] + " " + rgbt[1] + " " + rgbt[2] + " " + rgbt[3]);
-
         tileRenderer.material.SetColor("_Color", new Color(rgbt[0], rgbt[1], rgbt[2], rgbt[3])); 
 
     }
 
-    private void CreateNetworkflowArrows(Cell cell)
+    private void CreateNetworkFlow(Cell cell)
     {
-        GameObject tile = (GameObject)Instantiate(Resources.Load(cell.GetSignalDir().GetDirectionArrowResource(cell.GetSignalDirDiagonal())));
+        if(cell.GetSignalDir() == null)
+        {
+            if(cell.GetSignalStr() != 0)
+            {
+                throw new UnassignedReferenceException("Direction is null but signalStr > 0.");
+            }
+            return;
+        }
 
+        if(cell.GetSignalDir() is Origin)
+        {
+            Debug.Log("JAG ÄR EN ORIGIN OCH HAR RESOURCE: " + cell.GetSignalDir().GetResourcePath());
+        }
 
-        tile.transform.SetParent(this.transform);
-        cellToTile[gridArray[cell.GetY(), cell.GetX()]] = tile;
+        GameObject arrow = (GameObject)Instantiate(Resources.Load(cell.GetSignalDir().GetResourcePath()));
+        networkFlow.Add(arrow);
 
-        float posX = cell.GetX() * tileSize;
-        float posY = cell.GetY() * -tileSize;
+        arrow.transform.SetParent(cellToTile[gridArray[cell.GetY(), cell.GetX()]].transform);
 
-        tile.transform.localPosition = new Vector2(posX, posY);
+        arrow.transform.localPosition = new Vector2(0.5f, 0.5f);
+
+        var rotation = new Vector3(0, 0, cell.GetSignalDir().GetDirectionArrowRotation(cell.GetSignalDirDiagonal()));
+        arrow.transform.Rotate(rotation);
+
+    }
+
+    private void DestroyNetworkFlow()
+    {
+        for (int i = 0; i < networkFlow.Count; i++)
+        {
+            Destroy(networkFlow[i]);
+        }
     }
 
     /*
