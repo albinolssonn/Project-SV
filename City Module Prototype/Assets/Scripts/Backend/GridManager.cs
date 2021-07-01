@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +9,6 @@ public class GridManager : MonoBehaviour
     private int rows;
     private int cols;
     private float tileSize;
-    public SignalBarScript coverageBar;
     private Module toBePlaced;
     private Module toBeRemoved;
     private Vector3 newScale;
@@ -22,6 +20,8 @@ public class GridManager : MonoBehaviour
 
     private bool shiftHeldDown;
     private bool createNetworkArrows;
+
+    public SignalBarScript coverageBar;
 
 
 

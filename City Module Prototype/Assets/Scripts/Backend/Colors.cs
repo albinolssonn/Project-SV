@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 /*
  * This class contains the color codes for the colors used in the program.
  */
@@ -12,6 +8,7 @@ public class Colors
     public readonly float[] lightOrange = new float[] { 1f, 1f, 0.425f, 0.50f };
     public readonly float[] red = new float[] { 1f, 0.276f, 0.231f, 0.50f };
     public readonly float[] green = new float[] { 0.23f, 1f, 0.325f, 0.50f };
+    
     private readonly double maxSignalStr; 
 
     public  Colors(double maxSignalStr)

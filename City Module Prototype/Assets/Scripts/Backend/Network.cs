@@ -52,8 +52,6 @@ public class Network
         startCell = gridArray[startY, startX];
         startCell.SetSignalIfHigher(baseStationStr, new Origin(), false);
 
-
-
         foreach (Direction direction in directions)
         {
             Traverse(direction, startCell, startCell.GetSignalStr());

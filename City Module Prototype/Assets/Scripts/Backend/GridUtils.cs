@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 /*
  * This class contains utitilies used by the gridManager. The reason these are in a class of their own is to be able to run automatic tests on them
@@ -93,7 +91,5 @@ public static class GridUtils
 
         return neighbours;
     }
-
-
 
 }
