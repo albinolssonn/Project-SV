@@ -43,18 +43,38 @@ public class GridManager : MonoBehaviour
         colors = new Colors(maxSignalStr);
         newScale = new Vector3(0.6f, 0.6f, 1f);
         
-        
-
 
         GenerateGrid();
-        coverageBar.SetCoverage(0, colors);
-        
-        
+        CenterGrid();
 
-        transform.parent.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
+        coverageBar.SetCoverage(0, colors);
+
         transform.localScale = newScale;
         UpdateNetwork();
     }
+
+
+    /*
+     * This helper-method centers the grid to the middle of the screen.
+     */
+    private void CenterGrid()
+    {
+        transform.parent.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
+
+
+        var scaledTileSize = tileSize * newScale[0];
+
+        float[] finalPosition = new float[2] { -scaledTileSize , 0 };
+
+        float gridWidth = cols * scaledTileSize;
+        float gridHeight = rows * scaledTileSize;
+
+        finalPosition[1] = finalPosition[1] - gridWidth / 2;
+        finalPosition[0] = finalPosition[0] + gridHeight / 2;
+
+        transform.localPosition = new Vector2(finalPosition[1], finalPosition[0]);
+    }
+
 
     // Update is called once per frame. It checks if the mouse has been clicked to place down a module.
     private void Update()
@@ -83,12 +103,22 @@ public class GridManager : MonoBehaviour
 
 
     /*
-     * 
+     * This method toggles the visual of the network flow and then creates/removes the flow visuals.
      */
     public void ToggleCreateNetworkArrows()
     {
         createNetworkArrows = !createNetworkArrows;
-        UpdateNetwork();
+        if (createNetworkArrows)
+        {
+            foreach (Cell cell in gridArray)
+            {
+                CreateNetworkFlow(cell);
+            }
+        } else
+        {
+            DestroyNetworkFlow();
+        }
+        
     }
 
 
@@ -150,6 +180,14 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    
+    /*
+     * This method sets the layer of the given objects and all its children to newLayer.
+     * 
+     * GameObject currentObejct: The object and its children to get the layer set.
+     * 
+     * int newLayer: The layer which to set the objects to.
+     */
     private void SetLayerRecursive(GameObject currentObject, int newLayer)
     {
         currentObject.layer = newLayer;
@@ -303,13 +341,6 @@ public class GridManager : MonoBehaviour
             }
         }
 
-
-        float gridWidth = cols * tileSize;
-        float gridHeight = rows * tileSize;
-
-
-        transform.localPosition = new Vector2(-gridWidth / 4, gridHeight / 4);
-
         Destroy(referenceTile);
     }
 
@@ -348,11 +379,6 @@ public class GridManager : MonoBehaviour
                 throw new UnassignedReferenceException("Direction is null but signalStr > 0.");
             }
             return;
-        }
-
-        if(cell.GetSignalDir() is Origin)
-        {
-            Debug.Log("JAG ÄR EN ORIGIN OCH HAR RESOURCE: " + cell.GetSignalDir().GetResourcePath());
         }
 
         GameObject arrow = (GameObject)Instantiate(Resources.Load(cell.GetSignalDir().GetResourcePath()));
