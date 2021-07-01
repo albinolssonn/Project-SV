@@ -14,6 +14,7 @@ public class Cell
     private readonly int yCoord;
     private int maxHeight;
     private bool hasAntenna;
+    private GameObject tile;
 
     private Direction signalDirection;
     private bool signalDirDiagonal;
@@ -26,9 +27,22 @@ public class Cell
         this.yCoord = yCoord;
         signalStr = 0;
         hasAntenna = false;
-        cellContent = new List<Module>(); 
+        cellContent = new List<Module>();
     }
 
+
+    /*
+     * 
+     */
+    public void SetTile(GameObject tile)
+    {
+        this.tile = tile;
+    }
+
+    public GameObject GetTile()
+    {
+        return tile;
+    }
 
     /*
      * Returns: Which direction the signal for this cell came from.

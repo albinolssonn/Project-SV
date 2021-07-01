@@ -16,7 +16,6 @@ public class GridManager : MonoBehaviour
     private Vector3 newScale;
     private Network network; 
     private Cell[,] gridArray;
-    private Dictionary<Cell, GameObject> cellToTile;
     private List<GameObject> networkFlow;
     private double maxSignalStr;
     private Colors colors; 
@@ -38,7 +37,6 @@ public class GridManager : MonoBehaviour
         network = new Network();
         networkFlow = new List<GameObject>();
 
-        cellToTile = new Dictionary<Cell, GameObject>();
         gridArray = GridUtils.BuildArray(rows, cols);
         colors = new Colors(maxSignalStr);
         newScale = new Vector3(0.6f, 0.6f, 1f);
@@ -159,8 +157,8 @@ public class GridManager : MonoBehaviour
         ClickedCell(out int y, out int x);
         if (x >= 0 && y >= 0 && x < cols && y < rows)
         {
-            GameObject tmpObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()), cellToTile[gridArray[y, x]].transform.position, Quaternion.identity);
-            tmpObject.transform.SetParent(cellToTile[gridArray[y, x]].transform);
+            GameObject tmpObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()), gridArray[y, x].GetTile().transform.position, Quaternion.identity);
+            tmpObject.transform.SetParent(gridArray[y, x].GetTile().transform);
             tmpObject.transform.localScale = newScale;
             toBePlaced.visualObject = tmpObject;
             SetLayerRecursive(tmpObject, LayerMask.NameToLayer("Module"));
@@ -326,7 +324,7 @@ public class GridManager : MonoBehaviour
             {
                 GameObject tile = (GameObject)Instantiate(referenceTile, transform);
                 tile.transform.SetParent(transform);
-                cellToTile[gridArray[row, col]] = tile;
+                gridArray[row, col].SetTile(tile);
 
                 float posX = col * tileSize;
                 float posY = row * -tileSize;
@@ -347,7 +345,7 @@ public class GridManager : MonoBehaviour
      */
     public void SetTileColor(Cell cell)
     {
-        var tileRenderer = cellToTile[cell].transform.GetChild(0).GetComponent<Renderer>();
+        var tileRenderer = cell.GetTile().transform.GetChild(0).GetComponent<Renderer>();
         var signalStr = cell.GetSignalStr();
 
         float[] rgbt;
@@ -378,7 +376,7 @@ public class GridManager : MonoBehaviour
         GameObject arrow = (GameObject)Instantiate(Resources.Load(cell.GetSignalDir().GetResourcePath()));
         networkFlow.Add(arrow);
 
-        arrow.transform.SetParent(cellToTile[gridArray[cell.GetY(), cell.GetX()]].transform);
+        arrow.transform.SetParent(gridArray[cell.GetY(), cell.GetX()].GetTile().transform);
 
         arrow.transform.localPosition = new Vector2(0.5f, 0.5f);
 
