@@ -1,36 +1,36 @@
 using UnityEngine;
 
-/*
- * This class is used to represent the different modules guests will be able to place upon a city tile.
- */
+
+/// <summary>
+/// Used to represent the different modules guests will be able to place upon a city tile.
+/// </summary>
 public abstract class Module
 {
-    /*
-     * This is the GameObject which is visualized on the screen for the user.
-     */
+
+    /// <summary>
+    /// The GameObject which is visualized on the screen for the user.
+    /// </summary>
     public GameObject visualObject;
 
-    /*
-     * Returns: The amount of which the module blocks the signal.
-     */
+
+    /// <returns>The amount of which the module blocks the signal.</returns>
     public abstract int blockIndex();
 
-    /*
-     * Returns: the height value of the model.
-     */
+
+    /// <returns>The height value of the module.</returns>
     public abstract int Height();
 
-    /*
-     * Returns: The path where the resource for the visual model is located on the device.
-     *          Should be: "Modules/MODELNAME" where MODELNAME is the filename of the resource.
-     */
+
+    /// <returns>The path where the resource for the visual model is located on the device.</returns>
     public abstract string GetResourcePath();
-    
-    /*
-     * Returns a new instance of the object.
-     */
+    //Should return: "Modules/MODELNAME" where MODELNAME is the filename of the resource.
+
+
+    /// <returns>A new instance of the same object type.</returns>
     public abstract Module Copy();
 }
+
+//---------------------------------------------------------------------
 
 public class Park : Module
 {
@@ -56,6 +56,8 @@ public class Park : Module
     }
 }
 
+//---------------------------------------------------------------------
+
 public class House : Module
 {
 
@@ -79,6 +81,8 @@ public class House : Module
         return new House();
     }
 }
+
+//---------------------------------------------------------------------
 
 public class TallBuilding : Module
 {
@@ -104,6 +108,8 @@ public class TallBuilding : Module
     }
 }
 
+//---------------------------------------------------------------------
+
 public class Hospital : Module
 {
 
@@ -127,6 +133,8 @@ public class Hospital : Module
         return new Hospital();
     }
 }
+
+//---------------------------------------------------------------------
 
 public class PoliceStation: Module
 {
@@ -152,6 +160,8 @@ public class PoliceStation: Module
     }
 }
 
+//---------------------------------------------------------------------
+
 public class FireDepartment : Module
 {
 
@@ -176,6 +186,8 @@ public class FireDepartment : Module
     }
 }
 
+//---------------------------------------------------------------------
+
 public class Antenna : Module
 {
 
@@ -199,3 +211,5 @@ public class Antenna : Module
         return new Antenna();
     }
 }
+
+//---------------------------------------------------------------------

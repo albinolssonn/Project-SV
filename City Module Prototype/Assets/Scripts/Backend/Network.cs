@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 
 /// <summary>
-/// This class is used to build the network of the grid of the type Cell[,] handed to the class in the method BuildNetwork().
+/// Used to build a network across a grid.
 /// </summary>
 /// <remarks>
 /// <para>The network is "built" by assigning the strongest signal strength to each cell based on the distance and modules in between the cell and the antenna providing the strongest signal.</para>
@@ -16,12 +16,18 @@ public class Network
 
     private readonly double distancePenalty;
     private readonly double heightPenalty;
-    private readonly double baseStationStr;
+    private readonly double baseSignalStr;
 
-    public Network(double baseStationStr, double distancePenalty, double heightPenalty)
+    /// <summary>
+    /// Used to build a network across a grid.
+    /// </summary>
+    /// <param name="baseSignalStr">The strength of which an Antenna transmits a signal with</param>
+    /// <param name="distancePenalty">The reduction in signal strength for traveling one step in any direction.</param>
+    /// <param name="heightPenalty">The reduction in signal strength for traveling through a cell with a higher max height than the cell which the antenna is located in.</param>
+    public Network(double baseSignalStr, double distancePenalty, double heightPenalty)
     {
         directions = new List<Direction>() { new North_NorthEast(), new East_NorthEast(), new East_SouthEast(), new South_SouthEast(), new South_SouthWest(), new West_SouthWest(), new West_NorthWest(), new North_NorthWest() };
-        this.baseStationStr = baseStationStr;
+        this.baseSignalStr = baseSignalStr;
         this.distancePenalty = distancePenalty;
         this.heightPenalty = heightPenalty;
     }
@@ -29,7 +35,7 @@ public class Network
 
 
     /// <summary>
-    /// This method builds the network based on the grid provided.
+    /// Builds the network based on the grid provided.
     /// </summary>
     /// <param name="gridArray">The grid to build the network across.</param>
     public void BuildNetwork(Cell[,] gridArray)
@@ -48,14 +54,14 @@ public class Network
 
 
     /// <summary>
-    /// This helper-method should be called upon once for each cell that contains an Antenna, with startX and startY being the coordinates for said cell.
-    /// It spreads the network from the cell gridArray[startY, startX] with the signal strength baseStationStr.
+    /// Should be called upon once for each cell that contains an Antenna.
+    /// Spreads the network from the given Cell with the signal strength baseSignalStr.
     /// </summary>
     /// <param name="cell">The cell to use as an origin for the network</param>
     private void BuildNetworkFromCell(Cell cell)
     {
         startCell = gridArray[cell.GetY(), cell.GetX()];
-        startCell.SetSignalIfHigher(baseStationStr, new Origin(), false);
+        startCell.SetSignalIfHigher(baseSignalStr, new Origin(), false);
 
         foreach (Direction direction in directions)
         {

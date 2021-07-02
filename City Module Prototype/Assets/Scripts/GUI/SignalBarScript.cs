@@ -1,17 +1,21 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI; 
+using UnityEngine.UI;
 
-/*
- * This class contains the functionality of any statistic bars visualized.
- */
+/// <summary>
+/// Contains the functionality of coverage statistic bar visualized.
+/// </summary>
 public class SignalBarScript : MonoBehaviour
 {
 
     public Slider slider;
     public TMP_Text text;
 
-
+    /// <summary>
+    /// Sets the visuals of the bar to a new value.
+    /// </summary>
+    /// <param name="signalStr">The value to set the bar to.</param>
+    /// <param name="colors">The color to display the bar in.</param>
     public void SetCoverage(float signalStr, Colors colors)
     {
         slider.value = signalStr;

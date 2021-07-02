@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 public class TestNetwork
 {
-    private readonly double baseStationStr = GridManager.baseStationStr;
+    private readonly double baseStationStr = GridManager.baseSignalStr;
     private readonly double distancePenalty = GridManager.distancePenalty;
     private readonly double heightPenalty = GridManager.heightPenalty;
 

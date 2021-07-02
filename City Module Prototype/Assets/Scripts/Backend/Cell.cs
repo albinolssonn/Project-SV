@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
- * This class represents a cell in the grid.
- */
+
+/// <summary>
+/// Represents a cell in the grid.
+/// </summary>
 public class Cell
 {
     private double signalStr;
@@ -18,8 +18,16 @@ public class Cell
     private Direction signalDirection;
     private bool signalDirDiagonal;
 
+    /// <summary>
+    /// The file path to the resource used to visualize a cell.
+    /// </summary>
     public static readonly string resourcePath = "Modules/Square";
 
+    /// <summary>
+    /// Represents a cell in the grid.
+    /// </summary>
+    /// <param name="yCoord">The y-coordinate in the grid of this cell.</param>
+    /// <param name="xCoord">The x-coordinate in the grid of this cell.</param>
     public Cell(int yCoord, int xCoord) 
     {
         this.xCoord = xCoord;
@@ -30,9 +38,10 @@ public class Cell
     }
 
 
-    /*
-     * 
-     */
+    /// <summary>
+    /// Connects a game object to the cell used to visualize it.
+    /// </summary>
+    /// <param name="tile">The game object to connect to the Cell.</param>
     public void SetTile(GameObject tile)
     {
         this.tile = tile;
@@ -43,45 +52,37 @@ public class Cell
         return tile;
     }
 
-    /*
-     * Returns: Which direction the signal for this cell came from.
-     */
+
+    /// <returns>Which direction the signal for this cell came from.</returns>
     public Direction GetSignalDir()
     {
         return signalDirection;
     }
 
 
-    /*
-     * Returns: If the signal came to this sell via a diagonal.
-     */
+    /// <returns>If the signal came to this sell via a diagonal.</returns>
     public bool GetSignalDirDiagonal()
     {
         return signalDirDiagonal;
     }
 
 
-    /*
-     * Returns: the signal strength of this cell as a 'double'.
-     */
     public double GetSignalStr()
     {
         return signalStr; 
     }
 
-    /*
-     * Returns: If this cell has an Antenna in it or not as a 'bool'.
-     */
+
+    /// <returns>If this cell has an Antenna in it.</returns>
     public bool HasAntenna()
     {
         return hasAntenna;
     }
 
-    /*
-     * This method sets the signal strength of this cell.
-     * 
-     * double signalStr: the value which the variable 'signalStr' should be set to.
-     */
+
+    /// <summary>
+    /// Resets the signal strength of this cell to 0 and removes its Direction object.
+    /// </summary>
     public void ResetSignalStr()
     {
         signalStr = 0;
@@ -90,16 +91,21 @@ public class Cell
         
     }
 
-    /*
-     * This method sets the signal strength of this cell to a new value ONLY if the new value is larger.
-     * 
-     * Returns: Nothing.
-     */
+
+    /// <summary>
+    /// Sets the signal strength of this cell to a new value if the new value is larger.
+    /// </summary>
+    /// <param name="signalStr">The new signal strength.</param>
+    /// <param name="cameFrom">Which direction this signal came from.</param>
+    /// <param name="wasDiagonal">If the direction the signal came from was diagonal.</param>
+    /// <exception cref="System.ArgumentException">
+    /// Throws if cameFrom was passed as null.
+    /// </exception>
     public void SetSignalIfHigher(double signalStr, Direction cameFrom, bool wasDiagonal)
     {
         if(cameFrom == null)
         {
-            throw new ArgumentException("cameFrom was null.");
+            throw new System.ArgumentException("cameFrom was null.");
         }
 
         if(this.signalStr < signalStr)
@@ -110,38 +116,36 @@ public class Cell
         }
     }
 
-    /*
-     * Returns: The variable cellContent.
-     */
+
     public List<Module> GetCellContent()
     {
         return cellContent; 
     }
 
-    /*
-     * Returns: The variable xCoord.
-     */
+
     public int GetX()
     {
         return xCoord;
     }
 
-    /*
-     * Returns: The variable yCoord.
-     */
+
     public int GetY()
     {
         return yCoord;
     }
 
     /*
-     * This method adds a module to the List<Module> cellContent and sets the max height of this module
-     * cell to the height of the module if the new height is higher than any previous.
+     * 
      * 
      * Module content: The 'Module' object which one wants to add to this cell.
      * 
      * Returns: Nothing.
      */
+    /// <summary>
+    /// Adds a module to cellContent and sets the max height of this 
+    /// cell to the height of the module if its height is higher.
+    /// </summary>
+    /// <param name="content">The module object to add to this cell.</param>
     public void AddCellContent (Module content)
     {
         if(content is Antenna)
@@ -153,22 +157,17 @@ public class Cell
         maxHeight = System.Math.Max(maxHeight, content.Height()); 
     }
 
-    /*
-     * Returns: The max height of any modules placed in this cell.
-     */
+
     public int GetMaxHeight()
     {
         return maxHeight;
     }
 
-    /*
-     * This method removes every instance of the given 'Module' type from this cell and sets the variable 'maxHeight' to its new correct value.
-     * Example, RemoveCellContent(new House()) to remove every House from this cell.
-     * 
-     * Module module: The module type one wants to remove from this cell.
-     * 
-     * Returns: Nothing.
-     */
+
+    /// <summary>
+    /// Removes every Module instance matching the given type from this cell and sets the variable 'maxHeight' to its new correct value.
+    /// </summary>
+    /// <param name="module">The module type to remove every instance of from this cell.</param>
     public void RemoveCellContent(Module module)
     {
         List<Module> newList = new List<Module>();
@@ -197,11 +196,10 @@ public class Cell
         maxHeight = newMax;
     }
 
-    /*
-     * This method clears the cell of all modules it contains, as well as resets every variable dependent on the modules in it.
-     * 
-     * Returns: Nothing.
-     */
+
+    /// <summary>
+    /// Clears the cell of all modules it contains, as well as resets every variable dependent on the modules.
+    /// </summary>
     public void ClearCellContent()
     {
         foreach (Module module in cellContent)

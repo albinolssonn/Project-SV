@@ -1,20 +1,18 @@
 using System.Collections.Generic;
 
-/*
- * This class contains utitilies used by the gridManager. The reason these are in a class of their own is to be able to run automatic tests on them
- * without having to start the entire program.
- */
+/// <summary>
+/// Contains utitilies used by the gridManager.
+/// The reason these are in a class of their own is to be able to run automatic tests on them without having to start the entire program.
+/// </summary>
 public static class GridUtils
 {
-    /*
-     * Fills a nested array of (rows x cols) with instances of Cell.
-     * 
-     * int rows: number of rows for resulting grid.
-     * 
-     * int cols: number of cols for resulting grid.
-     * 
-     * Returns: A nested array Cell[,] which is (rows x cols) large.
-     */
+
+    /// <summary>
+    /// Fills a nested array of (rows x cols) with instances of Cell.
+    /// </summary>
+    /// <param name="rows">Number of rows for resulting grid.</param>
+    /// <param name="cols">Number of cols for resulting grid.</param>
+    /// <returns>A nested array of Cell which is (rows x cols) large.</returns>
     public static Cell[,] BuildArray(int rows, int cols)
     {
         Cell[,] gridArray = new Cell[rows, cols];
@@ -29,17 +27,14 @@ public static class GridUtils
     }
 
 
-    /*
-     * Gets a list of all neighbouring cells to the cell at gridArray[y,x].
-     * 
-     * int y: The y-coordinate for the origin cell.
-     * 
-     * int x: The x-coordinate for the origin cell.
-     * 
-     * Cell[,]: The grid to apply the coordinates to.
-     * 
-     * Returns: A List<Cell> containing all the neighbouring cells for the one at gridArray[y,x].
-     */
+
+    /// <summary>
+    /// Gets a list of all neighbouring cells to the cell at gridArray[y,x].
+    /// </summary>
+    /// <param name="y">The y-coordinate for the origin cell.</param>
+    /// <param name="x">The x-coordinate for the origin cell.</param>
+    /// <param name="gridArray">The grid to apply the coordinates to.</param>
+    /// <returns>A List of Cell containing all the neighbouring cells for that at gridArray[y,x].</returns>
     public static List<Cell> GetNearbyCells(int y, int x, Cell[,] gridArray)
     {
         Cell cell = gridArray[y, x];
