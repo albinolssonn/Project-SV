@@ -207,9 +207,7 @@ public class GridManager : MonoBehaviour
         {
             child.gameObject.layer = newLayer;
 
-            Transform grandChildren = child.GetComponentInChildren<Transform>();
-
-            if(grandChildren != null)
+            if(child.GetComponentInChildren<Transform>() != null)
             {
                 SetLayerRecursive(child.gameObject, newLayer);
             }
