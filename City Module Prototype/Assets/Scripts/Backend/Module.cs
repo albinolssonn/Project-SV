@@ -13,7 +13,7 @@ public abstract class Module
     /*
      * Returns: The amount of which the module blocks the signal.
      */
-    public abstract int Modifier();
+    public abstract int blockIndex();
 
     /*
      * Returns: the height value of the model.
@@ -35,7 +35,7 @@ public abstract class Module
 public class Park : Module
 {
 
-    public override int Modifier()
+    public override int blockIndex()
     {
         return 0;
     }
@@ -59,9 +59,9 @@ public class Park : Module
 public class House : Module
 {
 
-    public override int Modifier()
+    public override int blockIndex()
     {
-        return -1;
+        return 1;
     }
 
     public override int Height()
@@ -83,9 +83,9 @@ public class House : Module
 public class TallBuilding : Module
 {
 
-    public override int Modifier()
+    public override int blockIndex()
     {
-        return -2;
+        return 2;
     }
 
     public override int Height()
@@ -107,9 +107,9 @@ public class TallBuilding : Module
 public class Hospital : Module
 {
 
-    public override int Modifier()
+    public override int blockIndex()
     {
-        return -2;
+        return 2;
     }
 
     public override int Height()
@@ -131,9 +131,9 @@ public class Hospital : Module
 public class PoliceStation: Module
 {
 
-    public override int Modifier()
+    public override int blockIndex()
     {
-        return -1;
+        return 1;
     }
 
     public override int Height()
@@ -155,9 +155,9 @@ public class PoliceStation: Module
 public class FireDepartment : Module
 {
 
-    public override int Modifier()
+    public override int blockIndex()
     {
-        return -1;
+        return 1;
     }
 
     public override int Height()
@@ -179,7 +179,7 @@ public class FireDepartment : Module
 public class Antenna : Module
 {
 
-    public override int Modifier()
+    public override int blockIndex()
     {
         return 0;
     }

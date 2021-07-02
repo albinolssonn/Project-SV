@@ -15,8 +15,12 @@ public class GridManager : MonoBehaviour
     private Network network; 
     private Cell[,] gridArray;
     private List<GameObject> networkFlow;
-    private double maxSignalStr;
-    private Colors colors; 
+    private Colors colors;
+
+    public static readonly double baseStationStr = 10;
+    public static readonly double distancePenalty = 1;
+    public static readonly double heightPenalty = 2;
+
 
     private bool shiftHeldDown;
     private bool createNetworkArrows;
@@ -28,17 +32,17 @@ public class GridManager : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-        maxSignalStr = 10;
+
         rows = 10;
         cols = 10;
         tileSize = 110F;
         shiftHeldDown = false;
         createNetworkArrows = false;
-        network = new Network();
         networkFlow = new List<GameObject>();
 
+        network = new Network(baseStationStr, distancePenalty, heightPenalty);
         gridArray = GridUtils.BuildArray(rows, cols);
-        colors = new Colors(maxSignalStr);
+        colors = new Colors(baseStationStr);
         newScale = new Vector3(0.6f, 0.6f, 1f);
         
 
@@ -278,7 +282,7 @@ public class GridManager : MonoBehaviour
 
         DestroyNetworkFlow();
 
-        network.BuildNetwork(gridArray, maxSignalStr);
+        network.BuildNetwork(gridArray);
 
 
         float total = 0;
@@ -380,7 +384,7 @@ public class GridManager : MonoBehaviour
 
         arrow.transform.localPosition = new Vector2(0.5f, 0.5f);
 
-        var rotation = new Vector3(0, 0, cell.GetSignalDir().GetDirectionArrowRotation(cell.GetSignalDirDiagonal()));
+        var rotation = new Vector3(0, 0, cell.GetSignalDir().GetDirectionInDegrees(cell.GetSignalDirDiagonal()));
         arrow.transform.Rotate(rotation);
 
     }

@@ -1,120 +1,118 @@
 using System.Collections.Generic;
 
 
-//This class is used to build the network of the grid of the type Cell[,] handed to the class in the method BuildNetwork().
-//The network is "built" by assigning the correct signal strength to each cell depedning on the distance and modules in between the cell and the best antenna.
+/// <summary>
+/// This class is used to build the network of the grid of the type Cell[,] handed to the class in the method BuildNetwork().
+/// </summary>
+/// <remarks>
+/// <para>The network is "built" by assigning the strongest signal strength to each cell based on the distance and modules in between the cell and the antenna providing the strongest signal.</para>
+/// <para>The direction of the network flow is taken into account.</para>
+/// </remarks>
 public class Network
 {
     private readonly List<Direction> directions; 
     private Cell[,] gridArray;
-    private Cell startCell; 
-    
-    public Network()
+    private Cell startCell;
+
+    private readonly double distancePenalty;
+    private readonly double heightPenalty;
+    private readonly double baseStationStr;
+
+    public Network(double baseStationStr, double distancePenalty, double heightPenalty)
     {
         directions = new List<Direction>() { new North_NorthEast(), new East_NorthEast(), new East_SouthEast(), new South_SouthEast(), new South_SouthWest(), new West_SouthWest(), new West_NorthWest(), new North_NorthWest() };
+        this.baseStationStr = baseStationStr;
+        this.distancePenalty = distancePenalty;
+        this.heightPenalty = heightPenalty;
     }
 
-    
-    /*
-     * This method builds the network based on the grid and the base station strength provided.
-     * 
-     * Cell[,] gridArray: The grid to build the network across.
-     * 
-     * double baseStationStr: The strength of which a basestation send a signal.
-     */
-    public void BuildNetwork(Cell[,] gridArray, double baseStationStr)
+
+
+    /// <summary>
+    /// This method builds the network based on the grid provided.
+    /// </summary>
+    /// <param name="gridArray">The grid to build the network across.</param>
+    public void BuildNetwork(Cell[,] gridArray)
     {
+        this.gridArray = gridArray;
+
         foreach (Cell cell in gridArray)
         {
             if (cell.HasAntenna())
             {
-                BuildNetworkFromCell(gridArray, cell.GetY(), cell.GetX(), baseStationStr);
+                BuildNetworkFromCell(cell);
             }
         }
     }
 
 
-    /*
-     * This helper-method should be called upon once for each cell that contains an Antenna, with startX and startY being the coordinates for said cell.
-     * It spreads the network from the cell gridArray[startY, startX] with the signal strength of that cell.
-     * 
-     * Cell[,] gridArray: This is the grid the method will spread the network across.
-     * 
-     * int startY: This is the y-coordinate which the method will use as origin for the spread.
-     * 
-     * int startX: This is the x-coordinate which the method will use as origin for the spread.
-     * 
-     * Returns: Nothing.
-     */
-    private void BuildNetworkFromCell(Cell[,] gridArray, int startY, int startX, double baseStationStr)
+
+    /// <summary>
+    /// This helper-method should be called upon once for each cell that contains an Antenna, with startX and startY being the coordinates for said cell.
+    /// It spreads the network from the cell gridArray[startY, startX] with the signal strength baseStationStr.
+    /// </summary>
+    /// <param name="cell">The cell to use as an origin for the network</param>
+    private void BuildNetworkFromCell(Cell cell)
     {
-        this.gridArray = gridArray;
-        startCell = gridArray[startY, startX];
+        startCell = gridArray[cell.GetY(), cell.GetX()];
         startCell.SetSignalIfHigher(baseStationStr, new Origin(), false);
 
         foreach (Direction direction in directions)
         {
-            Traverse(direction, startCell, startCell.GetSignalStr());
+            SetSignalRecursively(direction, startCell, startCell.GetSignalStr() - distancePenalty);
         }
     }
 
 
-    /*
-     * This helper-method is called to perform a recursive breadth-first search to spread the network accordingly.
-     * 
-     * Direction dir: In which direction this iteration of the search is searching in. 
-     *                Possible directions are those defined each as a separate class at the bottom of this file.
-     * 
-     * Cell currentCell: The current cell in the iteration.
-     * 
-     *
-     * Returns: Nothing.
-     */
-    private void Traverse(Direction direction, Cell currentCell, double currentSignalStr)
+
+    /// <summary>
+    /// This helper-method is called to perform a recursive depth-first search to spread the network accordingly.
+    /// </summary>
+    /// <param name="direction">In which direction this iteration of the search is searching in. Possible directions extends the Direction class.</param>
+    /// <param name="prevCell">The previous cell in the iteration.</param>
+    /// <param name="incomingSignalStr">The signal strength passing through the previous cell</param>
+    private void SetSignalRecursively(Direction direction, Cell prevCell, double incomingSignalStr)
     {
-        List<Cell> neighbours = GridUtils.GetNearbyCells(currentCell.GetY(), currentCell.GetX(), gridArray);
+        List<Cell> neighbours = GridUtils.GetNearbyCells(prevCell.GetY(), prevCell.GetX(), gridArray);
 
         foreach (Cell nextCell in neighbours)
         {
-            if (direction.CorrectDirection(nextCell, currentCell, out bool diagonal))
+            if (direction.CorrectDirection(nextCell, prevCell, out bool diagonal))
             {
-                double nextSignalStr = GetNewStr(currentCell, currentSignalStr);
-                nextCell.SetSignalIfHigher(nextSignalStr, direction, diagonal);
-                Traverse(direction, nextCell, nextSignalStr);
+                nextCell.SetSignalIfHigher(incomingSignalStr, direction, diagonal);
+
+                SetSignalRecursively(direction, nextCell, GetNewStr(nextCell, incomingSignalStr));
             }
         }
     }
 
 
-    /*
-     * This helper-method is called to calculate how much of the signal 'cell' will block for those behind it.
-     * 
-     * Cell cell: The cell which is blocking the signal.
-     * 
-     * double signalStr: The current strength of the signal passing through the cell.
-     * 
-     * Returns: The resulting signal strenght that passes through the tile 'cell'.
-     */
-    private double GetNewStr(Cell cell, double signalStr)
+    /// <summary>
+    /// This helper-method is called to calculate how much of the signal a cell will block for those behind it.
+    /// </summary>
+    /// <param name="blockingCell">The cell which the signal is passing through.</param>
+    /// <param name="signalStrIn">The signal strength going into blockingCell.</param>
+    /// <returns>The signal strength coming out from blockingCell.</returns>
+    private double GetNewStr(Cell blockingCell, double signalStrIn)
     {
-        double newStr = signalStr - 1;
+        double signalStrOut = signalStrIn  - distancePenalty;
 
-        if (cell.Equals(startCell))
+        if (blockingCell.Equals(startCell))
         {
-            return newStr;
+            return signalStrOut;
         }
 
-        foreach (Module content in cell.GetCellContent())
+        foreach (Module content in blockingCell.GetCellContent())
         {
-            newStr += content.Modifier();
+            signalStrOut -= content.blockIndex();
         }
 
-        if(startCell.GetMaxHeight() < cell.GetMaxHeight())
+        if(startCell.GetMaxHeight() < blockingCell.GetMaxHeight())
         {
-            newStr += -2; 
+            signalStrOut -= heightPenalty; 
         }
 
-        return newStr;
+        return signalStrOut;
     }
 
 }
@@ -122,17 +120,37 @@ public class Network
 
 
 
-
-/*
- * These below are the possible direction of which the signal can traverse through the system.
- * Note: The y-axis of the coordinate system is inverted. Going north results in decrease in y, going east results in increase in x.
- */
+/// <summary>
+/// Possible direction of which a signal can traverse through the network is restricted by those implementing this class.
+/// </summary>
+/// <remarks>
+/// The y-axis of the coordinate system is inverted along y-axis. Going north results in decrease in y, going east results in increase in x.
+/// </remarks>
 public abstract class Direction
 {
+    /// <summary>
+    /// Checks if a signal can traverse from currentCell to nextCell.
+    /// </summary>
+    /// <param name="nextCell">The cell to travel to.</param>
+    /// <param name="currentCell">The cell to travel from</param>
+    /// <param name="diagonal">Output for it the resulting movement is done diagonally or not</param>
+    /// <returns>True if the movement was possible given the direction, otherwise false.</returns>
     public abstract bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal);
 
-    public abstract float GetDirectionArrowRotation(bool diagonal);
+    /// <summary>
+    /// Gives the direction in degrees. Where 0 is North and 90 is West.
+    /// </summary>
+    /// <param name="diagonal">Which of the two directions of the object is desired.</param>
+    /// <remarks>
+    /// Every Direction object contains two directions. Ex. North_NorthEast where 'true' will give northeast and 'false' will give north.
+    /// </remarks>
+    /// <returns>The direction of the object in degrees.</returns>
+    public abstract float GetDirectionInDegrees(bool diagonal);
 
+
+    /// <returns>
+    /// The file path for the resource used to visualise the direction flow on the grid.
+    /// </returns>
     public virtual string GetResourcePath()
     {
         return "Modules/Arrow";
@@ -149,7 +167,7 @@ public class North_NorthEast : Direction
         return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() >= currentCell.GetX();
     }
 
-    public override float GetDirectionArrowRotation(bool diagonal)
+    public override float GetDirectionInDegrees(bool diagonal)
     {
         if (diagonal)
         {
@@ -168,7 +186,7 @@ public class  East_NorthEast : Direction
         return nextCell.GetY() <= currentCell.GetY() && nextCell.GetX() > currentCell.GetX();
     }
 
-    public override float GetDirectionArrowRotation(bool diagonal)
+    public override float GetDirectionInDegrees(bool diagonal)
     {
         if (diagonal)
         {
@@ -186,7 +204,7 @@ public class East_SouthEast : Direction
         return nextCell.GetX() > currentCell.GetX() && nextCell.GetY() >= currentCell.GetY();
     }
 
-    public override float GetDirectionArrowRotation(bool diagonal)
+    public override float GetDirectionInDegrees(bool diagonal)
     {
         if (diagonal)
         {
@@ -204,7 +222,7 @@ public class South_SouthEast : Direction
         return nextCell.GetX() >= currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
     }
 
-    public override float GetDirectionArrowRotation(bool diagonal)
+    public override float GetDirectionInDegrees(bool diagonal)
     {
         if (diagonal)
         {
@@ -222,7 +240,7 @@ public class South_SouthWest : Direction
         return nextCell.GetY() > currentCell.GetY() && nextCell.GetX() <= currentCell.GetX();
     }
 
-    public override float GetDirectionArrowRotation(bool diagonal)
+    public override float GetDirectionInDegrees(bool diagonal)
     {
         if (diagonal)
         {
@@ -240,7 +258,7 @@ public class West_SouthWest : Direction
         return nextCell.GetX() < currentCell.GetX() && nextCell.GetY() >= currentCell.GetY();
     }
 
-    public override float GetDirectionArrowRotation(bool diagonal)
+    public override float GetDirectionInDegrees(bool diagonal)
     {
         if (diagonal)
         {
@@ -258,7 +276,7 @@ public class West_NorthWest : Direction
         return nextCell.GetX() < currentCell.GetX() && nextCell.GetY() <= currentCell.GetY();
     }
 
-    public override float GetDirectionArrowRotation(bool diagonal)
+    public override float GetDirectionInDegrees(bool diagonal)
     {
         if (diagonal)
         {
@@ -276,7 +294,7 @@ public class North_NorthWest : Direction
         return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() <= currentCell.GetX();
     }
 
-    public override float GetDirectionArrowRotation(bool diagonal)
+    public override float GetDirectionInDegrees(bool diagonal)
     {
         if (diagonal)
         {
@@ -293,7 +311,7 @@ public class Origin : Direction
         throw new System.NotImplementedException();
     }
 
-    public override float GetDirectionArrowRotation(bool diagonal)
+    public override float GetDirectionInDegrees(bool diagonal)
     {
         return 0;
     }

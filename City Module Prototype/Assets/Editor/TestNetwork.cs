@@ -5,15 +5,16 @@ using NUnit.Framework;
 
 public class TestNetwork
 {
-
-    private int maxSignalStr = 10; 
+    private readonly double baseStationStr = GridManager.baseStationStr;
+    private readonly double distancePenalty = GridManager.distancePenalty;
+    private readonly double heightPenalty = GridManager.heightPenalty;
 
 
 
     [Test]
     public void TwoAntennas_Test()
     {
-        Network network = new Network();
+        Network network = new Network(baseStationStr, distancePenalty, heightPenalty);
         int rows = 5;
         int cols = 6;
         Cell[,] gridArray = GridUtils.BuildArray(rows, cols);
@@ -34,7 +35,7 @@ public class TestNetwork
 
 
 
-        network.BuildNetwork(gridArray, maxSignalStr);
+        network.BuildNetwork(gridArray);
 
 
         for (int row = 0; row < rows; row++)
@@ -84,7 +85,7 @@ public class TestNetwork
     [Test]
     public void SmallTown_Test1()
     {
-        Network network = new Network();
+        Network network = new Network(baseStationStr, distancePenalty, heightPenalty);
         int rows = 3;
         int cols = 3;
         Cell[,] gridArray = GridUtils.BuildArray(rows, cols);
@@ -109,7 +110,7 @@ public class TestNetwork
 
         gridArray[2, 2].AddCellContent(new Park());
 
-        network.BuildNetwork(gridArray, maxSignalStr);
+        network.BuildNetwork(gridArray);
 
         Debug.Log(gridArray[0, 0].GetSignalStr() + "  " + gridArray[0, 1].GetSignalStr() + "  " + gridArray[0, 2].GetSignalStr());
         Debug.Log(gridArray[1, 0].GetSignalStr() + "  " + gridArray[1, 1].GetSignalStr() + "  " + gridArray[1, 2].GetSignalStr());
@@ -134,7 +135,7 @@ public class TestNetwork
     [Test]
     public void SmallTown_Test2()
     {
-        Network network = new Network();
+        Network network = new Network(baseStationStr, distancePenalty, heightPenalty);
         int rows = 4;
         int cols = 4;
         Cell[,] gridArray = GridUtils.BuildArray(rows, cols);
@@ -182,7 +183,7 @@ public class TestNetwork
 
 
 
-        network.BuildNetwork(gridArray, maxSignalStr);
+        network.BuildNetwork(gridArray);
 
         for (int row = 0; row < rows; row++)
         {
@@ -220,7 +221,7 @@ public class TestNetwork
     public void Height_Test1()
     {
 
-        Network network = new Network();
+        Network network = new Network(baseStationStr, distancePenalty, heightPenalty);
         int rows = 3;
         int cols = 3;
         Cell[,] gridArray = GridUtils.BuildArray(rows, cols);
@@ -248,7 +249,7 @@ public class TestNetwork
 
         gridArray[2, 2].AddCellContent(new House());
 
-        network.BuildNetwork(gridArray, maxSignalStr);
+        network.BuildNetwork(gridArray);
 
         for (int row = 0; row < rows; row++)
         {
@@ -273,7 +274,7 @@ public class TestNetwork
     public void Height_Test2()
     {
 
-        Network network = new Network();
+        Network network = new Network(baseStationStr, distancePenalty, heightPenalty);
         int rows = 3;
         int cols = 3;
         Cell[,] gridArray = GridUtils.BuildArray(rows, cols);
@@ -303,7 +304,7 @@ public class TestNetwork
         gridArray[2, 2].AddCellContent(new Park());
 
 
-        network.BuildNetwork(gridArray, maxSignalStr);
+        network.BuildNetwork(gridArray);
 
         for (int row = 0; row < rows; row++)
         {
