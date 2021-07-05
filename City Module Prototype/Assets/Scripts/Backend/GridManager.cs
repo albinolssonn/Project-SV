@@ -17,6 +17,12 @@ public class GridManager : MonoBehaviour
     private List<GameObject> networkFlowVisuals;
     private Colors colors;
 
+    private int totalAntennas;
+    private int maxAntennas; 
+
+    public static bool limitedAntennas; 
+
+
     /// <summary>The strength of which an Antenna transmits a signal with.</summary>
     public static readonly double baseSignalStr = 10;
 
@@ -30,6 +36,7 @@ public class GridManager : MonoBehaviour
     private bool createNetworkArrows;
 
     public SignalBarScript coverageBar;
+    public AntennaStatistics antennaStatistics; 
 
 
 
@@ -39,8 +46,10 @@ public class GridManager : MonoBehaviour
         rows = 10;
         cols = 10;
         tileSize = 110F;
+        totalAntennas = 0;
         shiftHeldDown = false;
         createNetworkArrows = false;
+        limitedAntennas = false; 
         networkFlowVisuals = new List<GameObject>();
 
         network = new Network(baseSignalStr, distancePenalty, heightPenalty);
@@ -53,6 +62,8 @@ public class GridManager : MonoBehaviour
         CenterGrid();
 
         coverageBar.SetCoverage(0, colors);
+        antennaStatistics.setAntennaStatistics(totalAntennas, 0); 
+
 
         transform.localScale = newScale;
         UpdateNetwork();
@@ -128,6 +139,19 @@ public class GridManager : MonoBehaviour
     }
 
 
+    public bool ToggleLimitedAntennas()
+    {
+        limitedAntennas = !limitedAntennas;
+
+        if (!limitedAntennas)
+        {
+            antennaStatistics.setAntennaStatistics(totalAntennas, maxAntennas);
+        }
+
+        return limitedAntennas; 
+    }
+
+
 
     /// <summary>
     /// When clicking a button to place a module, the module type to be placed should be set in the variable 'toBePlaced'.
@@ -168,18 +192,38 @@ public class GridManager : MonoBehaviour
             throw new System.ArgumentException("'toBeRemoved' has not been set prior to calling this method.");
         }
 
-        MouseToGridCoord(out int y, out int x);
-        if (x >= 0 && y >= 0 && x < cols && y < rows)
+        if(!(toBePlaced is Antenna && limitedAntennas && maxAntennas <= totalAntennas))
         {
-            GameObject tmpObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()), gridArray[y, x].GetTile().transform.position, Quaternion.identity);
-            tmpObject.transform.SetParent(gridArray[y, x].GetTile().transform);
-            tmpObject.transform.localScale = newScale;
-            toBePlaced.visualObject = tmpObject;
-            SetLayerRecursive(tmpObject, LayerMask.NameToLayer("Module"));
+            MouseToGridCoord(out int y, out int x);
+            if (x >= 0 && y >= 0 && x < cols && y < rows)
+            {
+                if (!(gridArray[y, x].HasAntenna() & toBePlaced is Antenna))
+                {
+                    GameObject tmpObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()), gridArray[y, x].GetTile().transform.position, Quaternion.identity);
+                    tmpObject.transform.SetParent(gridArray[y, x].GetTile().transform);
+                    tmpObject.transform.localScale = newScale;
+                    toBePlaced.visualObject = tmpObject;
+                    SetLayerRecursive(tmpObject, LayerMask.NameToLayer("Module"));
 
-            gridArray[y, x].AddCellContent(toBePlaced);
-            UpdateNetwork();
+                    if (toBePlaced is Antenna)
+                    {
+                        totalAntennas += 1;
+                    }
+
+                    gridArray[y, x].AddCellContent(toBePlaced);
+                    UpdateNetwork();
+                }
+                else
+                {
+                    Debug.Log("Can't place an Antenna where there already is an Antenna.");
+                }
+            }
+        } else
+        {
+            Debug.Log("Maximum number of Antennas already placed.");
         }
+
+        
 
         if (!Input.GetKey(KeyCode.LeftShift))
         {
@@ -235,7 +279,10 @@ public class GridManager : MonoBehaviour
 
         if (x >= 0 && y >= 0 && x < cols && y < rows)
         {
-            gridArray[y, x].RemoveCellContent(toBeRemoved);
+            if(gridArray[y, x].RemoveCellContent(toBeRemoved) && toBeRemoved is Antenna)
+            {
+                totalAntennas--;
+            }
             UpdateNetwork();
         }
 
@@ -311,7 +358,8 @@ public class GridManager : MonoBehaviour
             count++;
         }
 
-        coverageBar.SetCoverage(total/count, colors); 
+        coverageBar.SetCoverage(total/count, colors);
+        antennaStatistics.setAntennaStatistics(totalAntennas, maxAntennas); 
     }
 
     /// <summary>
@@ -431,9 +479,9 @@ public class GridManager : MonoBehaviour
             {
                 gridArray[row, col].ClearCellContent();
                 gridArray[row, col].ResetSignalStr();
-
             }
         }
+        totalAntennas = 0; 
         UpdateNetwork();
     }
 
@@ -449,6 +497,13 @@ public class GridManager : MonoBehaviour
     public int GetCols()
     {
         return cols;
+    }
+
+    public void SetAndUpdateMaxAntennas(int maxAntennas)
+    {
+        this.maxAntennas = maxAntennas;
+        antennaStatistics.setAntennaStatistics(totalAntennas, maxAntennas);
+
     }
 
 }

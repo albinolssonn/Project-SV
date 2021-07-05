@@ -168,14 +168,16 @@ public class Cell
     /// Removes every Module instance matching the given type from this cell and sets the variable 'maxHeight' to its new correct value.
     /// </summary>
     /// <param name="module">The module type to remove every instance of from this cell.</param>
-    public void RemoveCellContent(Module module)
+    public bool RemoveCellContent(Module module)
     {
+        bool removedSomething = false;
         List<Module> newList = new List<Module>();
         foreach (Module elem in cellContent)
         {
             if(elem.GetType() == module.GetType())
             {
                 GameObject.Destroy(elem.visualObject);
+                removedSomething = true;
             } else
             {
                 newList.Add(elem);
@@ -194,6 +196,8 @@ public class Cell
             newMax = System.Math.Max(newMax, elem.Height());
         }
         maxHeight = newMax;
+
+        return removedSomething;
     }
 
 
