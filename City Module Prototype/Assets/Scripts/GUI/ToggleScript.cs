@@ -7,6 +7,7 @@ public class ToggleScript : MonoBehaviour
 
     public InputField inputLimitedAntennas;
     public GameObject visualTextLimitedAntennas;
+    public GameObject criticalCoverageBar;
 
     public void Start()
     {
@@ -24,5 +25,11 @@ public class ToggleScript : MonoBehaviour
         inputLimitedAntennas.gameObject.SetActive(toggleCheck);
         visualTextLimitedAntennas.SetActive(!toggleCheck);
         inputLimitedAntennas.Select();
+    }
+
+    public void CriticalCoverage()
+    {
+        
+        criticalCoverageBar.gameObject.SetActive(gridManager.ToggleCriticalCoverage());
     }
 }

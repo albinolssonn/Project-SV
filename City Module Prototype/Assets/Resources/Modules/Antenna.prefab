@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3372648389498624125}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Antenna
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,25 +42,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: Antenna_Sprites
       objectReference: {fileID: 0}
+    - target: {fileID: 1129936628846608456, guid: 3d8672b3f1f65954fbb5810f9adb8798, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1368979408853201085, guid: 3d8672b3f1f65954fbb5810f9adb8798, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1368979408853201085, guid: 3d8672b3f1f65954fbb5810f9adb8798, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1368979408853201085, guid: 3d8672b3f1f65954fbb5810f9adb8798, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1368979408853201085, guid: 3d8672b3f1f65954fbb5810f9adb8798, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.5
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 1368979408853201085, guid: 3d8672b3f1f65954fbb5810f9adb8798, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 1368979408853201085, guid: 3d8672b3f1f65954fbb5810f9adb8798, type: 3}
       propertyPath: m_LocalPosition.z
@@ -93,6 +97,22 @@ PrefabInstance:
     - target: {fileID: 1368979408853201085, guid: 3d8672b3f1f65954fbb5810f9adb8798, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6755803832668374768, guid: 3d8672b3f1f65954fbb5810f9adb8798, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6755803832668374768, guid: 3d8672b3f1f65954fbb5810f9adb8798, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6755803832668374768, guid: 3d8672b3f1f65954fbb5810f9adb8798, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6755803832668374768, guid: 3d8672b3f1f65954fbb5810f9adb8798, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1282801181
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d8672b3f1f65954fbb5810f9adb8798, type: 3}

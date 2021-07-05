@@ -20,7 +20,8 @@ public class GridManager : MonoBehaviour
     private int totalAntennas;
     private int maxAntennas; 
 
-    public static bool limitedAntennas; 
+    public static bool limitedAntennas;
+    public static bool criticalInfrCoverage;
 
 
     /// <summary>The strength of which an Antenna transmits a signal with.</summary>
@@ -36,7 +37,8 @@ public class GridManager : MonoBehaviour
     private bool createNetworkArrows;
 
     public SignalBarScript coverageBar;
-    public AntennaStatistics antennaStatistics; 
+    public AntennaStatistics antennaStatistics;
+    public CriticalCoverageScript criticalCoverage;
 
 
 
@@ -49,7 +51,8 @@ public class GridManager : MonoBehaviour
         totalAntennas = 0;
         shiftHeldDown = false;
         createNetworkArrows = false;
-        limitedAntennas = false; 
+        limitedAntennas = false;
+        criticalInfrCoverage = false;
         networkFlowVisuals = new List<GameObject>();
 
         network = new Network(baseSignalStr, distancePenalty, heightPenalty);
@@ -62,6 +65,7 @@ public class GridManager : MonoBehaviour
         CenterGrid();
 
         coverageBar.SetCoverage(0, colors);
+        criticalCoverage.SetCoverage(0, colors); 
         antennaStatistics.setAntennaStatistics(totalAntennas, 0); 
 
 
@@ -151,6 +155,38 @@ public class GridManager : MonoBehaviour
         return limitedAntennas; 
     }
 
+    public bool ToggleCriticalCoverage()
+    {
+        criticalInfrCoverage = !criticalInfrCoverage;
+
+        if (criticalInfrCoverage)
+        {
+            float criticalCount = 0;
+            float criticalTotal = 0;
+
+            foreach (Cell cell in gridArray)
+            {
+                if (cell.HasCriticalModule())
+                {
+                    criticalCount++;
+                    criticalTotal += (float)cell.GetSignalStr();
+                }
+            }
+
+            if (criticalCount == 0)
+            {
+                criticalTotal = 0;
+                criticalCount = 1;
+            }
+
+            criticalCoverage.SetCoverage(criticalTotal / criticalCount, colors);
+   
+        }
+     
+
+        return criticalInfrCoverage;
+    }
+
 
 
     /// <summary>
@@ -197,12 +233,15 @@ public class GridManager : MonoBehaviour
             MouseToGridCoord(out int y, out int x);
             if (x >= 0 && y >= 0 && x < cols && y < rows)
             {
-                if (!(gridArray[y, x].HasAntenna() & toBePlaced is Antenna))
+                if (!(gridArray[y, x].HasAntenna() & toBePlaced is Antenna) &&
+                    ((gridArray[y, x].GetCellContent().Count < 1 || (gridArray[y, x].GetCellContent().Count < 2 && toBePlaced is Antenna)) ||
+                    gridArray[y, x].GetCellContent().Count == 1 && gridArray[y, x].HasAntenna()))
                 {
                     GameObject tmpObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()), gridArray[y, x].GetTile().transform.position, Quaternion.identity);
                     tmpObject.transform.SetParent(gridArray[y, x].GetTile().transform);
                     tmpObject.transform.localScale = newScale;
                     toBePlaced.visualObject = tmpObject;
+
                     SetLayerRecursive(tmpObject, LayerMask.NameToLayer("Module"));
 
                     if (toBePlaced is Antenna)
@@ -211,11 +250,13 @@ public class GridManager : MonoBehaviour
                     }
 
                     gridArray[y, x].AddCellContent(toBePlaced);
+
+                    
                     UpdateNetwork();
                 }
                 else
                 {
-                    Debug.Log("Can't place an Antenna where there already is an Antenna.");
+                    Debug.Log("Can't place this module there.");
                 }
             }
         } else
@@ -279,10 +320,12 @@ public class GridManager : MonoBehaviour
 
         if (x >= 0 && y >= 0 && x < cols && y < rows)
         {
-            if(gridArray[y, x].RemoveCellContent(toBeRemoved) && toBeRemoved is Antenna)
+            if (gridArray[y, x].RemoveCellContent(toBeRemoved) &&
+                toBeRemoved is Antenna)
             {
                 totalAntennas--;
             }
+            
             UpdateNetwork();
         }
 
@@ -344,9 +387,16 @@ public class GridManager : MonoBehaviour
 
         float total = 0;
         float count = 0;
+        float criticalTotal = 0;
+        float criticalCount = 0;
         foreach (Cell cell in gridArray)
         {
             total += (float)cell.GetSignalStr();
+            if (cell.HasCriticalModule())
+            {
+                criticalCount++;
+                criticalTotal += (float)cell.GetSignalStr();
+            }
 
             SetTileColor(cell);
 
@@ -358,6 +408,13 @@ public class GridManager : MonoBehaviour
             count++;
         }
 
+        if(criticalCount == 0)
+        {
+            criticalTotal = 0;
+            criticalCount = 1;
+        }
+
+        criticalCoverage.SetCoverage(criticalTotal / criticalCount, colors);
         coverageBar.SetCoverage(total/count, colors);
         antennaStatistics.setAntennaStatistics(totalAntennas, maxAntennas); 
     }

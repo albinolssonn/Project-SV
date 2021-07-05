@@ -6,8 +6,7 @@ using UnityEngine.UI;
 public class InputScript : MonoBehaviour
 {
 
-    public GameObject inputField;
-    public GameObject inputLimitedAntennas;
+    public InputField inputLimitedAntennas;
     public GameObject visualTextLimitedAntennas;
     private GridManager gridManager;
 
@@ -20,15 +19,16 @@ public class InputScript : MonoBehaviour
     {
         try
         {
-            gridManager.SetAndUpdateMaxAntennas(int.Parse(inputField.GetComponentInChildren<Text>().text));
-            inputLimitedAntennas.SetActive(false);
+            gridManager.SetAndUpdateMaxAntennas(int.Parse(inputLimitedAntennas.GetComponentInChildren<Text>().text));
+            inputLimitedAntennas.gameObject.SetActive(false);
             visualTextLimitedAntennas.SetActive(true);
         }
         catch (System.FormatException)
         {
             Debug.Log("Invalid Input");
+
         }
-        
+
     }
     
 }

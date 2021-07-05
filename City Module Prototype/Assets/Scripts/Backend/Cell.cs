@@ -14,6 +14,7 @@ public class Cell
     private int maxHeight;
     private bool hasAntenna;
     private GameObject tile;
+    private bool hasCriticalModule;
 
     private Direction signalDirection;
     private bool signalDirDiagonal;
@@ -153,6 +154,8 @@ public class Cell
             hasAntenna = true; 
         }
 
+        hasCriticalModule = content.IsCritical();
+
         cellContent.Add(content);
         maxHeight = System.Math.Max(maxHeight, content.Height()); 
     }
@@ -168,6 +171,7 @@ public class Cell
     /// Removes every Module instance matching the given type from this cell and sets the variable 'maxHeight' to its new correct value.
     /// </summary>
     /// <param name="module">The module type to remove every instance of from this cell.</param>
+    /// <returns>True if the Module was removed.</returns>
     public bool RemoveCellContent(Module module)
     {
         bool removedSomething = false;
@@ -188,6 +192,9 @@ public class Cell
         if (module is Antenna)
         {
             hasAntenna = false;
+        } else
+        {
+            hasCriticalModule = false;
         }
 
         int newMax = 0;
@@ -211,7 +218,15 @@ public class Cell
             GameObject.Destroy(module.visualObject);
         }
         hasAntenna = false;
+        hasCriticalModule = false;
         maxHeight = 0;
         cellContent = new List<Module>();
+    }
+
+
+    /// <returns>If this cell has a critical module in it.</returns>
+    public bool HasCriticalModule()
+    {
+        return hasCriticalModule;
     }
 }

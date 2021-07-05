@@ -28,6 +28,10 @@ public abstract class Module
 
     /// <returns>A new instance of the same object type.</returns>
     public abstract Module Copy();
+
+    
+    /// <returns>If this module is classed as critical infrastructure.</returns>
+    public abstract bool IsCritical();
 }
 
 //---------------------------------------------------------------------
@@ -53,6 +57,11 @@ public class Park : Module
     public override Module Copy()
     {
         return new Park();
+    }
+
+    public override bool IsCritical()
+    {
+        return false;
     }
 }
 
@@ -80,6 +89,11 @@ public class House : Module
     {
         return new House();
     }
+
+    public override bool IsCritical()
+    {
+        return false;
+    }
 }
 
 //---------------------------------------------------------------------
@@ -105,6 +119,11 @@ public class TallBuilding : Module
     public override Module Copy()
     {
         return new TallBuilding();
+    }
+
+    public override bool IsCritical()
+    {
+        return false;
     }
 }
 
@@ -132,6 +151,11 @@ public class Hospital : Module
     {
         return new Hospital();
     }
+
+    public override bool IsCritical()
+    {
+        return true;
+    }
 }
 
 //---------------------------------------------------------------------
@@ -157,6 +181,11 @@ public class PoliceStation: Module
     public override Module Copy()
     {
         return new PoliceStation();
+    }
+
+    public override bool IsCritical()
+    {
+        return true;
     }
 }
 
@@ -184,6 +213,11 @@ public class FireDepartment : Module
     {
         return new FireDepartment();
     }
+
+    public override bool IsCritical()
+    {
+        return true;
+    }
 }
 
 //---------------------------------------------------------------------
@@ -209,6 +243,11 @@ public class Antenna : Module
     public override Module Copy()
     {
         return new Antenna();
+    }
+
+    public override bool IsCritical()
+    {
+        return false;
     }
 }
 
