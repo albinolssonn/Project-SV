@@ -135,10 +135,14 @@ public class Cell
     }
 
     /// <returns>The content of modules of this cell.</returns>
-
     public List<Module> GetCellContent()
     {
         return cellContent; 
+    }
+
+    public double GetCapacityDemand()
+    {
+        return capacityDemand;
     }
 
 

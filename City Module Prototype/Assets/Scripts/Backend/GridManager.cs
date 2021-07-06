@@ -23,8 +23,8 @@ public class GridManager : MonoBehaviour
     private int totalAntennas;
     private int maxAntennas; 
 
-    public static bool limitedAntennas;
-    public static bool criticalCoverage;
+    public static bool limitedAntennasMode;
+    public static bool criticalCoverageMode;
 
 
     /// <summary>The strength of which an Antenna transmits a signal with.</summary>
@@ -44,8 +44,10 @@ public class GridManager : MonoBehaviour
     private bool createNetworkArrows;
 
     public SignalBarScript coverageBar;
+    public CapacityBarScript capacityBar;
     public AntennaStatistics antennaStatistics;
     public CriticalCoverageScript criticalCoverageScript;
+    public CriticalCapacityScript criticalCapacityScript;
 
 
 
@@ -59,8 +61,8 @@ public class GridManager : MonoBehaviour
         simulationModeSelected = "coverage";
         shiftHeldDown = false;
         createNetworkArrows = false;
-        limitedAntennas = false;
-        criticalCoverage = false;
+        limitedAntennasMode = false;
+        criticalCoverageMode = false;
         networkFlowVisuals = new List<GameObject>();
         colors = new Dictionary<string, Colors>();
 
@@ -160,14 +162,14 @@ public class GridManager : MonoBehaviour
     /// <returns>The new state of the toggle.</returns>
     public bool ToggleLimitedAntennas()
     {
-        limitedAntennas = !limitedAntennas;
+        limitedAntennasMode = !limitedAntennasMode;
 
-        if (!limitedAntennas)
+        if (!limitedAntennasMode)
         {
             antennaStatistics.setAntennaStatistics(totalAntennas, maxAntennas);
         }
 
-        return limitedAntennas; 
+        return limitedAntennasMode; 
     }
 
 
@@ -177,9 +179,9 @@ public class GridManager : MonoBehaviour
     /// <returns>The new state of the toggle.</returns>
     public bool ToggleCriticalCoverage()
     {
-        criticalCoverage = !criticalCoverage;
+        criticalCoverageMode = !criticalCoverageMode;
 
-        if (criticalCoverage)
+        if (criticalCoverageMode)
         {
             float criticalCount = 0;
             float criticalTotal = 0;
@@ -204,7 +206,7 @@ public class GridManager : MonoBehaviour
         }
      
 
-        return criticalCoverage;
+        return criticalCoverageMode;
     }
 
 
@@ -248,7 +250,7 @@ public class GridManager : MonoBehaviour
             throw new System.ArgumentException("'toBeRemoved' has not been set prior to calling this method.");
         }
 
-        if(!(toBePlaced is Antenna && limitedAntennas && maxAntennas <= totalAntennas))
+        if(!(toBePlaced is Antenna && limitedAntennasMode && maxAntennas <= totalAntennas))
         {
             MouseToGridCoord(out int y, out int x);
             if (x >= 0 && y >= 0 && x < cols && y < rows)
@@ -403,19 +405,17 @@ public class GridManager : MonoBehaviour
         network.BuildNetwork(gridArray);
 
 
-        float total = 0;
-        float count = 0;
-        float criticalTotal = 0;
+        float totalCoverage = 0;
+        float criticalCoverage = 0;
+
+        float totalCapacity = 0;
+        float criticalCapacity = 0;
+
+        float totalCount = 0;
         float criticalCount = 0;
+
         foreach (Cell cell in gridArray)
         {
-            total += (float)cell.GetSignalStr();
-            if (criticalCoverage && cell.HasCriticalModule())
-            {
-                criticalCount++;
-                criticalTotal += (float)cell.GetSignalStr();
-            }
-
             SetTileColor(cell);
 
             if (createNetworkArrows)
@@ -423,19 +423,33 @@ public class GridManager : MonoBehaviour
                 CreateNetworkFlow(cell);
             }
 
-            count++;
+            if (GridManager.criticalCoverageMode && cell.HasCriticalModule())
+            {
+                criticalCoverage += (float)cell.GetSignalStr();
+                criticalCapacity += (float)cell.GetCapacityDemand();
+
+                criticalCount++;
+            }
+
+            totalCoverage += (float)cell.GetSignalStr();
+            totalCapacity += (float)cell.GetCapacityDemand();
+
+            totalCount++;
+
         }
 
         if(criticalCount == 0)
         {
-            criticalTotal = 0;
+            criticalCoverage = 0;
             criticalCount = 1;
         }
 
-        if (criticalCoverage) {
-            criticalCoverageScript.SetCoverage(criticalTotal / criticalCount, colors["coverage"]);
+        if (criticalCoverageMode) {
+            criticalCoverageScript.SetCoverage(criticalCoverage / criticalCount, colors["coverage"]);
+            criticalCapacityScript.SetCapacity(criticalCapacity / criticalCount, colors["capacity"]);
         }
-        coverageBar.SetCoverage(total/count, colors["coverage"]);
+        coverageBar.SetCoverage(totalCoverage / totalCount, colors["coverage"]);
+        capacityBar.SetCapacity(totalCapacity / totalCount, colors["capacity"]);
         antennaStatistics.setAntennaStatistics(totalAntennas, maxAntennas); 
     }
 

@@ -12,7 +12,7 @@ public class AntennaStatistics : MonoBehaviour
 
     public void setAntennaStatistics(int value, int maxValue)
     {
-        if (GridManager.limitedAntennas)
+        if (GridManager.limitedAntennasMode)
         {
             text.text = value.ToString() + " / " + maxValue.ToString();
             if(value > maxValue)
