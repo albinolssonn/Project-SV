@@ -24,7 +24,7 @@ public class GridManager : MonoBehaviour
     private int maxAntennas; 
 
     public static bool limitedAntennasMode;
-    public static bool criticalCoverageMode;
+    public static bool criticalMode;
 
 
     /// <summary>The strength of which an Antenna transmits a signal with.</summary>
@@ -62,7 +62,7 @@ public class GridManager : MonoBehaviour
         shiftHeldDown = false;
         createNetworkArrows = false;
         limitedAntennasMode = false;
-        criticalCoverageMode = false;
+        criticalMode = false;
         networkFlowVisuals = new List<GameObject>();
         colors = new Dictionary<string, Colors>();
 
@@ -177,11 +177,11 @@ public class GridManager : MonoBehaviour
     /// Toggles if the gamification "Critical Coverage" is active or not.
     /// </summary>
     /// <returns>The new state of the toggle.</returns>
-    public bool ToggleCriticalCoverage()
+    public bool ToggleCritical()
     {
-        criticalCoverageMode = !criticalCoverageMode;
+        criticalMode = !criticalMode;
 
-        if (criticalCoverageMode)
+        if (criticalMode)
         {
             float criticalCount = 0;
             float criticalTotal = 0;
@@ -206,8 +206,10 @@ public class GridManager : MonoBehaviour
         }
      
 
-        return criticalCoverageMode;
+        return criticalMode;
     }
+
+    
 
 
 
@@ -423,7 +425,7 @@ public class GridManager : MonoBehaviour
                 CreateNetworkFlow(cell);
             }
 
-            if (GridManager.criticalCoverageMode && cell.HasCriticalModule())
+            if (GridManager.criticalMode && cell.HasCriticalModule())
             {
                 criticalCoverage += (float)cell.GetSignalStr();
                 criticalCapacity += (float)cell.GetCapacityDemand();
@@ -444,7 +446,7 @@ public class GridManager : MonoBehaviour
             criticalCount = 1;
         }
 
-        if (criticalCoverageMode) {
+        if (criticalMode) {
             criticalCoverageScript.SetCoverage(criticalCoverage / criticalCount, colors["coverage"]);
             criticalCapacityScript.SetCapacity(criticalCapacity / criticalCount, colors["capacity"]);
         }
