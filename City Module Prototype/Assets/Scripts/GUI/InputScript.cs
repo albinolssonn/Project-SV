@@ -15,6 +15,7 @@ public class InputScript : MonoBehaviour
     {
         gridManager = GameObject.FindGameObjectsWithTag("Grid")[0].GetComponent<GridManager>();
         toggle = GameObject.Find("LimitedAntennas_Toggle"); 
+
     }
 
     public void EnterMaxValue()
@@ -37,8 +38,5 @@ public class InputScript : MonoBehaviour
         {
             toggle.GetComponent<Toggle>().isOn = false;
         }
-        
-
     }
-    
 }
