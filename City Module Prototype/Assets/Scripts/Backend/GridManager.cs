@@ -34,6 +34,7 @@ public class GridManager : MonoBehaviour
     public static readonly double baseCapacity = 20;
 
     /// <summary>The reduction in signal strength for traveling one step in any direction.</summary>
+    /// <remarks>Should be subtracted from the signal strength each time it travels from one cell to another.</remarks>
     public static readonly double distancePenalty = 1;
 
     /// <summary>The reduction in signal strength for traveling through a cell with a higher max height than the cell which the antenna is located in.</summary>
@@ -153,6 +154,10 @@ public class GridManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Toggles if the gamification "Limited Antennas" is active or not.
+    /// </summary>
+    /// <returns>The new state of the toggle.</returns>
     public bool ToggleLimitedAntennas()
     {
         limitedAntennas = !limitedAntennas;
@@ -165,6 +170,11 @@ public class GridManager : MonoBehaviour
         return limitedAntennas; 
     }
 
+
+    /// <summary>
+    /// Toggles if the gamification "Critical Coverage" is active or not.
+    /// </summary>
+    /// <returns>The new state of the toggle.</returns>
     public bool ToggleCriticalCoverage()
     {
         criticalCoverage = !criticalCoverage;
@@ -273,8 +283,6 @@ public class GridManager : MonoBehaviour
         {
             Debug.Log("Maximum number of Antennas already placed.");
         }
-
-        
 
         if (!Input.GetKey(KeyCode.LeftShift))
         {
@@ -432,7 +440,7 @@ public class GridManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Resets the signal strength of every cell in the grid.
+    /// Resets the signal strength of every Cell and the demand of every Antenna in the grid.
     /// </summary>
     private void ResetNetwork()
     {
@@ -626,6 +634,11 @@ public class GridManager : MonoBehaviour
         return cols;
     }
 
+
+    /// <summary>
+    /// Set 'maxAntennas' to a new value and update the statistics panel accordingly.
+    /// </summary>
+    /// <param name="maxAntennas">The new maximum number of Antennas allowed.</param>
     public void SetAndUpdateMaxAntennas(int maxAntennas)
     {
         this.maxAntennas = maxAntennas;
@@ -633,8 +646,18 @@ public class GridManager : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// Changes which simulation to show, such as coverage or capacity, 
+    /// and then updates the colors on the grid accordingly.
+    /// </summary>
+    /// <param name="mode">Which simulation mode to show.</param>
     public void SetSimulationMode(string mode)
     {
+        if (!colors.ContainsKey(mode))
+        {
+            throw new System.ArgumentException("The given mode does not exist.");
+        }
         simulationModeSelected = mode;
         foreach (Cell cell in gridArray)
         {
