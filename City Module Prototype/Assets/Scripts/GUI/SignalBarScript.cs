@@ -24,7 +24,7 @@ public class SignalBarScript : MonoBehaviour
     /// <param name="colors">The color to display the bar in.</param>
     public void SetCoverage(float signalStr, Colors colors)
     {
-        signalStr = (float)System.Math.Round(signalStr, 2);
+        signalStr = (float)System.Math.Round(signalStr, 1);
 
         slider.value = signalStr;
         text.text = signalStr.ToString();

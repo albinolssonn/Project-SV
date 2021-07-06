@@ -43,9 +43,10 @@ public class GridManager : MonoBehaviour
     private bool shiftHeldDown;
     private bool createNetworkArrows;
 
-    public SignalBarScript coverageBar;
-    public CapacityBarScript capacityBar;
     public AntennaStatistics antennaStatistics;
+
+    public SignalBarScript coverageBarScript;
+    public CapacityBarScript capacityBarScript;
     public CriticalCoverageScript criticalCoverageScript;
     public CriticalCapacityScript criticalCapacityScript;
 
@@ -77,8 +78,11 @@ public class GridManager : MonoBehaviour
         GenerateGrid();
         CenterGrid();
 
-        coverageBar.SetCoverage(0, colors["coverage"]);
-        criticalCoverageScript.SetCoverage(0, colors["capacity"]); 
+        coverageBarScript.SetCoverage(0, colors["coverage"]);
+        capacityBarScript.SetCapacity(0, colors["capacity"]);
+        criticalCoverageScript.SetCoverage(0, colors["coverage"]);
+        criticalCapacityScript.SetCapacity(0, colors["capacity"]);
+
         antennaStatistics.setAntennaStatistics(totalAntennas, 0); 
 
 
@@ -414,6 +418,7 @@ public class GridManager : MonoBehaviour
         float criticalCapacity = 0;
 
         float totalCount = 0;
+        float totalCapacityCount = 0;
         float criticalCount = 0;
 
         foreach (Cell cell in gridArray)
@@ -425,19 +430,23 @@ public class GridManager : MonoBehaviour
                 CreateNetworkFlow(cell);
             }
 
-            if (GridManager.criticalMode && cell.HasCriticalModule())
+            if (criticalMode && cell.HasCriticalModule())
             {
                 criticalCoverage += (float)cell.GetSignalStr();
-                criticalCapacity += (float)cell.GetCapacityDemand();
+                criticalCapacity += (float)cell.GetAvailableCapacity();
 
                 criticalCount++;
             }
 
+
+            if(cell.GetAntenna() != null)
+            {
+                totalCapacity += (float)cell.GetAvailableCapacity();
+                totalCapacityCount++;
+            }
+
             totalCoverage += (float)cell.GetSignalStr();
-            totalCapacity += (float)cell.GetCapacityDemand();
-
             totalCount++;
-
         }
 
         if(criticalCount == 0)
@@ -446,12 +455,18 @@ public class GridManager : MonoBehaviour
             criticalCount = 1;
         }
 
+        if(totalCapacityCount == 0)
+        {
+            totalCapacityCount = 1;
+            totalCapacity = 0;
+        }
+
         if (criticalMode) {
             criticalCoverageScript.SetCoverage(criticalCoverage / criticalCount, colors["coverage"]);
             criticalCapacityScript.SetCapacity(criticalCapacity / criticalCount, colors["capacity"]);
         }
-        coverageBar.SetCoverage(totalCoverage / totalCount, colors["coverage"]);
-        capacityBar.SetCapacity(totalCapacity / totalCount, colors["capacity"]);
+        coverageBarScript.SetCoverage(totalCoverage / totalCount, colors["coverage"]);
+        capacityBarScript.SetCapacity(totalCapacity / totalCapacityCount, colors["capacity"]);
         antennaStatistics.setAntennaStatistics(totalAntennas, maxAntennas); 
     }
 
@@ -551,7 +566,7 @@ public class GridManager : MonoBehaviour
             case "capacity":
                 if (cell.GetSignalDir() != null)
                 {
-                    rgbt = color.GetGradientColor(cell.GetSignalDir().originCell.GetAntenna().GetDemand());
+                    rgbt = color.GetGradientColor(cell.GetSignalDir().originCell.GetAntenna().AvailableCapacity());
                 }
                 else
                 {

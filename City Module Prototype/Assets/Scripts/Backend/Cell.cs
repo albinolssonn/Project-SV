@@ -140,11 +140,23 @@ public class Cell
         return cellContent; 
     }
 
+
+    /// <returns>The capacity demand of this cell.</returns>
     public double GetCapacityDemand()
     {
         return capacityDemand;
     }
 
+
+    public double GetAvailableCapacity()
+    {
+        if(signalDirection != null)
+        {
+            return signalDirection.originCell.GetAntenna().AvailableCapacity();
+        }
+
+        return 0;
+    }
 
     /// <returns>The x-coordinate of this cell.</returns>
     public int GetX()

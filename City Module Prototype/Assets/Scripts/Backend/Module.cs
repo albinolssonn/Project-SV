@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 
@@ -261,7 +262,7 @@ public class Antenna : Module
     /// <summary>
     /// The current demand on this Antenna.
     /// </summary>
-    private double currentDemand = 0;
+    private double currentCapacityDemand = 0;
 
 
     /// <summary>
@@ -270,7 +271,7 @@ public class Antenna : Module
     /// <param name="demand">The value to add.</param>
     public void AddDemand(double demand)
     {
-        currentDemand += demand;
+        currentCapacityDemand += demand;
     }
 
 
@@ -280,8 +281,8 @@ public class Antenna : Module
     /// <param name="demand">Value to remove.</param>
     public void RemoveDemand(double demand)
     {
-        currentDemand -= demand;
-        if(currentDemand < 0)
+        currentCapacityDemand -= demand;
+        if(currentCapacityDemand < 0)
         {
             throw new System.Exception("'currentDemand' less than 0.");
         }
@@ -293,14 +294,20 @@ public class Antenna : Module
     /// </summary>
     public void ResetDemand()
     {
-        currentDemand = 0;
+        currentCapacityDemand = 0;
     }
 
 
     /// <returns>Current demand on this Antenna.</returns>
     public double GetDemand()
     {
-        return currentDemand;
+        return currentCapacityDemand;
+    }
+
+
+    public double AvailableCapacity()
+    {
+        return GridManager.baseCapacity - currentCapacityDemand;
     }
 
 
@@ -333,6 +340,8 @@ public class Antenna : Module
     {
         return false;
     }
+
+    
 }
 
 //---------------------------------------------------------------------

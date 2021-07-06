@@ -19,7 +19,7 @@ public class CapacityBarScript : MonoBehaviour
     /// <param name="colors">The color to display the bar in.</param>
     public void SetCapacity(float capacity, Colors colors)
     {
-        capacity = (float)System.Math.Round(capacity, 2);
+        capacity = (float)System.Math.Round(capacity, 1);
         slider.value = capacity;
         text.text = capacity.ToString();
         var rgbt = colors.GetGradientColor(capacity);

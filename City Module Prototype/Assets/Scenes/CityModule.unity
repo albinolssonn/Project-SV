@@ -8661,9 +8661,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0e1ca91b506fa4d83324835b066853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coverageBar: {fileID: 1474659310}
-  capacityBar: {fileID: 808527326}
   antennaStatistics: {fileID: 1713931601}
+  coverageBarScript: {fileID: 1474659310}
+  capacityBarScript: {fileID: 808527326}
   criticalCoverageScript: {fileID: 1947181849}
   criticalCapacityScript: {fileID: 580571516}
 --- !u!224 &1686158861
