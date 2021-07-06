@@ -7,7 +7,7 @@ public class InformationScript : MonoBehaviour
 {
     public TMP_Text informationText;
 
-    public void setText(string input)
+    public void setInformationText(string input)
     {
         informationText.text = input; 
     }
