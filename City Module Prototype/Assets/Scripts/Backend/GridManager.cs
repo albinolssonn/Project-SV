@@ -503,37 +503,47 @@ public class GridManager : MonoBehaviour
         }
         catch (System.ArgumentException)
         {
-            throw new System.ArgumentException("The selected color gradient name in 'simulationModeSelected' does not exist.");
+            throw new System.ArgumentException("The selected color gradient string in 'simulationModeSelected' does not exist.");
         }
 
         float[] rgbt = null;
 
-        if (simulationModeSelected.Equals("coverage"))
+
+        switch (simulationModeSelected)
         {
-            double signalStr = cell.GetSignalStr();
-            if (1 <= signalStr)
-            {
-                rgbt = color.GetGradientColor(signalStr);
-            }
-            else
-            {
-                rgbt = Colors.gray;
-            }
-        } else if (simulationModeSelected.Equals("capacity"))
-        {
-            if(cell.GetSignalDir() != null)
-            {
-                rgbt = color.GetGradientColor(cell.GetSignalDir().originCell.GetAntenna().GetDemand());
-            } else
-            {
-                rgbt = Colors.gray;
-            }
+            case "coverage":
+                double signalStr = cell.GetSignalStr();
+                if (1 <= signalStr)
+                {
+                    rgbt = color.GetGradientColor(signalStr);
+                }
+                else
+                {
+                    rgbt = Colors.gray;
+                }
+                break;
+
+
+            case "capacity":
+                if (cell.GetSignalDir() != null)
+                {
+                    rgbt = color.GetGradientColor(cell.GetSignalDir().originCell.GetAntenna().GetDemand());
+                }
+                else
+                {
+                    rgbt = Colors.gray;
+                }
+                break;
+
+
+            default:
+                throw new System.Exception("This should be unreachable.");
         }
 
 
         if(rgbt == null)
         {
-            throw new System.Exception("rgbt was never assigned.");
+            throw new System.Exception("'rgbt' was never assigned.");
         }
         return rgbt;
 
@@ -621,6 +631,15 @@ public class GridManager : MonoBehaviour
         this.maxAntennas = maxAntennas;
         antennaStatistics.setAntennaStatistics(totalAntennas, maxAntennas);
 
+    }
+
+    public void SetSimulationMode(string mode)
+    {
+        simulationModeSelected = mode;
+        foreach (Cell cell in gridArray)
+        {
+            SetTileColor(cell);
+        }
     }
 
 }

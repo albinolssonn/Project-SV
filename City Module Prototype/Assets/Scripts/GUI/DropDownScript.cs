@@ -2,20 +2,30 @@ using UnityEngine;
 
 public class DropDownScript : MonoBehaviour
 {
-    public int simMode = 0; 
+    private GridManager gridManager;
+
+    public void Start()
+    {
+        gridManager = GameObject.FindGameObjectsWithTag("Grid")[0].GetComponent<GridManager>();
+    }
+
 
     public void ChooseSimMode(int value)
     {
-        if(value == 0)
+        switch (value)
         {
-            simMode = value; 
-            Debug.Log(simMode + " = Signal Strength"); 
-        }
+            case 0:
+                Debug.Log(value + " = Signal Strength");
+                gridManager.SetSimulationMode("coverage");
+                break;
 
-        if (value == 1)
-        {
-            simMode = value;
-            Debug.Log(simMode + " = Capacity"); 
+            case 1:
+                Debug.Log(value + " = Capacity");
+                gridManager.SetSimulationMode("capacity");
+                break;
+
+            default:
+                throw new System.Exception("This should be unreachable.");
         }
     }
 
