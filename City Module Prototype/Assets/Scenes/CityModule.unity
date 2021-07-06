@@ -3434,7 +3434,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &717789697
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3507,9 +3507,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 296aced91730fd64ba9514ef32405c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: {fileID: 0}
-  cols: {fileID: 0}
-  enterInputBtn: {fileID: 0}
 --- !u!114 &717789701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3522,9 +3519,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 296aced91730fd64ba9514ef32405c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: {fileID: 1760433371}
-  cols: {fileID: 938083260}
-  enterInputBtn: {fileID: 947024076}
 --- !u!1 &722380473
 GameObject:
   m_ObjectHideFlags: 0
@@ -7231,18 +7225,18 @@ MonoBehaviour:
     nisi porta lorem. Non enim praesent elementum facilisis. Dis parturient montes
     nascetur ridiculus mus. Diam vel quam elementum pulvinar.
 
-    
 
-    Odio ut
-    enim blandit volutpat maecenas volutpat blandit aliquam etiam. Varius duis at
-    consectetur lorem donec massa sapien faucibus et. Arcu felis bibendum ut tristique
-    et egestas. Hac habitasse platea dictumst quisque sagittis purus sit amet. Vitae
-    auctor eu augue ut. Tortor pretium viverra suspendisse potenti nullam ac tortor
-    vitae. Bibendum enim facilisis gravida neque convallis a cras. Ut enim blandit
-    volutpat maecenas volutpat blandit. Sed augue lacus viverra vitae congue eu.
-    Neque gravida in fermentum et sollicitudin ac orci. Amet nulla facilisi morbi
-    tempus iaculis urna id. Vel orci porta non pulvinar. Orci phasellus egestas tellus
-    rutrum tellus pellentesque eu tincidunt tortor.'
+
+    Odio ut enim
+    blandit volutpat maecenas volutpat blandit aliquam etiam. Varius duis at consectetur
+    lorem donec massa sapien faucibus et. Arcu felis bibendum ut tristique et egestas.
+    Hac habitasse platea dictumst quisque sagittis purus sit amet. Vitae auctor eu
+    augue ut. Tortor pretium viverra suspendisse potenti nullam ac tortor vitae.
+    Bibendum enim facilisis gravida neque convallis a cras. Ut enim blandit volutpat
+    maecenas volutpat blandit. Sed augue lacus viverra vitae congue eu. Neque gravida
+    in fermentum et sollicitudin ac orci. Amet nulla facilisi morbi tempus iaculis
+    urna id. Vel orci porta non pulvinar. Orci phasellus egestas tellus rutrum tellus
+    pellentesque eu tincidunt tortor.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7822,7 +7816,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coverageBar: {fileID: 1474659310}
   antennaStatistics: {fileID: 1713931601}
-  criticalCoverage: {fileID: 1947181849}
+  criticalCoverageScript: {fileID: 1947181849}
 --- !u!224 &1686158861
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10650,7 +10644,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenuUi: {fileID: 761539249}
   informationPageUi: {fileID: 1737470837}
-  settingsPageUi: {fileID: 717789696}
 --- !u!1 &2041387311
 GameObject:
   m_ObjectHideFlags: 0

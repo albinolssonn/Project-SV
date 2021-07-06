@@ -11,10 +11,11 @@ public class Cell
     private List<Module> cellContent;
     private readonly int xCoord; 
     private readonly int yCoord;
-    private int maxHeight;
-    private bool hasAntenna;
+    private double maxHeight;
+    private Antenna antenna;
     private GameObject tile;
     private bool hasCriticalModule;
+    private double capacityDemand;
 
     private Direction signalDirection;
     private bool signalDirDiagonal;
@@ -31,11 +32,19 @@ public class Cell
     /// <param name="xCoord">The x-coordinate in the grid of this cell.</param>
     public Cell(int yCoord, int xCoord) 
     {
+        signalStr = 0;
+        cellContent = new List<Module>();
         this.xCoord = xCoord;
         this.yCoord = yCoord;
-        signalStr = 0;
-        hasAntenna = false;
-        cellContent = new List<Module>();
+        maxHeight = 0;
+        antenna = null;
+        tile = null;
+        hasCriticalModule = false;
+        capacityDemand = 0;
+
+        signalDirection = null;
+        signalDirDiagonal = false;
+
     }
 
 
@@ -74,10 +83,10 @@ public class Cell
     }
 
 
-    /// <returns>If this cell has an Antenna in it.</returns>
-    public bool HasAntenna()
+    /// <returns>The antenna contained in this cell. Null if none.</returns>
+    public Antenna GetAntenna()
     {
-        return hasAntenna;
+        return antenna;
     }
 
 
@@ -111,12 +120,21 @@ public class Cell
 
         if(this.signalStr < signalStr)
         {
+            if(signalDirection != null)
+            {
+                signalDirection.originCell.GetAntenna().RemoveDemand(capacityDemand);
+            }
+
             this.signalStr = signalStr;
             signalDirection = cameFrom;
             signalDirDiagonal = wasDiagonal;
+
+            signalDirection.originCell.GetAntenna().AddDemand(capacityDemand);
+
         }
     }
 
+    /// <returns>The content of modules of this cell.</returns>
 
     public List<Module> GetCellContent()
     {
@@ -124,24 +142,19 @@ public class Cell
     }
 
 
+    /// <returns>The x-coordinate of this cell.</returns>
     public int GetX()
     {
         return xCoord;
     }
 
-
+    /// <returns>The y-coordinate of this cell.</returns>
     public int GetY()
     {
         return yCoord;
     }
 
-    /*
-     * 
-     * 
-     * Module content: The 'Module' object which one wants to add to this cell.
-     * 
-     * Returns: Nothing.
-     */
+
     /// <summary>
     /// Adds a module to cellContent and sets the max height of this 
     /// cell to the height of the module if its height is higher.
@@ -149,19 +162,22 @@ public class Cell
     /// <param name="content">The module object to add to this cell.</param>
     public void AddCellContent (Module content)
     {
-        if(content is Antenna)
+        if(content is Antenna newAntenna)
         {
-            hasAntenna = true; 
+            antenna = newAntenna;
         }
 
         hasCriticalModule = content.IsCritical();
+
+
+        capacityDemand += content.CapacityDemand();
 
         cellContent.Add(content);
         maxHeight = System.Math.Max(maxHeight, content.Height()); 
     }
 
-
-    public int GetMaxHeight()
+    /// <returns>The height of this cell.</returns>
+    public double GetHeight()
     {
         return maxHeight;
     }
@@ -181,6 +197,7 @@ public class Cell
             if(elem.GetType() == module.GetType())
             {
                 GameObject.Destroy(elem.visualObject);
+                capacityDemand -= module.CapacityDemand();
                 removedSomething = true;
             } else
             {
@@ -191,18 +208,23 @@ public class Cell
 
         if (module is Antenna)
         {
-            hasAntenna = false;
+            antenna = null;
         } else
         {
             hasCriticalModule = false;
         }
 
-        int newMax = 0;
+        double newMax = 0;
         foreach (Module elem in cellContent)
         {
             newMax = System.Math.Max(newMax, elem.Height());
         }
         maxHeight = newMax;
+
+        if (capacityDemand < 0)
+        {
+            throw new System.Exception("Capacity of Cell is negative.");
+        }
 
         return removedSomething;
     }
@@ -217,7 +239,9 @@ public class Cell
         {
             GameObject.Destroy(module.visualObject);
         }
-        hasAntenna = false;
+        
+        capacityDemand = 0;
+        antenna = null;
         hasCriticalModule = false;
         maxHeight = 0;
         cellContent = new List<Module>();

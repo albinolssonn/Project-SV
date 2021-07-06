@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+
 using NUnit.Framework;
 
 public class TestCell
@@ -56,10 +54,10 @@ public class TestCell
         cell.AddCellContent(new Hospital());
         Assert.AreEqual(2, cell.GetCellContent().Count);
 
-        Assert.IsFalse(cell.HasAntenna());
+        Assert.IsFalse(cell.GetAntenna() != null);
         cell.AddCellContent(new Antenna());
         Assert.AreEqual(3, cell.GetCellContent().Count);
-        Assert.IsTrue(cell.HasAntenna());
+        Assert.IsTrue(cell.GetAntenna() != null);
     }
 
     

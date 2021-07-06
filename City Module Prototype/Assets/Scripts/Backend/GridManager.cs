@@ -3,6 +3,7 @@ using UnityEngine;
 
 /// <summary>
 /// Manages the grid to place modules and visualizes the network on.
+/// Works as the main of the program.
 /// </summary>
 public class GridManager : MonoBehaviour
 {
@@ -15,17 +16,22 @@ public class GridManager : MonoBehaviour
     private Network network; 
     private Cell[,] gridArray;
     private List<GameObject> networkFlowVisuals;
-    private Colors colors;
+    private string simulationModeSelected;
+    private Dictionary<string, Colors> colors;
+
 
     private int totalAntennas;
     private int maxAntennas; 
 
     public static bool limitedAntennas;
-    public static bool criticalInfrCoverage;
+    public static bool criticalCoverage;
 
 
     /// <summary>The strength of which an Antenna transmits a signal with.</summary>
     public static readonly double baseSignalStr = 10;
+
+    /// <summary>The capacity of which an Antenna can supply users with.</summary>
+    public static readonly double baseCapacity = 20;
 
     /// <summary>The reduction in signal strength for traveling one step in any direction.</summary>
     public static readonly double distancePenalty = 1;
@@ -38,7 +44,7 @@ public class GridManager : MonoBehaviour
 
     public SignalBarScript coverageBar;
     public AntennaStatistics antennaStatistics;
-    public CriticalCoverageScript criticalCoverage;
+    public CriticalCoverageScript criticalCoverageScript;
 
 
 
@@ -49,23 +55,27 @@ public class GridManager : MonoBehaviour
         cols = 10;
         tileSize = 110F;
         totalAntennas = 0;
+        simulationModeSelected = "coverage";
         shiftHeldDown = false;
         createNetworkArrows = false;
         limitedAntennas = false;
-        criticalInfrCoverage = false;
+        criticalCoverage = false;
         networkFlowVisuals = new List<GameObject>();
+        colors = new Dictionary<string, Colors>();
+
+        colors.Add("coverage", new RedGreen(baseSignalStr));
+        colors.Add("capacity", new WhiteBlue(baseCapacity));
 
         network = new Network(baseSignalStr, distancePenalty, heightPenalty);
         gridArray = GridUtils.BuildArray(rows, cols);
-        colors = new Colors(baseSignalStr);
         newScale = new Vector3(0.6f, 0.6f, 1f);
         
 
         GenerateGrid();
         CenterGrid();
 
-        coverageBar.SetCoverage(0, colors);
-        criticalCoverage.SetCoverage(0, colors); 
+        coverageBar.SetCoverage(0, colors["coverage"]);
+        criticalCoverageScript.SetCoverage(0, colors["capacity"]); 
         antennaStatistics.setAntennaStatistics(totalAntennas, 0); 
 
 
@@ -157,9 +167,9 @@ public class GridManager : MonoBehaviour
 
     public bool ToggleCriticalCoverage()
     {
-        criticalInfrCoverage = !criticalInfrCoverage;
+        criticalCoverage = !criticalCoverage;
 
-        if (criticalInfrCoverage)
+        if (criticalCoverage)
         {
             float criticalCount = 0;
             float criticalTotal = 0;
@@ -179,12 +189,12 @@ public class GridManager : MonoBehaviour
                 criticalCount = 1;
             }
 
-            criticalCoverage.SetCoverage(criticalTotal / criticalCount, colors);
+            criticalCoverageScript.SetCoverage(criticalTotal / criticalCount, colors["coverage"]);
    
         }
      
 
-        return criticalInfrCoverage;
+        return criticalCoverage;
     }
 
 
@@ -233,9 +243,9 @@ public class GridManager : MonoBehaviour
             MouseToGridCoord(out int y, out int x);
             if (x >= 0 && y >= 0 && x < cols && y < rows)
             {
-                if (!(gridArray[y, x].HasAntenna() & toBePlaced is Antenna) &&
+                if (!(gridArray[y, x].GetAntenna() != null && toBePlaced is Antenna) &&
                     ((gridArray[y, x].GetCellContent().Count < 1 || (gridArray[y, x].GetCellContent().Count < 2 && toBePlaced is Antenna)) ||
-                    gridArray[y, x].GetCellContent().Count == 1 && gridArray[y, x].HasAntenna()))
+                    gridArray[y, x].GetCellContent().Count == 1 && gridArray[y, x].GetAntenna() != null))
                 {
                     GameObject tmpObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()), gridArray[y, x].GetTile().transform.position, Quaternion.identity);
                     tmpObject.transform.SetParent(gridArray[y, x].GetTile().transform);
@@ -392,7 +402,7 @@ public class GridManager : MonoBehaviour
         foreach (Cell cell in gridArray)
         {
             total += (float)cell.GetSignalStr();
-            if (cell.HasCriticalModule())
+            if (criticalCoverage && cell.HasCriticalModule())
             {
                 criticalCount++;
                 criticalTotal += (float)cell.GetSignalStr();
@@ -414,8 +424,10 @@ public class GridManager : MonoBehaviour
             criticalCount = 1;
         }
 
-        criticalCoverage.SetCoverage(criticalTotal / criticalCount, colors);
-        coverageBar.SetCoverage(total/count, colors);
+        if (criticalCoverage) {
+            criticalCoverageScript.SetCoverage(criticalTotal / criticalCount, colors["coverage"]);
+        }
+        coverageBar.SetCoverage(total/count, colors["coverage"]);
         antennaStatistics.setAntennaStatistics(totalAntennas, maxAntennas); 
     }
 
@@ -427,6 +439,11 @@ public class GridManager : MonoBehaviour
         foreach (Cell cell in gridArray)
         {
             cell.ResetSignalStr();
+            if(cell.GetAntenna() != null)
+            {
+                cell.GetAntenna().ResetDemand();
+            }
+            
         }
     }
 
@@ -463,20 +480,62 @@ public class GridManager : MonoBehaviour
     /// <param name="cell">The cell corresponding to the tile to change color of.</param>
     public void SetTileColor(Cell cell)
     {
-        var tileRenderer = cell.GetTile().transform.GetChild(0).GetComponent<Renderer>();
-        var signalStr = cell.GetSignalStr();
+        float[] rgbt = GetColor(cell);
 
-        float[] rgbt;
-        if (1 <= signalStr)
-        {
-            rgbt = colors.GetGradientColor(signalStr); 
-        }
-        else
-        {
-            rgbt = colors.gray;
-        }
+        var tileRenderer = cell.GetTile().transform.GetChild(0).GetComponent<Renderer>();
 
         tileRenderer.material.SetColor("_Color", new Color(rgbt[0], rgbt[1], rgbt[2], rgbt[3])); 
+
+    }
+
+
+    /// <summary>
+    /// Returns the correct color based on which type to simulate on the grid.
+    /// </summary>
+    /// <param name="cell">The cell to create the color for.</param>
+    /// <returns>The rgbt color code for this cell.</returns>
+    private float[] GetColor(Cell cell)
+    {
+        Colors color;
+        try
+        {
+            color = colors[simulationModeSelected];
+        }
+        catch (System.ArgumentException)
+        {
+            throw new System.ArgumentException("The selected color gradient name in 'simulationModeSelected' does not exist.");
+        }
+
+        float[] rgbt = null;
+
+        if (simulationModeSelected.Equals("coverage"))
+        {
+            double signalStr = cell.GetSignalStr();
+            if (1 <= signalStr)
+            {
+                rgbt = color.GetGradientColor(signalStr);
+            }
+            else
+            {
+                rgbt = Colors.gray;
+            }
+        } else if (simulationModeSelected.Equals("capacity"))
+        {
+            if(cell.GetSignalDir() != null)
+            {
+                rgbt = color.GetGradientColor(cell.GetSignalDir().originCell.GetAntenna().GetDemand());
+            } else
+            {
+                rgbt = Colors.gray;
+            }
+        }
+
+
+        if(rgbt == null)
+        {
+            throw new System.Exception("rgbt was never assigned.");
+        }
+        return rgbt;
 
     }
 
@@ -490,12 +549,13 @@ public class GridManager : MonoBehaviour
     /// </exception>
     private void CreateNetworkFlow(Cell cell)
     {
+        if(cell.GetSignalDir() == null ^ cell.GetSignalStr() == 0)
+        {
+            throw new System.ArgumentException("Direction and signalStr doesn't match.");
+        }
+
         if(cell.GetSignalDir() == null)
         {
-            if(cell.GetSignalStr() != 0)
-            {
-                throw new System.ArgumentException("Direction is null but signalStr > 0.");
-            }
             return;
         }
 

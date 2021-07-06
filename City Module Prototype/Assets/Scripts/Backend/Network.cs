@@ -10,13 +10,13 @@ using System.Collections.Generic;
 /// </remarks>
 public class Network
 {
-    private readonly List<Direction> directions; 
     private Cell[,] gridArray;
     private Cell startCell;
 
     private readonly double distancePenalty;
     private readonly double heightPenalty;
     private readonly double baseSignalStr;
+
 
     /// <summary>
     /// Used to build a network across a grid.
@@ -26,7 +26,6 @@ public class Network
     /// <param name="heightPenalty">The reduction in signal strength for traveling through a cell with a higher max height than the cell which the antenna is located in.</param>
     public Network(double baseSignalStr, double distancePenalty, double heightPenalty)
     {
-        directions = new List<Direction>() { new North_NorthEast(), new East_NorthEast(), new East_SouthEast(), new South_SouthEast(), new South_SouthWest(), new West_SouthWest(), new West_NorthWest(), new North_NorthWest() };
         this.baseSignalStr = baseSignalStr;
         this.distancePenalty = distancePenalty;
         this.heightPenalty = heightPenalty;
@@ -44,7 +43,7 @@ public class Network
 
         foreach (Cell cell in gridArray)
         {
-            if (cell.HasAntenna())
+            if (cell.GetAntenna() != null)
             {
                 BuildNetworkFromCell(cell);
             }
@@ -60,8 +59,10 @@ public class Network
     /// <param name="cell">The cell to use as an origin for the network</param>
     private void BuildNetworkFromCell(Cell cell)
     {
+        List<Direction> directions = new List<Direction>() { new North_NorthEast(cell), new East_NorthEast(cell), new East_SouthEast(cell), new South_SouthEast(cell), new South_SouthWest(cell), new West_SouthWest(cell), new West_NorthWest(cell), new North_NorthWest(cell) };
+
         startCell = gridArray[cell.GetY(), cell.GetX()];
-        startCell.SetSignalIfHigher(baseSignalStr, new Origin(), false);
+        startCell.SetSignalIfHigher(baseSignalStr, new Origin(cell), false);
 
         foreach (Direction direction in directions)
         {
@@ -110,10 +111,10 @@ public class Network
 
         foreach (Module content in blockingCell.GetCellContent())
         {
-            signalStrOut -= content.blockIndex();
+            signalStrOut -= content.BlockIndex();
         }
 
-        if(startCell.GetMaxHeight() < blockingCell.GetMaxHeight())
+        if(startCell.GetHeight() < blockingCell.GetHeight())
         {
             signalStrOut -= heightPenalty; 
         }
@@ -134,6 +135,15 @@ public class Network
 /// </remarks>
 public abstract class Direction
 {
+
+    public readonly Cell originCell;
+
+    public Direction(Cell originCell)
+    {
+        this.originCell = originCell;
+    }
+
+
     /// <summary>
     /// Checks if a signal can traverse from currentCell to nextCell.
     /// </summary>
@@ -142,6 +152,7 @@ public abstract class Direction
     /// <param name="diagonal">Output for it the resulting movement is done diagonally or not</param>
     /// <returns>True if the movement was possible given the direction, otherwise false.</returns>
     public abstract bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal);
+
 
     /// <summary>
     /// Gives the direction in degrees. Where 0 is North and 90 is West.
@@ -167,11 +178,16 @@ public abstract class Direction
 
 public class North_NorthEast : Direction
 {
+
+    public North_NorthEast(Cell cellOrigin) : base(cellOrigin) { }
+
+
     public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
         diagonal = nextCell.GetY() < currentCell.GetY() && nextCell.GetX() > currentCell.GetX();
         return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() >= currentCell.GetX();
     }
+
 
     public override float GetDirectionInDegrees(bool diagonal)
     {
@@ -182,15 +198,20 @@ public class North_NorthEast : Direction
         return 0;
     }
 
+
 }
 
 public class  East_NorthEast : Direction
 {
+    public East_NorthEast(Cell cellOrigin) : base(cellOrigin) { }
+
+
     public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
         diagonal = nextCell.GetY() < currentCell.GetY() && nextCell.GetX() > currentCell.GetX();
         return nextCell.GetY() <= currentCell.GetY() && nextCell.GetX() > currentCell.GetX();
     }
+
 
     public override float GetDirectionInDegrees(bool diagonal)
     {
@@ -204,11 +225,15 @@ public class  East_NorthEast : Direction
 
 public class East_SouthEast : Direction
 {
+    public East_SouthEast(Cell cellOrigin) : base(cellOrigin) { }
+
+
     public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
         diagonal = nextCell.GetX() > currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
         return nextCell.GetX() > currentCell.GetX() && nextCell.GetY() >= currentCell.GetY();
     }
+
 
     public override float GetDirectionInDegrees(bool diagonal)
     {
@@ -222,11 +247,15 @@ public class East_SouthEast : Direction
 
 public class South_SouthEast : Direction
 {
+    public South_SouthEast(Cell cellOrigin) : base(cellOrigin) { }
+
+
     public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
         diagonal = nextCell.GetX() > currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
         return nextCell.GetX() >= currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
     }
+
 
     public override float GetDirectionInDegrees(bool diagonal)
     {
@@ -240,11 +269,15 @@ public class South_SouthEast : Direction
 
 public class South_SouthWest : Direction
 {
+    public South_SouthWest(Cell cellOrigin) : base(cellOrigin) { }
+
+
     public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
         diagonal = nextCell.GetY() > currentCell.GetY() && nextCell.GetX() < currentCell.GetX();
         return nextCell.GetY() > currentCell.GetY() && nextCell.GetX() <= currentCell.GetX();
     }
+
 
     public override float GetDirectionInDegrees(bool diagonal)
     {
@@ -258,11 +291,15 @@ public class South_SouthWest : Direction
 
 public class West_SouthWest : Direction
 {
+    public West_SouthWest(Cell cellOrigin) : base(cellOrigin) { }
+
+
     public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
         diagonal = nextCell.GetX() < currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
         return nextCell.GetX() < currentCell.GetX() && nextCell.GetY() >= currentCell.GetY();
     }
+
 
     public override float GetDirectionInDegrees(bool diagonal)
     {
@@ -276,11 +313,15 @@ public class West_SouthWest : Direction
 
 public class West_NorthWest : Direction
 {
+    public West_NorthWest(Cell cellOrigin) : base(cellOrigin) { }
+
+
     public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
         diagonal = nextCell.GetX() < currentCell.GetX() && nextCell.GetY() < currentCell.GetY();
         return nextCell.GetX() < currentCell.GetX() && nextCell.GetY() <= currentCell.GetY();
     }
+
 
     public override float GetDirectionInDegrees(bool diagonal)
     {
@@ -294,11 +335,15 @@ public class West_NorthWest : Direction
 
 public class North_NorthWest : Direction
 {
+    public North_NorthWest(Cell cellOrigin) : base(cellOrigin) { }
+
+
     public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
         diagonal = nextCell.GetY() < currentCell.GetY() && nextCell.GetX() < currentCell.GetX();
         return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() <= currentCell.GetX();
     }
+
 
     public override float GetDirectionInDegrees(bool diagonal)
     {
@@ -312,15 +357,20 @@ public class North_NorthWest : Direction
 
 public class Origin : Direction
 {
+    public Origin(Cell cellOrigin) : base(cellOrigin) { }
+
+
     public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
         throw new System.NotImplementedException();
     }
 
+
     public override float GetDirectionInDegrees(bool diagonal)
     {
         return 0;
     }
+
 
     public override string GetResourcePath()
     {

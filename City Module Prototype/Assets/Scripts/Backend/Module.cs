@@ -14,11 +14,15 @@ public abstract class Module
 
 
     /// <returns>The amount of which the module blocks the signal.</returns>
-    public abstract int blockIndex();
+    public abstract double BlockIndex();
+
+
+    /// <returns>The capacity demand of this module.</returns>
+    public abstract double CapacityDemand();
 
 
     /// <returns>The height value of the module.</returns>
-    public abstract int Height();
+    public abstract double Height();
 
 
     /// <returns>The path where the resource for the visual model is located on the device.</returns>
@@ -39,12 +43,17 @@ public abstract class Module
 public class Park : Module
 {
 
-    public override int blockIndex()
+    public override double BlockIndex()
     {
         return 0;
     }
 
-    public override int Height()
+    public override double CapacityDemand()
+    {
+        return 3;
+    }
+
+    public override double Height()
     {
         return 0; 
     }
@@ -70,12 +79,17 @@ public class Park : Module
 public class House : Module
 {
 
-    public override int blockIndex()
+    public override double BlockIndex()
     {
         return 1;
     }
 
-    public override int Height()
+    public override double CapacityDemand()
+    {
+        return 2;
+    }
+
+    public override double Height()
     {
         return 1;
     }
@@ -101,12 +115,17 @@ public class House : Module
 public class TallBuilding : Module
 {
 
-    public override int blockIndex()
+    public override double BlockIndex()
     {
         return 2;
     }
 
-    public override int Height()
+    public override double CapacityDemand()
+    {
+        return 4;
+    }
+
+    public override double Height()
     {
         return 3;
     }
@@ -132,12 +151,17 @@ public class TallBuilding : Module
 public class Hospital : Module
 {
 
-    public override int blockIndex()
+    public override double BlockIndex()
     {
         return 2;
     }
 
-    public override int Height()
+    public override double CapacityDemand()
+    {
+        return 4;
+    }
+
+    public override double Height()
     {
         return 2;
     }
@@ -163,12 +187,17 @@ public class Hospital : Module
 public class PoliceStation: Module
 {
 
-    public override int blockIndex()
+    public override double BlockIndex()
     {
         return 1;
     }
 
-    public override int Height()
+    public override double CapacityDemand()
+    {
+        return 2;
+    }
+
+    public override double Height()
     {
         return 2;
     }
@@ -194,12 +223,17 @@ public class PoliceStation: Module
 public class FireDepartment : Module
 {
 
-    public override int blockIndex()
+    public override double BlockIndex()
     {
         return 1;
     }
 
-    public override int Height()
+    public override double CapacityDemand()
+    {
+        return 2;
+    }
+
+    public override double Height()
     {
         return 2;
     }
@@ -224,13 +258,63 @@ public class FireDepartment : Module
 
 public class Antenna : Module
 {
+    /// <summary>
+    /// The current demand on this Antenna.
+    /// </summary>
+    private double currentDemand = 0;
 
-    public override int blockIndex()
+
+    /// <summary>
+    /// Adds the given value to the current demand of the Antenna.
+    /// </summary>
+    /// <param name="demand">The value to add.</param>
+    public void AddDemand(double demand)
+    {
+        currentDemand += demand;
+    }
+
+
+    /// <summary>
+    /// Removes the given value from the current demand of the Antenna.
+    /// </summary>
+    /// <param name="demand">Value to remove.</param>
+    public void RemoveDemand(double demand)
+    {
+        currentDemand -= demand;
+        if(currentDemand < 0)
+        {
+            throw new System.Exception("'currentDemand' less than 0.");
+        }
+    }
+
+
+    /// <summary>
+    /// Sets current demand back to 0.
+    /// </summary>
+    public void ResetDemand()
+    {
+        currentDemand = 0;
+    }
+
+
+    /// <returns>Current demand on this Antenna.</returns>
+    public double GetDemand()
+    {
+        return currentDemand;
+    }
+
+
+    public override double BlockIndex()
     {
         return 0;
     }
 
-    public override int Height()
+    public override double CapacityDemand()
+    {
+        return 0;
+    }
+
+    public override double Height()
     {
         return 0;
     }

@@ -1,24 +1,25 @@
 
+using UnityEngine;
 /// <summary>
 /// Contains the color codes for the colors used in the program.
 /// </summary>
-public class Colors
+public abstract class Colors
 {
 
-    public readonly float[] gray = new float[] { 0.5f, 0.5f, 0.5f, 0.50f };
-    public readonly float[] lightOrange = new float[] { 1f, 1f, 0.425f, 0.50f };
-    public readonly float[] red = new float[] { 1f, 0.276f, 0.231f, 0.50f };
-    public readonly float[] green = new float[] { 0.23f, 1f, 0.325f, 0.50f };
+    public static readonly float[] gray = new float[] { 0.5f, 0.5f, 0.5f, 0.50f };
+    public static readonly float[] lightOrange = new float[] { 1f, 1f, 0.425f, 0.50f };
+    public static readonly float[] red = new float[] { 1f, 0.276f, 0.231f, 0.50f };
+    public static readonly float[] green = new float[] { 0.23f, 1f, 0.325f, 0.50f };
     
-    private readonly double maxSignalStr;
+    protected readonly double maxValue;
 
     /// <summary>
     /// Contains the color codes for the colors used in the program.
     /// </summary>
-    /// <param name="maxSignalStr">The maximum signal strength which a Cell can have. Taken into account when applying gradient colors.</param>
-    public Colors(double maxSignalStr)
+    /// <param name="maxValue">The maximum signal strength which a Cell can have. Taken into account when applying gradient colors.</param>
+    public Colors(double maxValue)
     {
-        this.maxSignalStr = maxSignalStr; 
+        this.maxValue = maxValue; 
     }
 
 
@@ -27,12 +28,35 @@ public class Colors
     /// </summary>
     /// <param name="signalStr">The value to create a corresponding color for going from red to green.</param>
     /// <returns>A color between red (low value) and green (high value).</returns>
-    public float[] GetGradientColor(double signalStr)
-    {
-        float k = (float) (2/((maxSignalStr - 1)));
-        float rValue = (float) System.Math.Min(1, -k * signalStr + k + 2);
-        float gValue = (float) System.Math.Min(1,  k * signalStr - k);
+    public abstract float[] GetGradientColor(double value);
+}
 
-        return new float[4] { rValue, gValue, 0f, 0.50f }; 
+
+public class RedGreen : Colors
+{
+    public RedGreen(double maxValue) : base(maxValue) { }
+
+    public override float[] GetGradientColor(double value)
+    {
+        float k = (float)(2 / (maxValue - 1));
+        float rValue = (float)System.Math.Min(1, -k * value + k + 2);
+        float gValue = (float)System.Math.Min(1, k * value - k);
+
+        return new float[4] { rValue, gValue, 0f, 0.50f };
+    }
+}
+
+public class WhiteBlue : Colors
+{
+    public WhiteBlue(double maxValue) : base(maxValue) { }
+
+    
+    public override float[] GetGradientColor(double value)
+    {
+        float k = (float)(1 / maxValue);
+        float rValue = (float)System.Math.Min(1, -k * value + 1);
+        float gValue = (float)System.Math.Min(1, -k * value + 1);
+
+        return new float[4] { rValue, gValue, 1.00f, 0.50f };
     }
 }
