@@ -5,14 +5,17 @@ using UnityEngine.UI;
 
 public class GridSizeScript : MonoBehaviour
 {
-    public TMP_InputField rows;
-    public TMP_InputField cols;
- 
-    public void EnterGridInput()
+
+    public TMP_InputField rows_input;
+    public TMP_InputField cols_input;
+
+    public string rows;
+    public string cols;
+
+    public void setGridSize()
     {
-
-        Debug.Log("Rows: " + rows.text);
-        Debug.Log("Cols: " + cols.text);
-
+        rows = rows_input.text;
+        cols = cols_input.text; 
+        Debug.Log("Rows: " + rows + ", Columns: " + cols); 
     }
 }

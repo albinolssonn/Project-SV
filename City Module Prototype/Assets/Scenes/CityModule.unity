@@ -3427,7 +3427,6 @@ GameObject:
   - component: {fileID: 717789699}
   - component: {fileID: 717789698}
   - component: {fileID: 717789700}
-  - component: {fileID: 717789701}
   m_Layer: 5
   m_Name: Settings_Panel
   m_TagString: Untagged
@@ -3464,7 +3463,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 717789696}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -3507,18 +3506,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 296aced91730fd64ba9514ef32405c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &717789701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 717789696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 296aced91730fd64ba9514ef32405c6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  rows_input: {fileID: 1760433371}
+  cols_input: {fileID: 938083260}
+  rows: 
+  cols: 
 --- !u!1 &722380473
 GameObject:
   m_ObjectHideFlags: 0
@@ -4344,7 +4335,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 717789700}
         m_TargetAssemblyTypeName: GridSizeScript, Assembly-CSharp
-        m_MethodName: EnterGridInput
+        m_MethodName: setGridSize
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10644,6 +10635,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenuUi: {fileID: 761539249}
   informationPageUi: {fileID: 1737470837}
+  settingsPageUi: {fileID: 717789696}
 --- !u!1 &2041387311
 GameObject:
   m_ObjectHideFlags: 0
