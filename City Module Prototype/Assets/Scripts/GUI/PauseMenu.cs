@@ -7,7 +7,8 @@ public class PauseMenu : MonoBehaviour
 {
     public static bool GameIsPaused = false;
 
-    public GameObject pauseMenuUi; 
+    public GameObject pauseMenuUi;
+    public GameObject informationPageUi; 
 
     // Update is called once per frame
     public void Update()
@@ -39,12 +40,23 @@ public class PauseMenu : MonoBehaviour
         GameIsPaused = true;
     }
 
+    public void InformationPage()
+    {
+        informationPageUi.SetActive(true);
+        pauseMenuUi.SetActive(false);
+    }
+
+    public void CloseInformationPage()
+    {
+        informationPageUi.SetActive(false);
+        pauseMenuUi.SetActive(true);
+    }
+
     public void Reset_btn()
     {
         GridManager grid = GameObject.FindGameObjectsWithTag("Grid")[0].GetComponent<GridManager>();
         grid.ResetGrid();
         Resume();
-
     }
 
     public void Menu_Btn()
