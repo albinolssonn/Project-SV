@@ -12078,7 +12078,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1737922872}
         m_TargetAssemblyTypeName: ToggleScript, Assembly-CSharp
-        m_MethodName: LimitedAntennas
+        m_MethodName: LimitedAntennasMode
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
