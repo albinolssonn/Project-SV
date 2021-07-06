@@ -15,12 +15,10 @@ public class DropDownScript : MonoBehaviour
         switch (value)
         {
             case 0:
-                Debug.Log(value + " = Signal Strength");
                 gridManager.SetSimulationMode("coverage");
                 break;
 
             case 1:
-                Debug.Log(value + " = Capacity");
                 gridManager.SetSimulationMode("capacity");
                 break;
 
