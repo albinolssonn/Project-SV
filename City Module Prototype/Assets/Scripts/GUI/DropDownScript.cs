@@ -22,6 +22,11 @@ public class DropDownScript : MonoBehaviour
                 gridManager.SetSimulationMode("capacity");
                 break;
 
+            case 2:
+                gridManager.SetSimulationMode("none");
+                break;
+
+
             default:
                 throw new System.Exception("This should be unreachable.");
         }
