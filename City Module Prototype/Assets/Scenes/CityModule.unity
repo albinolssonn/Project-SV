@@ -2491,7 +2491,6 @@ GameObject:
   - component: {fileID: 370156722}
   - component: {fileID: 370156724}
   - component: {fileID: 370156723}
-  - component: {fileID: 370156725}
   m_Layer: 5
   m_Name: EricssonLogo_Image
   m_TagString: Untagged
@@ -2556,19 +2555,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 370156721}
   m_CullTransparentMesh: 1
---- !u!114 &370156725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 370156721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a071cbe0a09029428cae3af2200ea56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coverageInfo: {fileID: 0}
 --- !u!1 &393589454
 GameObject:
   m_ObjectHideFlags: 0
