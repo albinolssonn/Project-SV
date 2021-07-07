@@ -24,9 +24,15 @@ public class GridManager : MonoBehaviour
     private int totalAntennas;
     private int maxAntennas; 
 
-    public static bool limitedAntennasMode;
-    public static bool criticalMode;
 
+    /// <summary>Set to true if game mode of limited antennas is wanted.</summary>
+    public static bool limitedAntennasMode = false;
+
+    /// <summary>Set to true if game mode of critical coverage is wanted.</summary>
+    public static bool criticalMode = false;
+
+    /// <summary>Set to false if colored network flow arrows is not wanted.</summary>
+    public static bool networkFlowColorsActive = true;
 
     /// <summary>The strength of which an Antenna transmits a signal with.</summary>
     public static readonly double baseSignalStr = 10;
@@ -54,7 +60,7 @@ public class GridManager : MonoBehaviour
 
 
     // Start is called before the first frame update
-    public void Start()
+    private void Start()
     {
         rows = 10;
         cols = 10;
@@ -63,15 +69,14 @@ public class GridManager : MonoBehaviour
         simulationModeSelected = "coverage";
         shiftHeldDown = false;
         createNetworkArrows = false;
-        limitedAntennasMode = false;
-        criticalMode = false;
         networkFlowVisuals = new List<GameObject>();
-        colors = new Dictionary<string, Colors>();
-
-        colors.Add("coverage", new RedGreen(baseSignalStr));
-        colors.Add("capacity", new WhiteBlue(baseCapacity));
-        colors.Add("none", null);
-
+        
+        colors = new Dictionary<string, Colors>
+        {
+            { "coverage", new RedGreen(baseSignalStr) },
+            { "capacity", new WhiteBlue(baseCapacity) },
+            { "none", null }
+        };
 
         network = new Network(baseSignalStr, distancePenalty, heightPenalty);
         gridArray = GridUtils.BuildArray(rows, cols);
@@ -559,7 +564,7 @@ public class GridManager : MonoBehaviour
             throw new System.ArgumentException("The selected color gradient string in 'simulationModeSelected' does not exist.");
         }
 
-        float[] rgbt = null;
+        float[] rgbt;
 
 
         switch (simulationModeSelected)
@@ -630,7 +635,14 @@ public class GridManager : MonoBehaviour
         Origin originDirection = (Origin)cell.GetSignalDir().originCell.GetSignalDir();
         Renderer arrowRenderer = arrow.transform.GetChild(0).GetComponent<Renderer>();
 
-        arrowRenderer.material.SetColor("_Color", Network.networkFlowColors[originDirection.networkFlowColorIndex]);
+        if (networkFlowColorsActive)
+        {
+            arrowRenderer.material.SetColor("_Color", Network.networkFlowColors[originDirection.networkFlowColorIndex]);
+        } else
+        {
+            arrowRenderer.material.SetColor("_Color", Color.black);
+
+        }
 
         networkFlowVisuals.Add(arrow);
 
