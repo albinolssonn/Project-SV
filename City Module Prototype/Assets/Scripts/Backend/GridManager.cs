@@ -18,6 +18,7 @@ public class GridManager : MonoBehaviour
     private List<GameObject> networkFlowVisuals;
     private string simulationModeSelected;
     private Dictionary<string, Colors> colors;
+    private InformationScript informationScript;    
 
 
     private int totalAntennas;
@@ -84,6 +85,8 @@ public class GridManager : MonoBehaviour
         criticalCapacityScript.SetCapacity(0, colors["capacity"]);
 
         antennaStatistics.setAntennaStatistics(totalAntennas, 0); 
+
+        informationScript = GameObject.Find("Information_Label").GetComponent<InformationScript>();
 
 
         transform.localScale = newScale;
@@ -284,12 +287,12 @@ public class GridManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Can't place this module there.");
+                    SetErrorMessage("Can't place this module there."); 
                 }
             }
         } else
         {
-            Debug.Log("Maximum number of Antennas already placed.");
+            SetErrorMessage("Maximum number of Antennas already placed.");
         }
 
         if (!Input.GetKey(KeyCode.LeftShift))
@@ -694,6 +697,11 @@ public class GridManager : MonoBehaviour
         {
             SetTileColor(cell);
         }
+    }
+
+    public void SetErrorMessage(string error)
+    {
+        informationScript.SetInformationText(error);
     }
 
 }
