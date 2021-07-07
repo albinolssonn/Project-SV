@@ -148,6 +148,8 @@ public class Cell
     }
 
 
+
+    /// <returns>The available capacity which this cell has access to.</returns>
     public double GetAvailableCapacity()
     {
         if(signalDirection != null)
@@ -222,13 +224,18 @@ public class Cell
         }
         cellContent = newList;
 
-        if (module is Antenna)
+        if (removedSomething)
         {
-            antenna = null;
-        } else
-        {
-            hasCriticalModule = false;
+            if (module is Antenna)
+            {
+                RemoveAntenna();
+            }
+            else
+            {
+                hasCriticalModule = false;
+            }
         }
+            
 
         double newMax = 0;
         foreach (Module elem in cellContent)
@@ -257,10 +264,32 @@ public class Cell
         }
         
         capacityDemand = 0;
-        antenna = null;
+
+        RemoveAntenna();
         hasCriticalModule = false;
         maxHeight = 0;
         cellContent = new List<Module>();
+    }
+
+
+    /// <summary>Removes the Antenna from the cell in the correct way.</summary>
+    /// <remarks>Does nothing if there is no Antenna in this cell.</remarks>
+    private void RemoveAntenna()
+    {
+        if(antenna == null)
+        {
+            return;
+        }
+
+        if (signalDirection is Origin origin)
+        {
+            origin.OriginRemoved();
+        }
+        else
+        {
+            throw new System.Exception("Direction for cell with Antenna was not Origin.");
+        }
+        antenna = null;
     }
 
 

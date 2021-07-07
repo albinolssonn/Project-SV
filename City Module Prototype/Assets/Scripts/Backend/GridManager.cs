@@ -292,7 +292,7 @@ public class GridManager : MonoBehaviour
             }
         } else
         {
-            SetErrorMessage("Maximum number of Antennas already placed.");
+            SetErrorMessage("Maximum number of antennas already placed.");
         }
 
         if (!Input.GetKey(KeyCode.LeftShift))
@@ -407,7 +407,7 @@ public class GridManager : MonoBehaviour
     /// </summary>
     public void UpdateNetwork()
     {
-        ResetNetwork();
+        ResetNetwork(false);
 
         DestroyNetworkFlow();
 
@@ -476,12 +476,21 @@ public class GridManager : MonoBehaviour
     /// <summary>
     /// Resets the signal strength of every Cell and the demand of every Antenna in the grid.
     /// </summary>
-    private void ResetNetwork()
+    private void ResetNetwork(bool andAntennas)
     {
         foreach (Cell cell in gridArray)
         {
-            cell.ResetSignalStr();
-            if(cell.GetAntenna() != null)
+            if (andAntennas)
+            {
+                cell.ResetSignalStr();
+            } else
+            {
+                if(cell.GetAntenna() == null)
+                {
+                    cell.ResetSignalStr();
+                }
+            }
+            if (cell.GetAntenna() != null)
             {
                 cell.GetAntenna().ResetDemand();
             }
@@ -616,7 +625,7 @@ public class GridManager : MonoBehaviour
         Origin originDirection = (Origin)cell.GetSignalDir().originCell.GetSignalDir();
         Renderer arrowRenderer = arrow.transform.GetChild(0).GetComponent<Renderer>();
 
-        arrowRenderer.material.SetColor("_Color", originDirection.networkFlowColor);
+        arrowRenderer.material.SetColor("_Color", Network.networkFlowColors[originDirection.networkFlowColorIndex]);
 
         networkFlowVisuals.Add(arrow);
 

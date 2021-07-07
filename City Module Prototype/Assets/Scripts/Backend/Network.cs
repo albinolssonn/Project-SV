@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 /// <summary>
 /// Used to build a network across a grid.
@@ -13,12 +14,15 @@ public class Network
 {
     private Cell[,] gridArray;
     private Cell startCell;
-    private int nextColor;
-    private readonly List<Color> networkFlowColors;
+    private readonly List<int> networkColorsOccurences;
 
     private readonly double distancePenalty;
     private readonly double heightPenalty;
     private readonly double baseSignalStr;
+
+
+    /// <summary>The different colors which the network flow is displayed with.</summary>
+    public static readonly List<Color> networkFlowColors = new List<Color>() { Color.black, Color.blue, new Color(0.5f, 0f, 1f, 1f), new Color(1f, 0.5f, 0f, 1f), Color.magenta, Color.gray, Color.cyan, Color.red, Color.yellow };
 
 
     /// <summary>
@@ -32,8 +36,8 @@ public class Network
         this.baseSignalStr = baseSignalStr;
         this.distancePenalty = distancePenalty;
         this.heightPenalty = heightPenalty;
-        networkFlowColors = new List<Color>() { Color.black, Color.blue, Color.green, Color.magenta, Color.gray, Color.cyan, Color.red, Color.yellow };
-        nextColor = 0;
+        networkColorsOccurences = new List<int>();
+        networkColorsOccurences.AddRange(Enumerable.Repeat(0, networkFlowColors.Count));        
     }
 
 
@@ -46,7 +50,6 @@ public class Network
     {
         this.gridArray = gridArray;
 
-        nextColor = 0;
 
         foreach (Cell cell in gridArray)
         {
@@ -69,10 +72,10 @@ public class Network
         List<Direction> directions = new List<Direction>() { new North_NorthEast(cell), new East_NorthEast(cell), new East_SouthEast(cell), new South_SouthEast(cell), new South_SouthWest(cell), new West_SouthWest(cell), new West_NorthWest(cell), new North_NorthWest(cell) };
 
         startCell = gridArray[cell.GetY(), cell.GetX()];
-        startCell.SetSignalIfHigher(baseSignalStr, new Origin(cell, networkFlowColors[nextColor++]), false);
-        if (nextColor >= networkFlowColors.Count)
+
+        if(!(startCell.GetSignalDir() is Origin))
         {
-            nextColor = 0;
+            startCell.SetSignalIfHigher(baseSignalStr, new Origin(cell, NextColorIndex(), networkColorsOccurences), false);
         }
 
         foreach (Direction direction in directions)
@@ -133,7 +136,42 @@ public class Network
         return signalStrOut;
     }
 
+
+    /// <summary>
+    /// Calculates the next index of the least used network flow color.
+    /// </summary>
+    /// <returns>The index of the least used network flow color.</returns>
+    private int NextColorIndex()
+    {
+        int nextIndex = 0;
+        int minOccureance = int.MaxValue;
+        for(int i = 0; i < networkColorsOccurences.Count; i++)
+        {
+            if(networkColorsOccurences[i] < minOccureance)
+            {
+                nextIndex = i;
+                minOccureance = networkColorsOccurences[i];
+                if (minOccureance == 0)
+                {
+                    networkColorsOccurences[i]++;
+                    Debug.Log("Index: " + i);
+                    return i;
+                }
+            }
+        }
+
+        Debug.Log("Index: " + nextIndex);
+
+        networkColorsOccurences[nextIndex]++;
+        return nextIndex;
+    }
+
 }
+
+
+
+
+
 
 
 
@@ -368,12 +406,21 @@ public class North_NorthWest : Direction
 
 public class Origin : Direction
 {
-    public Origin(Cell cellOrigin, Color networkFlowColor) : base(cellOrigin) 
+    public readonly int networkFlowColorIndex;
+    private readonly List<int> networkColorsOccurences;
+
+    public Origin(Cell cellOrigin, int networkFlowColorIndex, List<int> networkColorsOccurences) : base(cellOrigin) 
     {
-        this.networkFlowColor = networkFlowColor; 
+        this.networkFlowColorIndex = networkFlowColorIndex;
+        this.networkColorsOccurences = networkColorsOccurences;
     }
 
-    public readonly Color networkFlowColor;
+    public void OriginRemoved()
+    {
+        networkColorsOccurences[networkFlowColorIndex]--;
+    }
+
+
 
     public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
