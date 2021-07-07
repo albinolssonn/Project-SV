@@ -70,6 +70,8 @@ public class GridManager : MonoBehaviour
 
         colors.Add("coverage", new RedGreen(baseSignalStr));
         colors.Add("capacity", new WhiteBlue(baseCapacity));
+        colors.Add("none", null);
+
 
         network = new Network(baseSignalStr, distancePenalty, heightPenalty);
         gridArray = GridUtils.BuildArray(rows, cols);
@@ -586,6 +588,9 @@ public class GridManager : MonoBehaviour
                 }
                 break;
 
+            case "none":
+                rgbt = Colors.white;
+                break;
 
             default:
                 throw new System.Exception("This should be unreachable.");
