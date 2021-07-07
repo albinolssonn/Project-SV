@@ -448,15 +448,12 @@ public class GridManager : MonoBehaviour
                 criticalCount++;
             }
 
-
-            if(cell.GetAntenna() != null)
+            if (cell.GetSignalDir() != null && cell.GetSignalDir().originCell.GetAvailableCapacity() < baseCapacity)
             {
-                if((float)cell.GetAvailableCapacity() < baseCapacity)
-                {
-                    totalCapacity += (float)cell.GetAvailableCapacity();
-                    totalCapacityCount++;
-                }
+                totalCapacity += (float)cell.GetAvailableCapacity();
+                totalCapacityCount++;
             }
+
 
             totalCoverage += (float)cell.GetSignalStr();
             totalCount++;

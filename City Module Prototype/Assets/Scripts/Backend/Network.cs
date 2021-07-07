@@ -154,18 +154,14 @@ public class Network
                 if (minOccureance == 0)
                 {
                     networkColorsOccurences[i]++;
-                    Debug.Log("Index: " + i);
                     return i;
                 }
             }
         }
 
-        Debug.Log("Index: " + nextIndex);
-
         networkColorsOccurences[nextIndex]++;
         return nextIndex;
     }
-
 }
 
 
