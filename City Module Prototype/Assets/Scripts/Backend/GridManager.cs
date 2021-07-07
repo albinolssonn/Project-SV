@@ -612,6 +612,12 @@ public class GridManager : MonoBehaviour
         }
 
         GameObject arrow = (GameObject)Instantiate(Resources.Load(cell.GetSignalDir().GetResourcePath()));
+
+        Origin originDirection = (Origin)cell.GetSignalDir().originCell.GetSignalDir();
+        Renderer arrowRenderer = arrow.transform.GetChild(0).GetComponent<Renderer>();
+
+        arrowRenderer.material.SetColor("_Color", originDirection.networkFlowColor);
+
         networkFlowVisuals.Add(arrow);
 
         arrow.transform.SetParent(gridArray[cell.GetY(), cell.GetX()].GetTile().transform);

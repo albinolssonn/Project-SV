@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-
+using UnityEngine;
+using System;
 
 /// <summary>
 /// Used to build a network across a grid.
@@ -12,6 +13,8 @@ public class Network
 {
     private Cell[,] gridArray;
     private Cell startCell;
+    private int nextColor;
+    private readonly List<Color> networkFlowColors;
 
     private readonly double distancePenalty;
     private readonly double heightPenalty;
@@ -29,6 +32,8 @@ public class Network
         this.baseSignalStr = baseSignalStr;
         this.distancePenalty = distancePenalty;
         this.heightPenalty = heightPenalty;
+        networkFlowColors = new List<Color>() { Color.black, Color.blue, Color.green, Color.magenta, Color.gray, Color.cyan, Color.red, Color.yellow };
+        nextColor = 0;
     }
 
 
@@ -40,6 +45,8 @@ public class Network
     public void BuildNetwork(Cell[,] gridArray)
     {
         this.gridArray = gridArray;
+
+        nextColor = 0;
 
         foreach (Cell cell in gridArray)
         {
@@ -62,7 +69,11 @@ public class Network
         List<Direction> directions = new List<Direction>() { new North_NorthEast(cell), new East_NorthEast(cell), new East_SouthEast(cell), new South_SouthEast(cell), new South_SouthWest(cell), new West_SouthWest(cell), new West_NorthWest(cell), new North_NorthWest(cell) };
 
         startCell = gridArray[cell.GetY(), cell.GetX()];
-        startCell.SetSignalIfHigher(baseSignalStr, new Origin(cell), false);
+        startCell.SetSignalIfHigher(baseSignalStr, new Origin(cell, networkFlowColors[nextColor++]), false);
+        if (nextColor >= networkFlowColors.Count)
+        {
+            nextColor = 0;
+        }
 
         foreach (Direction direction in directions)
         {
@@ -357,8 +368,12 @@ public class North_NorthWest : Direction
 
 public class Origin : Direction
 {
-    public Origin(Cell cellOrigin) : base(cellOrigin) { }
+    public Origin(Cell cellOrigin, Color networkFlowColor) : base(cellOrigin) 
+    {
+        this.networkFlowColor = networkFlowColor; 
+    }
 
+    public readonly Color networkFlowColor;
 
     public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
     {
