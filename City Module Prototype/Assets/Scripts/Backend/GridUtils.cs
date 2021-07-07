@@ -28,6 +28,30 @@ public static class GridUtils
 
 
 
+    public static Cell[,] ResizeArray(Cell[,] oldArray, int newRows, int newCols)
+    {
+        Cell[,] newArray = new Cell[newRows, newCols];
+
+        for (int row = 0; row < newRows; row++)
+        {
+            for (int col = 0; col < newCols; col++)
+            {
+                if(row < oldArray.GetLength(0) && col < oldArray.GetLength(1))
+                {
+                    newArray[row, col] = oldArray[row, col];
+                    newArray[row, col].ResetSignalStr();
+                } else
+                {
+                    newArray[row, col] = new Cell(row, col);
+                }
+            }
+        }
+
+        return newArray;
+    }
+
+
+
     /// <summary>
     /// Gets a list of all neighbouring cells to the cell at gridArray[y,x].
     /// </summary>

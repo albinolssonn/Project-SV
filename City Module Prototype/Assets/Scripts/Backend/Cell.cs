@@ -57,6 +57,8 @@ public class Cell
         this.tile = tile;
     }
 
+
+    /// <returns>The tile connected to this cell.</returns>
     public GameObject GetTile()
     {
         return tile;

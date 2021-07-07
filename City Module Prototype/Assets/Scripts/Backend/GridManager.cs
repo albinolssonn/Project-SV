@@ -18,8 +18,9 @@ public class GridManager : MonoBehaviour
     private List<GameObject> networkFlowVisuals;
     private string simulationModeSelected;
     private Dictionary<string, Colors> colors;
-    private InformationScript informationScript;    
-
+    private InformationScript informationScript;
+    
+    private GameObject gridManager;
 
     private int totalAntennas;
     private int maxAntennas; 
@@ -70,7 +71,8 @@ public class GridManager : MonoBehaviour
         shiftHeldDown = false;
         createNetworkArrows = false;
         networkFlowVisuals = new List<GameObject>();
-        
+        gridManager = GameObject.FindGameObjectsWithTag("Grid")[0];
+
         colors = new Dictionary<string, Colors>
         {
             { "coverage", new RedGreen(baseSignalStr) },
@@ -117,7 +119,8 @@ public class GridManager : MonoBehaviour
 
             if (toBePlaced != null)
             {
-                AddModule();
+                MouseToGridCoord(out int y, out int x);
+                AddModule(y, x);
             }
             else if (toBeRemoved != null)
             {
@@ -259,33 +262,24 @@ public class GridManager : MonoBehaviour
     /// <exception cref="System.ArgumentException">
     /// Throws if 'toBePlaced' has not been set.
     /// </exception>
-    private void AddModule()
+    private void AddModule(int y, int x)
     {
         if (toBePlaced == null)
         {
             throw new System.ArgumentException("'toBeRemoved' has not been set prior to calling this method.");
         }
 
-        if(!(toBePlaced is Antenna && limitedAntennasMode && maxAntennas <= totalAntennas))
+        if(!(limitedAntennasMode && toBePlaced is Antenna && maxAntennas <= totalAntennas))
         {
-            MouseToGridCoord(out int y, out int x);
             if (x >= 0 && y >= 0 && x < cols && y < rows)
             {
                 if (!(gridArray[y, x].GetAntenna() != null && toBePlaced is Antenna) &&
                     ((gridArray[y, x].GetCellContent().Count < 1 || (gridArray[y, x].GetCellContent().Count < 2 && toBePlaced is Antenna)) ||
                     gridArray[y, x].GetCellContent().Count == 1 && gridArray[y, x].GetAntenna() != null))
                 {
-                    GameObject tmpObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()), gridArray[y, x].GetTile().transform.position, Quaternion.identity);
-                    tmpObject.transform.SetParent(gridArray[y, x].GetTile().transform);
-                    tmpObject.transform.localScale = newScale;
-                    toBePlaced.visualObject = tmpObject;
+                    AddModuleVisual(y, x);
 
-                    SetLayerRecursive(tmpObject, LayerMask.NameToLayer("Module"));
-
-                    if (toBePlaced is Antenna)
-                    {
-                        totalAntennas += 1;
-                    }
+                    
 
                     gridArray[y, x].AddCellContent(toBePlaced);
 
@@ -310,6 +304,38 @@ public class GridManager : MonoBehaviour
         {
             shiftHeldDown = true;
             toBePlaced = toBePlaced.Copy();
+        }
+    }
+
+
+    /// <summary>
+    /// Places a GameObject of the module assigned to 'toBePlaced'.
+    /// </summary>
+    /// <param name="y">The y-coordinate for the cell to recieve the module.</param>
+    /// <param name="x">The x-coordinate for the cell to recieve the module.</param>
+    /// <remarks>
+    /// This method should only be called upon if the variable 'toBePlaced' has been set.
+    /// </remarks>
+    /// <exception cref="System.ArgumentException">
+    /// Throws if 'toBePlaced' has not been set.
+    /// </exception>
+    private void AddModuleVisual(int y, int x)
+    {
+        if (toBePlaced == null)
+        {
+            throw new System.ArgumentException("'toBeRemoved' has not been set prior to calling this method.");
+        }
+
+        GameObject tmpObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()), gridArray[y, x].GetTile().transform.position, Quaternion.identity);
+        tmpObject.transform.SetParent(gridArray[y, x].GetTile().transform);
+        tmpObject.transform.localScale = newScale;
+        toBePlaced.visualObject = tmpObject;
+
+        SetLayerRecursive(tmpObject, LayerMask.NameToLayer("Module"));
+
+        if (toBePlaced is Antenna)
+        {
+            totalAntennas += 1;
         }
     }
 
@@ -525,6 +551,13 @@ public class GridManager : MonoBehaviour
                 float posY = row * -tileSize;
 
                 tile.transform.localPosition = new Vector2(posX, posY);
+
+                foreach (Module module in gridArray[row, col].GetCellContent())
+                {
+                    toBePlaced = module;
+                    AddModuleVisual(row, col);
+                    toBePlaced = null;
+                }
             }
         }
 
@@ -687,17 +720,29 @@ public class GridManager : MonoBehaviour
     }
 
 
-    /// <returns>Number of rows of the grid.</returns>
-    public int GetRows()
+
+    public void SetNewGridSize(int rows, int cols)
     {
-        return rows;
+        this.rows = rows;
+        this.cols = cols;
+        gridArray = GridUtils.ResizeArray(gridArray, rows, cols);
+        totalAntennas = 0;
+        DestroyGrid();
+        GenerateGrid();
+        UpdateNetwork();
+        CenterGrid();
     }
 
 
-    /// <returns>Number of columns of the grid.</returns>
-    public int GetCols()
+    /// <summary>
+    /// Destroys the current visuals for the grid.
+    /// </summary>
+    private void DestroyGrid()
     {
-        return cols;
+        foreach (Transform child in gridManager.transform)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
 
@@ -731,6 +776,11 @@ public class GridManager : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Prints a string on the screen for the user.
+    /// </summary>
+    /// <param name="error">The text to print out.</param>
     public void SetErrorMessage(string error)
     {
         informationScript.SetInformationText(error);
