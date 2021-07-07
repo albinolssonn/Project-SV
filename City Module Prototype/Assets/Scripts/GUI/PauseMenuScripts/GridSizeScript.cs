@@ -11,10 +11,10 @@ public class GridSizeScript : MonoBehaviour
 
     private void Start()
     {
-        gridManager = GameObject.FindGameObjectsWithTag("Grid")[0].GetComponent<GridManager>();
+        gridManager = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
     }
 
-    public void setGridSize()
+    public void SetGridSize()
     {
         int rows = 0, cols = 0;
 

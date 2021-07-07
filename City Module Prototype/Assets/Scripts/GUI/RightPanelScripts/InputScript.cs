@@ -13,7 +13,7 @@ public class InputScript : MonoBehaviour
 
     public void Start()
     {
-        gridManager = GameObject.FindGameObjectsWithTag("Grid")[0].GetComponent<GridManager>();
+        gridManager = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
         toggle = GameObject.Find("LimitedAntennas_Toggle"); 
 
     }

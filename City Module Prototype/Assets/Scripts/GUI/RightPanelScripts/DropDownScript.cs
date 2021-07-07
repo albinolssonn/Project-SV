@@ -6,7 +6,7 @@ public class DropDownScript : MonoBehaviour
 
     public void Start()
     {
-        gridManager = GameObject.FindGameObjectsWithTag("Grid")[0].GetComponent<GridManager>();
+        gridManager = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
     }
 
 

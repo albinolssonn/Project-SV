@@ -9,7 +9,7 @@ public class BuildingPlacer : MonoBehaviour
 
     public void Start()
     {
-        grid = GameObject.FindGameObjectsWithTag("Grid")[0].GetComponent<GridManager>();
+        grid = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
 
     }
 

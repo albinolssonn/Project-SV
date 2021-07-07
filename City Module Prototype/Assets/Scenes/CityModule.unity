@@ -4216,8 +4216,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rows_input: {fileID: 1760433371}
   cols_input: {fileID: 938083260}
-  rows: 
-  cols: 
 --- !u!1 &722380473
 GameObject:
   m_ObjectHideFlags: 0
@@ -5619,7 +5617,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 717789700}
         m_TargetAssemblyTypeName: GridSizeScript, Assembly-CSharp
-        m_MethodName: setGridSize
+        m_MethodName: SetGridSize
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
