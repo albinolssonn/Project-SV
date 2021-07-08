@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEngine;
 
 public class TestGridUtils
 {
@@ -8,7 +6,7 @@ public class TestGridUtils
     [Test]
     public void BuildArray_Test()
     {
-        var grid = GridUtils.BuildArray(10, 5);
+        Cell[,] grid = GridUtils.BuildArray(10, 5);
         int rows = grid.GetLength(0);
         int cols = grid.GetLength(1);
         Assert.AreEqual(10, rows);
@@ -23,95 +21,75 @@ public class TestGridUtils
         }
     }
 
+
     [Test]
-    public void GetNearbyCells_Test()
+    public void ResizeArray_Test()
     {
-        int rows = 3;
-        int cols = 3;
-        Cell[,] gridArray = GridUtils.BuildArray(rows, cols);
-        List<Cell> neighbours;
-        Cell originCell = gridArray[1, 1];
-        Direction direction;
-
-        direction = new North_NorthEast(originCell);
-        neighbours = direction.GetNearbyCells(originCell, gridArray);
-        Assert.AreEqual(2, neighbours.Count);
-        Assert.IsTrue(Search(neighbours, new Cell(0, 1)));
-        Assert.IsTrue(Search(neighbours, new Cell(0, 2)));
+        Cell[,] grid = GridUtils.BuildArray(10, 5);
+        int rows = grid.GetLength(0);
+        int cols = grid.GetLength(1);
+        Assert.AreEqual(10, rows);
+        Assert.AreEqual(5, cols);
 
 
-        direction = new East_NorthEast(originCell);
-        neighbours = direction.GetNearbyCells(originCell, gridArray);
-        Assert.AreEqual(2, neighbours.Count);
-        Assert.IsTrue(Search(neighbours, new Cell(0, 2)));
-        Assert.IsTrue(Search(neighbours, new Cell(1, 2)));
+        Assert.AreEqual(0, grid[0, 0].GetCellContent().Count);
+
+        grid[0, 0].AddCellContent(new House());
+
+        Assert.AreEqual(1, grid[0, 0].GetCellContent().Count);
 
 
-        direction = new East_SouthEast(originCell);
-        neighbours = direction.GetNearbyCells(originCell, gridArray);
-        Assert.AreEqual(2, neighbours.Count);
-        Assert.IsTrue(Search(neighbours, new Cell(1, 2)));
-        Assert.IsTrue(Search(neighbours, new Cell(2, 2)));
-
-
-        direction = new South_SouthEast(originCell);
-        neighbours = direction.GetNearbyCells(originCell, gridArray);
-        Assert.AreEqual(2, neighbours.Count);
-        Assert.IsTrue(Search(neighbours, new Cell(2, 1)));
-        Assert.IsTrue(Search(neighbours, new Cell(2, 2)));
-
-
-        direction = new South_SouthWest(originCell);
-        neighbours = direction.GetNearbyCells(originCell, gridArray);
-        Assert.AreEqual(2, neighbours.Count);
-        Assert.IsTrue(Search(neighbours, new Cell(2, 0)));
-        Assert.IsTrue(Search(neighbours, new Cell(2, 1)));
-
-
-        direction = new West_SouthWest(originCell);
-        neighbours = direction.GetNearbyCells(originCell, gridArray);
-        Assert.AreEqual(2, neighbours.Count);
-        Assert.IsTrue(Search(neighbours, new Cell(1, 0)));
-        Assert.IsTrue(Search(neighbours, new Cell(2, 0)));
-
-
-        direction = new West_NorthWest(originCell);
-        neighbours = direction.GetNearbyCells(originCell, gridArray);
-        Assert.AreEqual(2, neighbours.Count);
-        Assert.IsTrue(Search(neighbours, new Cell(0, 0)));
-        Assert.IsTrue(Search(neighbours, new Cell(1, 0)));
-
-
-        originCell = gridArray[1, 2];
-        direction = new North_NorthEast(originCell);
-        neighbours = direction.GetNearbyCells(originCell, gridArray);
-        Assert.AreEqual(1, neighbours.Count);
-        Assert.IsTrue(Search(neighbours, new Cell(0, 2)));
-
-
-        originCell = gridArray[2, 0];
-        direction = new South_SouthWest(originCell);
-        neighbours = direction.GetNearbyCells(originCell, gridArray);
-        Assert.AreEqual(0, neighbours.Count);
-
-    }
-
-
-
-    private bool Search(List<Cell> list, Cell target)
-    {
-        bool found = false;
-        foreach (Cell elem in list)
+        for (int row = 0; row < rows; row++)
         {
-            if (elem.GetX() == target.GetX() &&
-                elem.GetY() == target.GetY())
+            for (int col = 0; col < cols; col++)
             {
-                found = true;
-                break;
+                Assert.IsTrue(grid[row, col].GetType() == typeof(Cell));
             }
         }
-        return found;
-    }
 
+        Cell[,] newGrid = GridUtils.ResizeGrid(grid, 2, 2);
+
+        int newRows = newGrid.GetLength(0);
+        int newCols = newGrid.GetLength(1);
+        Assert.AreEqual(2, newRows);
+        Assert.AreEqual(2, newCols);
+
+        Assert.AreEqual(1, grid[0, 0].GetCellContent().Count);
+
+        Assert.AreEqual(0, newGrid[0, 1].GetCellContent().Count);
+        Assert.AreEqual(0, newGrid[1, 0].GetCellContent().Count);
+        Assert.AreEqual(0, newGrid[1, 1].GetCellContent().Count);
+
+
+
+
+        grid[2, 0].AddCellContent(new Hospital());
+
+        rows = 8;
+        cols = 5;
+        newGrid = GridUtils.ResizeGrid(grid, rows, cols);
+        
+        newRows = newGrid.GetLength(0);
+        newCols = newGrid.GetLength(1);
+        Assert.AreEqual(8, newRows);
+        Assert.AreEqual(5, newCols);
+
+        Assert.AreEqual(1, grid[0, 0].GetCellContent().Count);
+        Assert.AreEqual(1, grid[2, 0].GetCellContent().Count);
+
+
+
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                if((row != 0 && col != 0) || (row != 2 && col != 0))
+                {
+                    Assert.AreEqual(0, newGrid[row, col].GetCellContent().Count);
+                }
+
+            }
+        }
+    }
 
 }

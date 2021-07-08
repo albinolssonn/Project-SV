@@ -757,7 +757,7 @@ public class GridManager : MonoBehaviour
     {
         this.rows = rows;
         this.cols = cols;
-        gridArray = GridUtils.ResizeArray(gridArray, rows, cols);
+        gridArray = GridUtils.ResizeGrid(gridArray, rows, cols);
         totalAntennas = 0;
         DestroyGrid();
         GenerateGrid();

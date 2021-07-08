@@ -32,7 +32,7 @@ public static class GridUtils
     /// <param name="newRows">The number of rows of the new grid array.</param>
     /// <param name="newCols">The number of columns of the new grid array.</param>
     /// <returns>The newly created grid array.</returns>
-    public static Cell[,] ResizeArray(Cell[,] oldArray, int newRows, int newCols)
+    public static Cell[,] ResizeGrid(Cell[,] oldArray, int newRows, int newCols)
     {
         Cell[,] newArray = new Cell[newRows, newCols];
 
