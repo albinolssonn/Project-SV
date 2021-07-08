@@ -13,17 +13,17 @@ public class GridManager : MonoBehaviour
     private Module toBePlaced;
     private Module toBeRemoved;
     private Vector3 newScale;
-    private Network network; 
+    private Network network;
     private Cell[,] gridArray;
     private List<GameObject> networkFlowVisuals;
     private string simulationModeSelected;
     private Dictionary<string, Colors> colors;
     private InformationScript informationScript;
-    
+
     private GameObject gridManager;
 
     private int totalAntennas;
-    private int maxAntennas; 
+    private int maxAntennas;
 
 
     /// <summary>Set to true if game mode of limited antennas is wanted.</summary>
@@ -83,7 +83,7 @@ public class GridManager : MonoBehaviour
         network = new Network(baseSignalStr, distancePenalty, heightPenalty);
         gridArray = GridUtils.BuildArray(rows, cols);
         newScale = new Vector3(0.6f, 0.6f, 1f);
-        
+
 
         GenerateGrid();
         CenterGrid();
@@ -93,7 +93,7 @@ public class GridManager : MonoBehaviour
         criticalCoverageScript.SetCoverage(0, colors["coverage"]);
         criticalCapacityScript.SetCapacity(0, colors["capacity"]);
 
-        antennaStatistics.setAntennaStatistics(totalAntennas, 0); 
+        antennaStatistics.setAntennaStatistics(totalAntennas, 0);
 
         informationScript = GameObject.Find("Information_Label").GetComponent<InformationScript>();
 
@@ -139,7 +139,7 @@ public class GridManager : MonoBehaviour
 
         var scaledTileSize = tileSize * newScale[0];
 
-        float[] finalPosition = new float[2] { -scaledTileSize , 0 };
+        float[] finalPosition = new float[2] { -scaledTileSize, 0 };
 
         float gridWidth = cols * scaledTileSize;
         float gridHeight = rows * scaledTileSize;
@@ -165,7 +165,8 @@ public class GridManager : MonoBehaviour
             {
                 CreateNetworkFlow(cell);
             }
-        } else
+        }
+        else
         {
             DestroyNetworkFlow();
         }
@@ -186,7 +187,7 @@ public class GridManager : MonoBehaviour
             antennaStatistics.setAntennaStatistics(totalAntennas, maxAntennas);
         }
 
-        return limitedAntennasMode; 
+        return limitedAntennasMode;
     }
 
 
@@ -219,14 +220,14 @@ public class GridManager : MonoBehaviour
             }
 
             criticalCoverageScript.SetCoverage(criticalTotal / criticalCount, colors["coverage"]);
-   
+
         }
-     
+
 
         return criticalMode;
     }
 
-    
+
 
 
 
@@ -269,7 +270,7 @@ public class GridManager : MonoBehaviour
             throw new System.ArgumentException("'toBeRemoved' has not been set prior to calling this method.");
         }
 
-        if(!(limitedAntennasMode && toBePlaced is Antenna && maxAntennas <= totalAntennas))
+        if (!(limitedAntennasMode && toBePlaced is Antenna && maxAntennas <= totalAntennas))
         {
             if (x >= 0 && y >= 0 && x < cols && y < rows)
             {
@@ -280,22 +281,24 @@ public class GridManager : MonoBehaviour
                     AddModuleVisual(y, x);
 
                     gridArray[y, x].AddCellContent(toBePlaced);
-                    
-                    if(toBePlaced is Antenna)
+
+                    if (toBePlaced is Antenna)
                     {
                         AntennaPlaced(y, x);
-                    } else
+                    }
+                    else
                     {
                         UpdateNetwork();
                     }
-                    
+
                 }
                 else
                 {
-                    SetErrorMessage("Can't place this module there."); 
+                    SetErrorMessage("Can't place this module there.");
                 }
             }
-        } else
+        }
+        else
         {
             SetErrorMessage("Maximum number of antennas already placed.");
         }
@@ -358,7 +361,7 @@ public class GridManager : MonoBehaviour
         {
             child.gameObject.layer = newLayer;
 
-            if(child.GetComponentInChildren<Transform>() != null)
+            if (child.GetComponentInChildren<Transform>() != null)
             {
                 SetLayerRecursive(child.gameObject, newLayer);
             }
@@ -377,7 +380,7 @@ public class GridManager : MonoBehaviour
     /// </exception>
     public void RemoveModule()
     {
-        if(toBeRemoved == null)
+        if (toBeRemoved == null)
         {
             throw new System.ArgumentException("'toBeRemoved' has not been set prior to calling this method.");
         }
@@ -391,7 +394,7 @@ public class GridManager : MonoBehaviour
             {
                 totalAntennas--;
             }
-            
+
             UpdateNetwork();
         }
 
@@ -568,7 +571,7 @@ public class GridManager : MonoBehaviour
 
         var tileRenderer = cell.GetTile().transform.GetChild(0).GetComponent<Renderer>();
 
-        tileRenderer.material.SetColor("_Color", new Color(rgbt[0], rgbt[1], rgbt[2], rgbt[3])); 
+        tileRenderer.material.SetColor("_Color", new Color(rgbt[0], rgbt[1], rgbt[2], rgbt[3]));
 
     }
 
@@ -628,7 +631,7 @@ public class GridManager : MonoBehaviour
         }
 
 
-        if(rgbt == null)
+        if (rgbt == null)
         {
             throw new System.Exception("'rgbt' was never assigned.");
         }
@@ -646,12 +649,27 @@ public class GridManager : MonoBehaviour
     /// </exception>
     private void CreateNetworkFlow(Cell cell)
     {
-        if(cell.GetSignalDir() == null ^ cell.GetSignalStr() == 0)
+        if (cell.GetSignalDir() == null ^ cell.GetSignalStr() == 0)
         {
             throw new System.ArgumentException("Direction and signalStr doesn't match.");
         }
 
-        if(cell.GetSignalDir() == null)
+        var oldChild = gridArray[cell.GetY(), cell.GetX()].GetTile().transform.Find("Arrow(Clone)");
+        if (oldChild != null)
+        {
+            Destroy(oldChild.gameObject);
+        }
+        else
+        {
+            oldChild = gridArray[cell.GetY(), cell.GetX()].GetTile().transform.Find("Dot(Clone)");
+            if (oldChild != null)
+            {
+                Destroy(oldChild.gameObject);
+            }
+        }
+
+
+        if (cell.GetSignalDir() == null)
         {
             return;
         }
@@ -664,20 +682,14 @@ public class GridManager : MonoBehaviour
         if (networkFlowColorsActive)
         {
             arrowRenderer.material.SetColor("_Color", Network.networkFlowColors[originDirection.networkFlowColorIndex]);
-        } else
+        }
+        else
         {
             arrowRenderer.material.SetColor("_Color", Color.black);
 
         }
 
         networkFlowVisuals.Add(arrow);
-
-        var oldChild = gridArray[cell.GetY(), cell.GetX()].GetTile().transform.Find("Arrow(Clone)");
-        if(oldChild != null)
-        {
-            Destroy(oldChild);
-        }
-        
 
         arrow.transform.SetParent(gridArray[cell.GetY(), cell.GetX()].GetTile().transform);
 
@@ -715,7 +727,7 @@ public class GridManager : MonoBehaviour
                 gridArray[row, col].ResetSignalStr();
             }
         }
-        totalAntennas = 0; 
+        totalAntennas = 0;
         UpdateNetwork();
     }
 

@@ -5,7 +5,7 @@ public class CameraActivator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 1; i < Display.displays.Length; i++)
+        for (int i = 1; i < Display.displays.Length; i++)
         {
             Display.displays[1].Activate();
         }
@@ -14,6 +14,6 @@ public class CameraActivator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

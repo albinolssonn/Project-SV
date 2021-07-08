@@ -9,11 +9,11 @@ public class InformationScript : MonoBehaviour
     public void SetInformationText(string input)
     {
         informationText.text = input;
-        Invoke("DisableText", 5f); 
+        Invoke("DisableText", 5f);
     }
 
     private void DisableText()
     {
-        informationText.text = ""; 
+        informationText.text = "";
     }
 }

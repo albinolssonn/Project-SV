@@ -88,7 +88,7 @@ public class TestNetwork
         int cols = 3;
         Cell[,] gridArray = GridUtils.BuildArray(rows, cols);
 
-        
+
 
         gridArray[0, 0].AddCellContent(new FireDepartment());
 
@@ -115,7 +115,7 @@ public class TestNetwork
         Debug.Log(gridArray[2, 0].GetSignalStr() + "  " + gridArray[2, 1].GetSignalStr() + "  " + gridArray[2, 2].GetSignalStr());
 
 
-        
+
 
         Assert.AreEqual(9, gridArray[0, 0].GetSignalStr());
         Assert.AreEqual(9, gridArray[0, 1].GetSignalStr());

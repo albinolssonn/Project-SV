@@ -37,7 +37,7 @@ public class Network
         this.distancePenalty = distancePenalty;
         this.heightPenalty = heightPenalty;
         networkColorsOccurences = new List<int>();
-        networkColorsOccurences.AddRange(Enumerable.Repeat(0, networkFlowColors.Count));        
+        networkColorsOccurences.AddRange(Enumerable.Repeat(0, networkFlowColors.Count));
     }
 
 
@@ -72,7 +72,7 @@ public class Network
 
         startCell = gridArray[cell.GetY(), cell.GetX()];
 
-        if(!(startCell.GetSignalDir() is Origin))
+        if (!(startCell.GetSignalDir() is Origin))
         {
             startCell.SetSignalIfHigher(baseSignalStr, new Origin(cell, NextColorIndex(), networkColorsOccurences), false);
         }
@@ -89,20 +89,19 @@ public class Network
     /// This helper-method is called to perform a recursive depth-first search to spread the network accordingly.
     /// </summary>
     /// <param name="direction">In which direction this iteration of the search is searching in. Possible directions extends the Direction class.</param>
-    /// <param name="prevCell">The previous cell in the iteration.</param>
+    /// <param name="currentCell">The previous cell in the iteration.</param>
     /// <param name="incomingSignalStr">The signal strength passing through the previous cell</param>
-    private void SetSignalRecursively(Direction direction, Cell prevCell, double incomingSignalStr)
+    private void SetSignalRecursively(Direction direction, Cell currentCell, double incomingSignalStr)
     {
-        List<Cell> neighbours = GridUtils.GetNearbyCells(prevCell, gridArray);
+        List<Cell> neighbours = direction.GetNearbyCells(currentCell, gridArray);
 
         foreach (Cell nextCell in neighbours)
         {
-            if (direction.CorrectDirection(nextCell, prevCell, out bool diagonal))
-            {
-                nextCell.SetSignalIfHigher(incomingSignalStr, direction, diagonal);
 
-                SetSignalRecursively(direction, nextCell, GetNewStr(nextCell, incomingSignalStr));
-            }
+            nextCell.SetSignalIfHigher(incomingSignalStr, direction, direction.IsDiagonally(nextCell, currentCell));
+
+            SetSignalRecursively(direction, nextCell, GetNewStr(nextCell, incomingSignalStr));
+
         }
     }
 
@@ -115,7 +114,7 @@ public class Network
     /// <returns>The signal strength coming out from blockingCell.</returns>
     private double GetNewStr(Cell blockingCell, double signalStrIn)
     {
-        double signalStrOut = signalStrIn  - distancePenalty;
+        double signalStrOut = signalStrIn - distancePenalty;
 
         if (blockingCell.Equals(startCell))
         {
@@ -127,9 +126,9 @@ public class Network
             signalStrOut -= content.BlockIndex();
         }
 
-        if(startCell.GetHeight() < blockingCell.GetHeight())
+        if (startCell.GetHeight() < blockingCell.GetHeight())
         {
-            signalStrOut -= heightPenalty; 
+            signalStrOut -= heightPenalty;
         }
 
         return signalStrOut;
@@ -144,9 +143,9 @@ public class Network
     {
         int nextIndex = 0;
         int minOccureance = int.MaxValue;
-        for(int i = 0; i < networkColorsOccurences.Count; i++)
+        for (int i = 0; i < networkColorsOccurences.Count; i++)
         {
-            if(networkColorsOccurences[i] < minOccureance)
+            if (networkColorsOccurences[i] < minOccureance)
             {
                 nextIndex = i;
                 minOccureance = networkColorsOccurences[i];
@@ -193,9 +192,9 @@ public abstract class Direction
     /// </summary>
     /// <param name="nextCell">The cell to travel to.</param>
     /// <param name="currentCell">The cell to travel from</param>
-    /// <param name="diagonal">Output for it the resulting movement is done diagonally or not</param>
+    /// 
     /// <returns>True if the movement was possible given the direction, otherwise false.</returns>
-    public abstract bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal);
+    public abstract bool IsDiagonally(Cell nextCell, Cell currentCell);
 
 
     /// <summary>
@@ -207,6 +206,15 @@ public abstract class Direction
     /// </remarks>
     /// <returns>The direction of the object in degrees.</returns>
     public abstract float GetDirectionInDegrees(bool diagonal);
+
+
+    /// <summary>
+    /// Find all neighbours for the given cell in the direction matching the Direction type.
+    /// </summary>
+    /// <param name="cell">The cell of which neighbours one is looking for.</param>
+    /// <param name="gridArray">The grid where the cells are located in.</param>
+    /// <returns>A List containing all the neighbouring Cells for the given cell.</returns>
+    public abstract List<Cell> GetNearbyCells(Cell cell, Cell[,] gridArray);
 
 
     /// <returns>
@@ -226,10 +234,9 @@ public class North_NorthEast : Direction
     public North_NorthEast(Cell cellOrigin) : base(cellOrigin) { }
 
 
-    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
+    public override bool IsDiagonally(Cell nextCell, Cell currentCell)
     {
-        diagonal = nextCell.GetY() < currentCell.GetY() && nextCell.GetX() > currentCell.GetX();
-        return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() >= currentCell.GetX();
+        return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() > currentCell.GetX();
     }
 
 
@@ -243,19 +250,37 @@ public class North_NorthEast : Direction
     }
 
 
+    public override List<Cell> GetNearbyCells(Cell cell, Cell[,] gridArray)
+    {
+        int y = cell.GetY();
+        int x = cell.GetX();
+        int cols = gridArray.GetLength(1);
+
+        List<Cell> neighbours = new List<Cell>();
+
+        if (y > 0)
+        {
+            neighbours.Add(gridArray[y - 1, x]);
+        }
+
+        if (y > 0 && x < cols - 1)
+        {
+            neighbours.Add(gridArray[y - 1, x + 1]);
+        }
+
+        return neighbours;
+    }
 }
 
-public class  East_NorthEast : Direction
+public class East_NorthEast : Direction
 {
     public East_NorthEast(Cell cellOrigin) : base(cellOrigin) { }
 
 
-    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
+    public override bool IsDiagonally(Cell nextCell, Cell currentCell)
     {
-        diagonal = nextCell.GetY() < currentCell.GetY() && nextCell.GetX() > currentCell.GetX();
-        return nextCell.GetY() <= currentCell.GetY() && nextCell.GetX() > currentCell.GetX();
+        return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() > currentCell.GetX();
     }
-
 
     public override float GetDirectionInDegrees(bool diagonal)
     {
@@ -264,6 +289,28 @@ public class  East_NorthEast : Direction
             return 315;
         }
         return 270;
+    }
+
+
+    public override List<Cell> GetNearbyCells(Cell cell, Cell[,] gridArray)
+    {
+        int y = cell.GetY();
+        int x = cell.GetX();
+        int cols = gridArray.GetLength(1);
+
+        List<Cell> neighbours = new List<Cell>();
+
+        if (x < cols - 1)
+        {
+            neighbours.Add(gridArray[y, x + 1]);
+        }
+
+        if (y > 0 && x < cols - 1)
+        {
+            neighbours.Add(gridArray[y - 1, x + 1]);
+        }
+
+        return neighbours;
     }
 }
 
@@ -272,10 +319,9 @@ public class East_SouthEast : Direction
     public East_SouthEast(Cell cellOrigin) : base(cellOrigin) { }
 
 
-    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
+    public override bool IsDiagonally(Cell nextCell, Cell currentCell)
     {
-        diagonal = nextCell.GetX() > currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
-        return nextCell.GetX() > currentCell.GetX() && nextCell.GetY() >= currentCell.GetY();
+        return nextCell.GetX() > currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
     }
 
 
@@ -287,6 +333,29 @@ public class East_SouthEast : Direction
         }
         return 270;
     }
+
+
+    public override List<Cell> GetNearbyCells(Cell cell, Cell[,] gridArray)
+    {
+        int y = cell.GetY();
+        int x = cell.GetX();
+        int rows = gridArray.GetLength(0);
+        int cols = gridArray.GetLength(1);
+
+        List<Cell> neighbours = new List<Cell>();
+
+        if (x < cols - 1)
+        {
+            neighbours.Add(gridArray[y, x + 1]);
+        }
+
+        if (y < rows - 1 && x < cols - 1)
+        {
+            neighbours.Add(gridArray[y + 1, x + 1]);
+        }
+
+        return neighbours;
+    }
 }
 
 public class South_SouthEast : Direction
@@ -294,10 +363,9 @@ public class South_SouthEast : Direction
     public South_SouthEast(Cell cellOrigin) : base(cellOrigin) { }
 
 
-    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
+    public override bool IsDiagonally(Cell nextCell, Cell currentCell)
     {
-        diagonal = nextCell.GetX() > currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
-        return nextCell.GetX() >= currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
+        return nextCell.GetX() > currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
     }
 
 
@@ -309,6 +377,30 @@ public class South_SouthEast : Direction
         }
         return 180;
     }
+
+
+    public override List<Cell> GetNearbyCells(Cell cell, Cell[,] gridArray)
+    {
+        int y = cell.GetY();
+        int x = cell.GetX();
+        int rows = gridArray.GetLength(0);
+        int cols = gridArray.GetLength(1);
+
+        List<Cell> neighbours = new List<Cell>();
+
+        if (y < rows - 1)
+        {
+            neighbours.Add(gridArray[y + 1, x]);
+        }
+
+
+        if (y < rows - 1 && x < cols - 1)
+        {
+            neighbours.Add(gridArray[y + 1, x + 1]);
+        }
+
+        return neighbours;
+    }
 }
 
 public class South_SouthWest : Direction
@@ -316,10 +408,9 @@ public class South_SouthWest : Direction
     public South_SouthWest(Cell cellOrigin) : base(cellOrigin) { }
 
 
-    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
+    public override bool IsDiagonally(Cell nextCell, Cell currentCell)
     {
-        diagonal = nextCell.GetY() > currentCell.GetY() && nextCell.GetX() < currentCell.GetX();
-        return nextCell.GetY() > currentCell.GetY() && nextCell.GetX() <= currentCell.GetX();
+        return nextCell.GetY() > currentCell.GetY() && nextCell.GetX() < currentCell.GetX();
     }
 
 
@@ -331,6 +422,28 @@ public class South_SouthWest : Direction
         }
         return 180;
     }
+
+
+    public override List<Cell> GetNearbyCells(Cell cell, Cell[,] gridArray)
+    {
+        int y = cell.GetY();
+        int x = cell.GetX();
+        int rows = gridArray.GetLength(0);
+
+        List<Cell> neighbours = new List<Cell>();
+
+        if (y < rows - 1)
+        {
+            neighbours.Add(gridArray[y + 1, x]);
+        }
+
+        if (y < rows - 1 && x > 0)
+        {
+            neighbours.Add(gridArray[y + 1, x - 1]);
+        }
+
+        return neighbours;
+    }
 }
 
 public class West_SouthWest : Direction
@@ -338,10 +451,9 @@ public class West_SouthWest : Direction
     public West_SouthWest(Cell cellOrigin) : base(cellOrigin) { }
 
 
-    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
+    public override bool IsDiagonally(Cell nextCell, Cell currentCell)
     {
-        diagonal = nextCell.GetX() < currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
-        return nextCell.GetX() < currentCell.GetX() && nextCell.GetY() >= currentCell.GetY();
+        return nextCell.GetX() < currentCell.GetX() && nextCell.GetY() > currentCell.GetY();
     }
 
 
@@ -353,6 +465,28 @@ public class West_SouthWest : Direction
         }
         return 90;
     }
+
+
+    public override List<Cell> GetNearbyCells(Cell cell, Cell[,] gridArray)
+    {
+        int y = cell.GetY();
+        int x = cell.GetX();
+        int rows = gridArray.GetLength(0);
+
+        List<Cell> neighbours = new List<Cell>();
+
+        if (x > 0)
+        {
+            neighbours.Add(gridArray[y, x - 1]);
+        }
+
+        if (y < rows - 1 && x > 0)
+        {
+            neighbours.Add(gridArray[y + 1, x - 1]);
+        }
+
+        return neighbours;
+    }
 }
 
 public class West_NorthWest : Direction
@@ -360,10 +494,9 @@ public class West_NorthWest : Direction
     public West_NorthWest(Cell cellOrigin) : base(cellOrigin) { }
 
 
-    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
+    public override bool IsDiagonally(Cell nextCell, Cell currentCell)
     {
-        diagonal = nextCell.GetX() < currentCell.GetX() && nextCell.GetY() < currentCell.GetY();
-        return nextCell.GetX() < currentCell.GetX() && nextCell.GetY() <= currentCell.GetY();
+        return nextCell.GetX() < currentCell.GetX() && nextCell.GetY() < currentCell.GetY();
     }
 
 
@@ -375,6 +508,27 @@ public class West_NorthWest : Direction
         }
         return 90;
     }
+
+
+    public override List<Cell> GetNearbyCells(Cell cell, Cell[,] gridArray)
+    {
+        int y = cell.GetY();
+        int x = cell.GetX();
+
+        List<Cell> neighbours = new List<Cell>();
+
+        if (x > 0)
+        {
+            neighbours.Add(gridArray[y, x - 1]);
+        }
+
+        if (y > 0 && x > 0)
+        {
+            neighbours.Add(gridArray[y - 1, x - 1]);
+        }
+
+        return neighbours;
+    }
 }
 
 public class North_NorthWest : Direction
@@ -382,10 +536,9 @@ public class North_NorthWest : Direction
     public North_NorthWest(Cell cellOrigin) : base(cellOrigin) { }
 
 
-    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
+    public override bool IsDiagonally(Cell nextCell, Cell currentCell)
     {
-        diagonal = nextCell.GetY() < currentCell.GetY() && nextCell.GetX() < currentCell.GetX();
-        return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() <= currentCell.GetX();
+        return nextCell.GetY() < currentCell.GetY() && nextCell.GetX() < currentCell.GetX();
     }
 
 
@@ -397,6 +550,27 @@ public class North_NorthWest : Direction
         }
         return 0;
     }
+
+
+    public override List<Cell> GetNearbyCells(Cell cell, Cell[,] gridArray)
+    {
+        int y = cell.GetY();
+        int x = cell.GetX();
+
+        List<Cell> neighbours = new List<Cell>();
+
+        if (y > 0)
+        {
+            neighbours.Add(gridArray[y - 1, x]);
+        }
+
+        if (y > 0 && x > 0)
+        {
+            neighbours.Add(gridArray[y - 1, x - 1]);
+        }
+
+        return neighbours;
+    }
 }
 
 public class Origin : Direction
@@ -404,7 +578,7 @@ public class Origin : Direction
     public readonly int networkFlowColorIndex;
     private readonly List<int> networkColorsOccurences;
 
-    public Origin(Cell cellOrigin, int networkFlowColorIndex, List<int> networkColorsOccurences) : base(cellOrigin) 
+    public Origin(Cell cellOrigin, int networkFlowColorIndex, List<int> networkColorsOccurences) : base(cellOrigin)
     {
         this.networkFlowColorIndex = networkFlowColorIndex;
         this.networkColorsOccurences = networkColorsOccurences;
@@ -417,9 +591,9 @@ public class Origin : Direction
 
 
 
-    public override bool CorrectDirection(Cell nextCell, Cell currentCell, out bool diagonal)
+    public override bool IsDiagonally(Cell nextCell, Cell currentCell)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
 
@@ -434,4 +608,8 @@ public class Origin : Direction
         return "Modules/Dot";
     }
 
+    public override List<Cell> GetNearbyCells(Cell cell, Cell[,] gridArray)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -1,18 +1,17 @@
-
 using NUnit.Framework;
 
 public class TestCell
 {
 
-   [Test]
-   public void GetSignalStr_Test()
+    [Test]
+    public void GetSignalStr_Test()
     {
         Cell cell = new Cell(5, 1);
 
         Assert.AreEqual(0, cell.GetSignalStr());
     }
 
-    
+
 
     [Test]
     public void GetCellContent_Test()
@@ -21,7 +20,7 @@ public class TestCell
         Assert.AreEqual(0, cell.GetCellContent().Count);
 
         Module a = new House();
-        Module b = new Hospital(); 
+        Module b = new Hospital();
 
         cell.AddCellContent(a);
         cell.AddCellContent(b);
@@ -42,15 +41,15 @@ public class TestCell
         Assert.AreEqual(1, y);
     }
 
-   [Test]
-   public void AddCellContent_Test()
+    [Test]
+    public void AddCellContent_Test()
     {
         Cell cell = new Cell(3, 2);
         Assert.AreEqual(0, cell.GetCellContent().Count);
 
         cell.AddCellContent(new House());
         Assert.AreEqual(1, cell.GetCellContent().Count);
-        
+
         cell.AddCellContent(new Hospital());
         Assert.AreEqual(2, cell.GetCellContent().Count);
 
@@ -60,5 +59,5 @@ public class TestCell
         Assert.IsTrue(cell.GetAntenna() != null);
     }
 
-    
+
 }

@@ -1,5 +1,3 @@
-
-using UnityEngine;
 /// <summary>
 /// Contains the color codes for the colors used in the program.
 /// </summary>
@@ -11,7 +9,7 @@ public abstract class Colors
     public static readonly float[] lightOrange = new float[] { 1f, 1f, 0.425f, 0.50f };
     public static readonly float[] red = new float[] { 1f, 0.276f, 0.231f, 0.50f };
     public static readonly float[] green = new float[] { 0.23f, 1f, 0.325f, 0.50f };
-    
+
     protected readonly double maxValue;
 
     /// <summary>
@@ -20,7 +18,7 @@ public abstract class Colors
     /// <param name="maxValue">The maximum signal strength which a Cell can have. Taken into account when applying gradient colors.</param>
     public Colors(double maxValue)
     {
-        this.maxValue = maxValue; 
+        this.maxValue = maxValue;
     }
 
 
@@ -51,7 +49,7 @@ public class WhiteBlue : Colors
 {
     public WhiteBlue(double maxValue) : base(maxValue) { }
 
-    
+
     public override float[] GetGradientColor(double value)
     {
         float k = (float)(1 / maxValue);

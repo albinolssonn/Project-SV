@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; 
+using UnityEngine.UI;
 
 public class InputScript : MonoBehaviour
 {
@@ -9,12 +9,12 @@ public class InputScript : MonoBehaviour
     public InputField inputLimitedAntennas;
     public GameObject visualTextLimitedAntennas;
     private GridManager gridManager;
-    private GameObject toggle; 
+    private GameObject toggle;
 
     public void Start()
     {
         gridManager = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
-        toggle = GameObject.Find("LimitedAntennas_Toggle"); 
+        toggle = GameObject.Find("LimitedAntennas_Toggle");
 
     }
 
@@ -34,7 +34,8 @@ public class InputScript : MonoBehaviour
                 Debug.Log("Invalid Input");
 
             }
-        } else
+        }
+        else
         {
             toggle.GetComponent<Toggle>().isOn = false;
         }

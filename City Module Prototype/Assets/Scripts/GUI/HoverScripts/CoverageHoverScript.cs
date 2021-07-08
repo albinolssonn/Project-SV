@@ -1,4 +1,4 @@
-using UnityEngine.EventSystems; 
+using UnityEngine.EventSystems;
 using UnityEngine;
 
 public class CoverageHoverScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler

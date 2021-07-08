@@ -9,7 +9,7 @@ public class Cell
 {
     private double signalStr;
     private List<Module> cellContent;
-    private readonly int xCoord; 
+    private readonly int xCoord;
     private readonly int yCoord;
     private double maxHeight;
     private Antenna antenna;
@@ -30,7 +30,7 @@ public class Cell
     /// </summary>
     /// <param name="yCoord">The y-coordinate in the grid of this cell.</param>
     /// <param name="xCoord">The x-coordinate in the grid of this cell.</param>
-    public Cell(int yCoord, int xCoord) 
+    public Cell(int yCoord, int xCoord)
     {
         signalStr = 0;
         cellContent = new List<Module>();
@@ -81,7 +81,7 @@ public class Cell
 
     public double GetSignalStr()
     {
-        return signalStr; 
+        return signalStr;
     }
 
 
@@ -100,7 +100,7 @@ public class Cell
         signalStr = 0;
         signalDirDiagonal = false;
         signalDirection = null;
-        
+
     }
 
 
@@ -115,14 +115,14 @@ public class Cell
     /// </exception>
     public void SetSignalIfHigher(double signalStr, Direction cameFrom, bool wasDiagonal)
     {
-        if(cameFrom == null)
+        if (cameFrom == null)
         {
             throw new System.ArgumentException("cameFrom was null.");
         }
 
-        if(this.signalStr < signalStr)
+        if (this.signalStr < signalStr)
         {
-            if(signalDirection != null)
+            if (signalDirection != null)
             {
                 signalDirection.originCell.GetAntenna().RemoveDemand(capacityDemand);
             }
@@ -139,7 +139,7 @@ public class Cell
     /// <returns>The content of modules of this cell.</returns>
     public List<Module> GetCellContent()
     {
-        return cellContent; 
+        return cellContent;
     }
 
 
@@ -154,7 +154,7 @@ public class Cell
     /// <returns>The available capacity which this cell has access to.</returns>
     public double GetAvailableCapacity()
     {
-        if(signalDirection != null)
+        if (signalDirection != null)
         {
             return signalDirection.originCell.GetAntenna().AvailableCapacity();
         }
@@ -180,9 +180,9 @@ public class Cell
     /// cell to the height of the module if its height is higher.
     /// </summary>
     /// <param name="content">The module object to add to this cell.</param>
-    public void AddCellContent (Module content)
+    public void AddCellContent(Module content)
     {
-        if(content is Antenna newAntenna)
+        if (content is Antenna newAntenna)
         {
             antenna = newAntenna;
         }
@@ -193,7 +193,7 @@ public class Cell
         capacityDemand += content.CapacityDemand();
 
         cellContent.Add(content);
-        maxHeight = System.Math.Max(maxHeight, content.Height()); 
+        maxHeight = System.Math.Max(maxHeight, content.Height());
     }
 
     /// <returns>The height of this cell.</returns>
@@ -214,12 +214,13 @@ public class Cell
         List<Module> newList = new List<Module>();
         foreach (Module elem in cellContent)
         {
-            if(elem.GetType() == module.GetType())
+            if (elem.GetType() == module.GetType())
             {
                 GameObject.Destroy(elem.visualObject);
                 capacityDemand -= module.CapacityDemand();
                 removedSomething = true;
-            } else
+            }
+            else
             {
                 newList.Add(elem);
             }
@@ -237,7 +238,7 @@ public class Cell
                 hasCriticalModule = false;
             }
         }
-            
+
 
         double newMax = 0;
         foreach (Module elem in cellContent)
@@ -264,7 +265,7 @@ public class Cell
         {
             GameObject.Destroy(module.visualObject);
         }
-        
+
         capacityDemand = 0;
 
         RemoveAntenna();
@@ -278,7 +279,7 @@ public class Cell
     /// <remarks>Does nothing if there is no Antenna in this cell.</remarks>
     private void RemoveAntenna()
     {
-        if(antenna == null)
+        if (antenna == null)
         {
             return;
         }

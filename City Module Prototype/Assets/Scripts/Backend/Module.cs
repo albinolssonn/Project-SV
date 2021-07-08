@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 
@@ -34,7 +33,7 @@ public abstract class Module
     /// <returns>A new instance of the same object type.</returns>
     public abstract Module Copy();
 
-    
+
     /// <returns>If this module is classed as critical infrastructure.</returns>
     public abstract bool IsCritical();
 }
@@ -56,12 +55,12 @@ public class Park : Module
 
     public override double Height()
     {
-        return 0; 
+        return 0;
     }
 
     public override string GetResourcePath()
     {
-        return "Modules/Park"; 
+        return "Modules/Park";
     }
 
     public override Module Copy()
@@ -185,7 +184,7 @@ public class Hospital : Module
 
 //---------------------------------------------------------------------
 
-public class PoliceStation: Module
+public class PoliceStation : Module
 {
 
     public override double BlockIndex()
@@ -282,7 +281,7 @@ public class Antenna : Module
     public void RemoveDemand(double demand)
     {
         currentCapacityDemand -= demand;
-        if(currentCapacityDemand < 0)
+        if (currentCapacityDemand < 0)
         {
             throw new System.Exception("'currentDemand' less than 0.");
         }
@@ -341,7 +340,7 @@ public class Antenna : Module
         return false;
     }
 
-    
+
 }
 
 //---------------------------------------------------------------------

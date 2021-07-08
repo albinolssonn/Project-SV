@@ -17,7 +17,7 @@ public class BuildingPlacer : MonoBehaviour
 
     public void Antenna_Btn()
     {
-        grid.SetToBePlaced(new Antenna()); 
+        grid.SetToBePlaced(new Antenna());
     }
 
     public void RemoveAntenna_Btn()

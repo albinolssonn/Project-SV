@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class AntennaStatistics : MonoBehaviour
 {
@@ -15,10 +12,11 @@ public class AntennaStatistics : MonoBehaviour
         if (GridManager.limitedAntennasMode)
         {
             text.text = value.ToString() + " / " + maxValue.ToString();
-            if(value > maxValue)
+            if (value > maxValue)
             {
                 text.color = Color.red;
-            } else
+            }
+            else
             {
                 text.color = Color.white;
             }

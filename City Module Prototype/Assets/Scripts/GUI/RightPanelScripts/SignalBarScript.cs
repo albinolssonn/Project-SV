@@ -32,5 +32,5 @@ public class SignalBarScript : MonoBehaviour
         slider.transform.GetChild(2).GetComponent<Image>().color = new Color(rgbt[0], rgbt[1], rgbt[2], 1f);
 
     }
-    
+
 }
