@@ -279,12 +279,16 @@ public class GridManager : MonoBehaviour
                 {
                     AddModuleVisual(y, x);
 
-                    
-
                     gridArray[y, x].AddCellContent(toBePlaced);
-
                     
-                    UpdateNetwork();
+                    if(toBePlaced is Antenna)
+                    {
+                        AntennaPlaced(y, x);
+                    } else
+                    {
+                        UpdateNetwork();
+                    }
+                    
                 }
                 else
                 {
@@ -433,20 +437,31 @@ public class GridManager : MonoBehaviour
 
     }
 
+    public void AntennaPlaced(int y, int x)
+    {
+        DestroyNetworkFlow();
 
+        network.BuildNetworkFromCell(gridArray[y, x]);
+
+        UpdateStatistics();
+    }
 
     /// <summary>
     /// Updates the network by rebuilding it using the Network class and then setting each tile to their correct color.
     /// </summary>
     public void UpdateNetwork()
     {
-        ResetNetwork(false);
-
-        DestroyNetworkFlow();
+        ResetNetwork();
 
         network.BuildNetwork(gridArray);
 
+        UpdateStatistics();
+    }
 
+
+
+    private void UpdateStatistics()
+    {
         float totalCoverage = 0;
         float criticalCoverage = 0;
 
@@ -485,51 +500,29 @@ public class GridManager : MonoBehaviour
             totalCount++;
         }
 
-        if(criticalCount == 0)
+        if (criticalCount == 0)
         {
             criticalCoverage = 0;
             criticalCount = 1;
         }
 
-        if(totalCapacityCount == 0)
+        if (totalCapacityCount == 0)
         {
             totalCapacityCount = 1;
             totalCapacity = 0;
         }
 
-        if (criticalMode) {
+        if (criticalMode)
+        {
             criticalCoverageScript.SetCoverage(criticalCoverage / criticalCount, colors["coverage"]);
             criticalCapacityScript.SetCapacity(criticalCapacity / criticalCount, colors["capacity"]);
         }
         coverageBarScript.SetCoverage(totalCoverage / totalCount, colors["coverage"]);
         capacityBarScript.SetCapacity(totalCapacity / totalCapacityCount, colors["capacity"]);
-        antennaStatistics.setAntennaStatistics(totalAntennas, maxAntennas); 
+        antennaStatistics.setAntennaStatistics(totalAntennas, maxAntennas);
     }
 
-    /// <summary>
-    /// Resets the signal strength of every Cell and the demand of every Antenna in the grid.
-    /// </summary>
-    private void ResetNetwork(bool andAntennas)
-    {
-        foreach (Cell cell in gridArray)
-        {
-            if (andAntennas)
-            {
-                cell.ResetSignalStr();
-            } else
-            {
-                if(cell.GetAntenna() == null)
-                {
-                    cell.ResetSignalStr();
-                }
-            }
-            if (cell.GetAntenna() != null)
-            {
-                cell.GetAntenna().ResetDemand();
-            }
-            
-        }
-    }
+
 
 
     /// <summary>
@@ -679,6 +672,13 @@ public class GridManager : MonoBehaviour
 
         networkFlowVisuals.Add(arrow);
 
+        var oldChild = gridArray[cell.GetY(), cell.GetX()].GetTile().transform.Find("Arrow(Clone)");
+        if(oldChild != null)
+        {
+            Destroy(oldChild);
+        }
+        
+
         arrow.transform.SetParent(gridArray[cell.GetY(), cell.GetX()].GetTile().transform);
 
         arrow.transform.localPosition = new Vector2(0.5f, 0.5f);
@@ -719,6 +719,26 @@ public class GridManager : MonoBehaviour
         UpdateNetwork();
     }
 
+
+    /// <summary>
+    /// Resets the signal strength of every Cell and the demand of every Antenna in the grid.
+    /// </summary>
+    /// <param name="andAntennas">If to reset cells with Antennas as well or not.</param>
+    private void ResetNetwork()
+    {
+        foreach (Cell cell in gridArray)
+        {
+            if (cell.GetAntenna() == null)
+            {
+                cell.ResetSignalStr();
+            }
+
+            if (cell.GetAntenna() != null)
+            {
+                cell.GetAntenna().ResetDemand();
+            }
+        }
+    }
 
 
     public void SetNewGridSize(int rows, int cols)

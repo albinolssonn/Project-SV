@@ -32,31 +32,31 @@ public class TestGridUtils
         List<Cell> neighbours;
         
         
-        neighbours = GridUtils.GetNearbyCells(0, 0, gridArray);
+        neighbours = GridUtils.GetNearbyCells(gridArray[0, 0], gridArray);
         Assert.AreEqual(3, neighbours.Count);
         Assert.IsTrue(Search(neighbours, new Cell(0, 1)));
         Assert.IsTrue(Search(neighbours, new Cell(1, 0)));
         Assert.IsTrue(Search(neighbours, new Cell(1, 1)));
 
-        neighbours = GridUtils.GetNearbyCells(4, 4, gridArray);
+        neighbours = GridUtils.GetNearbyCells(gridArray[4, 4], gridArray);
         Assert.AreEqual(3, neighbours.Count);
         Assert.IsTrue(Search(neighbours, new Cell(3, 3)));
         Assert.IsTrue(Search(neighbours, new Cell(3, 4)));
         Assert.IsTrue(Search(neighbours, new Cell(4, 3)));
 
-        neighbours = GridUtils.GetNearbyCells(0, 4, gridArray);
+        neighbours = GridUtils.GetNearbyCells(gridArray[0, 4], gridArray);
         Assert.AreEqual(3, neighbours.Count);
         Assert.IsTrue(Search(neighbours, new Cell(0, 3)));
         Assert.IsTrue(Search(neighbours, new Cell(1, 3)));
         Assert.IsTrue(Search(neighbours, new Cell(1, 4)));
 
-        neighbours = GridUtils.GetNearbyCells(4, 0, gridArray);
+        neighbours = GridUtils.GetNearbyCells(gridArray[4, 0], gridArray);
         Assert.AreEqual(3, neighbours.Count);
         Assert.IsTrue(Search(neighbours, new Cell(3, 0)));
         Assert.IsTrue(Search(neighbours, new Cell(3, 1)));
         Assert.IsTrue(Search(neighbours, new Cell(4, 1)));
 
-        neighbours = GridUtils.GetNearbyCells(2, 2, gridArray);
+        neighbours = GridUtils.GetNearbyCells(gridArray[2, 2], gridArray);
         Assert.AreEqual(8, neighbours.Count);
         Assert.IsTrue(Search(neighbours, new Cell(1, 1)));
         Assert.IsTrue(Search(neighbours, new Cell(1, 2)));

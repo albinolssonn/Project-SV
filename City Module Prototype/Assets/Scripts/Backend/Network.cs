@@ -63,11 +63,10 @@ public class Network
 
 
     /// <summary>
-    /// Should be called upon once for each cell that contains an Antenna.
     /// Spreads the network from the given Cell with the signal strength baseSignalStr.
     /// </summary>
     /// <param name="cell">The cell to use as an origin for the network</param>
-    private void BuildNetworkFromCell(Cell cell)
+    public void BuildNetworkFromCell(Cell cell)
     {
         List<Direction> directions = new List<Direction>() { new North_NorthEast(cell), new East_NorthEast(cell), new East_SouthEast(cell), new South_SouthEast(cell), new South_SouthWest(cell), new West_SouthWest(cell), new West_NorthWest(cell), new North_NorthWest(cell) };
 
@@ -94,7 +93,7 @@ public class Network
     /// <param name="incomingSignalStr">The signal strength passing through the previous cell</param>
     private void SetSignalRecursively(Direction direction, Cell prevCell, double incomingSignalStr)
     {
-        List<Cell> neighbours = GridUtils.GetNearbyCells(prevCell.GetY(), prevCell.GetX(), gridArray);
+        List<Cell> neighbours = GridUtils.GetNearbyCells(prevCell, gridArray);
 
         foreach (Cell nextCell in neighbours)
         {

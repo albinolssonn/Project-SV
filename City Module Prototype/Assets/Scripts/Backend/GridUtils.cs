@@ -27,7 +27,13 @@ public static class GridUtils
     }
 
 
-
+    /// <summary>
+    /// Creates a new grid array of the given size, transfering the old content to the new. Any content of the old grid which ends up outside the new grid is removed.
+    /// </summary>
+    /// <param name="oldArray">The grid array to transfer to the new.</param>
+    /// <param name="newRows">The number of rows of the new grid array.</param>
+    /// <param name="newCols">The number of columns of the new grid array.</param>
+    /// <returns>The newly created grid array.</returns>
     public static Cell[,] ResizeArray(Cell[,] oldArray, int newRows, int newCols)
     {
         Cell[,] newArray = new Cell[newRows, newCols];
@@ -59,9 +65,10 @@ public static class GridUtils
     /// <param name="x">The x-coordinate for the origin cell.</param>
     /// <param name="gridArray">The grid to apply the coordinates to.</param>
     /// <returns>A List of Cell containing all the neighbouring cells for that at gridArray[y,x].</returns>
-    public static List<Cell> GetNearbyCells(int y, int x, Cell[,] gridArray)
+    public static List<Cell> GetNearbyCells(Cell cell, Cell[,] gridArray)
     {
-        Cell cell = gridArray[y, x];
+        int y = cell.GetY();
+        int x = cell.GetX();
         int rows = gridArray.GetLength(0);
         int cols = gridArray.GetLength(1);
 
