@@ -32,9 +32,9 @@ public class TestNetwork
         gridArray[3, 0].AddCellContent(new Antenna());
         gridArray[3, 1].AddCellContent(new House());
 
+        List<Cell> antennaCells = new List<Cell> { gridArray[1, 2], gridArray[3, 0] };
 
-
-        network.BuildNetwork(gridArray);
+        network.BuildEntireNetwork(gridArray, antennaCells);
 
 
         for (int row = 0; row < rows; row++)
@@ -109,7 +109,9 @@ public class TestNetwork
 
         gridArray[2, 2].AddCellContent(new Park());
 
-        network.BuildNetwork(gridArray);
+        List<Cell> antennaCells = new List<Cell> { gridArray[1, 0] };
+
+        network.BuildEntireNetwork(gridArray, antennaCells);
 
         Debug.Log(gridArray[0, 0].GetSignalStr() + "  " + gridArray[0, 1].GetSignalStr() + "  " + gridArray[0, 2].GetSignalStr());
         Debug.Log(gridArray[1, 0].GetSignalStr() + "  " + gridArray[1, 1].GetSignalStr() + "  " + gridArray[1, 2].GetSignalStr());
@@ -180,9 +182,10 @@ public class TestNetwork
         gridArray[3, 3].AddCellContent(new Hospital());
 
 
+        List<Cell> antennaCells = new List<Cell> { gridArray[1, 1] };
 
 
-        network.BuildNetwork(gridArray);
+        network.BuildEntireNetwork(gridArray, antennaCells);
 
         for (int row = 0; row < rows; row++)
         {
@@ -248,7 +251,11 @@ public class TestNetwork
 
         gridArray[2, 2].AddCellContent(new House());
 
-        network.BuildNetwork(gridArray);
+
+        List<Cell> antennaCells = new List<Cell> { gridArray[2, 0] };
+
+
+        network.BuildEntireNetwork(gridArray, antennaCells);
 
         for (int row = 0; row < rows; row++)
         {
@@ -303,7 +310,10 @@ public class TestNetwork
         gridArray[2, 2].AddCellContent(new Park());
 
 
-        network.BuildNetwork(gridArray);
+        List<Cell> antennaCells = new List<Cell> { gridArray[1, 2] };
+
+
+        network.BuildEntireNetwork(gridArray, antennaCells);
 
         for (int row = 0; row < rows; row++)
         {

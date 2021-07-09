@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 /// <summary>
 /// Contains utitilies used by the gridManager.
 /// The reason these are in a class of their own is to be able to run automatic tests on them without having to start the entire program.
@@ -32,9 +33,10 @@ public static class GridUtils
     /// <param name="newRows">The number of rows of the new grid array.</param>
     /// <param name="newCols">The number of columns of the new grid array.</param>
     /// <returns>The newly created grid array.</returns>
-    public static Cell[,] ResizeGrid(Cell[,] oldArray, int newRows, int newCols)
+    public static Cell[,] ResizeGrid(Cell[,] oldArray, int newRows, int newCols, out List<Cell> antennaCells)
     {
         Cell[,] newArray = new Cell[newRows, newCols];
+        antennaCells = new List<Cell>();
 
         for (int row = 0; row < newRows; row++)
         {
@@ -44,6 +46,10 @@ public static class GridUtils
                 {
                     newArray[row, col] = oldArray[row, col];
                     newArray[row, col].ResetSignalStr();
+                    if(newArray[row, col].HasAntenna())
+                    {
+                        antennaCells.Add(newArray[row, col]);
+                    }
                 }
                 else
                 {

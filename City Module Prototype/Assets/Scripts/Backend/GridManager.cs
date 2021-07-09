@@ -19,6 +19,7 @@ public class GridManager : MonoBehaviour
     private string simulationModeSelected;
     private Dictionary<string, Colors> colors;
     private InformationScript informationScript;
+    private List<Cell> antennaCells;
 
     private GameObject gridManager;
 
@@ -82,8 +83,9 @@ public class GridManager : MonoBehaviour
 
         network = new Network(baseSignalStr, distancePenalty, heightPenalty);
         gridArray = GridUtils.BuildArray(rows, cols);
+        antennaCells = new List<Cell>();
         newScale = new Vector3(0.6f, 0.6f, 1f);
-
+        //newScale = new Vector3(1f, 1f, 1f);
 
         GenerateGrid();
         CenterGrid();
@@ -285,6 +287,7 @@ public class GridManager : MonoBehaviour
 
                         if (toBePlaced is Antenna)
                         {
+                            antennaCells.Add(gridArray[y, x]);
                             AntennaPlaced(y, x);
                         }
                         else
@@ -398,6 +401,7 @@ public class GridManager : MonoBehaviour
                 toBeRemoved is Antenna)
             {
                 totalAntennas--;
+                antennaCells.Remove(gridArray[y, x]);
             }
 
             UpdateNetwork();
@@ -449,7 +453,7 @@ public class GridManager : MonoBehaviour
     {
         DestroyNetworkFlow();
 
-        network.BuildNetworkFromCell(gridArray[y, x]);
+        network.BuildSingleNetwork(gridArray[y, x], gridArray);
 
         UpdateStatistics();
     }
@@ -461,7 +465,7 @@ public class GridManager : MonoBehaviour
     {
         ResetNetwork();
 
-        network.BuildNetwork(gridArray);
+        network.BuildEntireNetwork(gridArray, antennaCells);
 
         UpdateStatistics();
     }
@@ -733,6 +737,7 @@ public class GridManager : MonoBehaviour
             }
         }
         totalAntennas = 0;
+        antennaCells.Clear();
         UpdateNetwork();
     }
 
@@ -761,7 +766,7 @@ public class GridManager : MonoBehaviour
     {
         this.rows = rows;
         this.cols = cols;
-        gridArray = GridUtils.ResizeGrid(gridArray, rows, cols);
+        gridArray = GridUtils.ResizeGrid(gridArray, rows, cols, out antennaCells);
         totalAntennas = 0;
         DestroyGrid();
         GenerateGrid();

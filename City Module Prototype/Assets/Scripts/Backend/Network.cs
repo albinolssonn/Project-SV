@@ -46,35 +46,40 @@ public class Network
     /// Builds the network based on the grid provided.
     /// </summary>
     /// <param name="gridArray">The grid to build the network across.</param>
-    public void BuildNetwork(Cell[,] gridArray)
+    /// <param name="antennaCells">A list of Cells which contains an Antenna.</param>
+    public void BuildEntireNetwork(Cell[,] gridArray, List<Cell> antennaCells)
     {
-        this.gridArray = gridArray;
-
-
-        foreach (Cell cell in gridArray)
+        foreach (Cell cell in antennaCells)
         {
-            if (cell.HasAntenna())
-            {
-                BuildNetworkFromCell(cell);
-            }
+            BuildSingleNetwork(cell, gridArray);
         }
     }
 
 
 
     /// <summary>
-    /// Spreads the network from the given Cell with the signal strength baseSignalStr.
+    /// Spreads the network from the given Cell across the given grid.
     /// </summary>
     /// <param name="cell">The cell to use as an origin for the network.</param>
-    public void BuildNetworkFromCell(Cell cell)
+    /// <param name="gridArray">The grid to build the network across.</param>
+
+    public void BuildSingleNetwork(Cell cell, Cell[,] gridArray)
     {
+        this.gridArray = gridArray;
+
         startCell = cell;
 
-        List<Direction> directions = new List<Direction>() { new North_NorthEast(startCell), new East_NorthEast(startCell), new East_SouthEast(startCell), new South_SouthEast(startCell), new South_SouthWest(startCell), new West_SouthWest(startCell), new West_NorthWest(startCell), new North_NorthWest(startCell) };
+        List<Direction> directions;
 
-        if (!(startCell.GetSignalDir() is Origin))
+        if (startCell.GetSignalDir() is Origin origin)
         {
-            startCell.SetSignalIfHigher(baseSignalStr, new Origin(startCell, NextColorIndex(), networkColorsOccurences), false);
+            directions = origin.GetDirections();
+        }
+        else
+        {
+            directions = new List<Direction>() { new North_NorthEast(startCell), new East_NorthEast(startCell), new East_SouthEast(startCell), new South_SouthEast(startCell), new South_SouthWest(startCell), new West_SouthWest(startCell), new West_NorthWest(startCell), new North_NorthWest(startCell) };
+
+            startCell.SetSignalIfHigher(baseSignalStr, new Origin(startCell, NextColorIndex(), networkColorsOccurences, directions), false);
         }
 
         foreach (Direction direction in directions)
@@ -91,6 +96,7 @@ public class Network
     /// <param name="direction">In which direction this iteration of the search is searching in. Possible directions extends the Direction class.</param>
     /// <param name="currentCell">The previous cell in the iteration.</param>
     /// <param name="incomingSignalStr">The signal strength passing through the previous cell</param>
+    /// <remarks>'gridArray' in this class must have been set prior to calling this method.</remarks>
     private void SetSignalRecursively(Direction direction, Cell currentCell, double incomingSignalStr)
     {
         List<Cell> neighbours = direction.GetNearbyCells(currentCell, gridArray);
@@ -575,18 +581,26 @@ public class Origin : Direction
 {
     public readonly int networkFlowColorIndex;
     private readonly List<int> networkColorsOccurences;
+    private readonly List<Direction> directions;
 
-    public Origin(Cell cellOrigin, int networkFlowColorIndex, List<int> networkColorsOccurences) : base(cellOrigin)
+    public Origin(Cell cellOrigin, int networkFlowColorIndex, List<int> networkColorsOccurences, List<Direction> directions) : base(cellOrigin)
     {
         this.networkFlowColorIndex = networkFlowColorIndex;
         this.networkColorsOccurences = networkColorsOccurences;
+        this.directions = directions;
     }
+
+
+    public List<Direction> GetDirections()
+    {
+        return directions;
+    }
+
 
     public void OriginRemoved()
     {
         networkColorsOccurences[networkFlowColorIndex]--;
     }
-
 
 
     public override bool IsDiagonally(Cell nextCell, Cell currentCell)
