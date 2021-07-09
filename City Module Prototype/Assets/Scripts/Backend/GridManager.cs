@@ -274,27 +274,32 @@ public class GridManager : MonoBehaviour
         {
             if (x >= 0 && y >= 0 && x < cols && y < rows)
             {
-                if (!(gridArray[y, x].GetAntenna() != null && toBePlaced is Antenna) &&
-                    ((gridArray[y, x].GetCellContent().Count < 1 || (gridArray[y, x].GetCellContent().Count < 2 && toBePlaced is Antenna)) ||
-                    gridArray[y, x].GetCellContent().Count == 1 && gridArray[y, x].GetAntenna() != null))
+                if (!(gridArray[y, x].HasAntenna() && toBePlaced is Antenna))
                 {
-                    AddModuleVisual(y, x);
-
-                    gridArray[y, x].AddCellContent(toBePlaced);
-
-                    if (toBePlaced is Antenna)
+                    if (gridArray[y, x].GetCellContent().Count == 0 || (gridArray[y, x].GetCellContent().Count < 2 && toBePlaced is Antenna) ||
+                    gridArray[y, x].GetCellContent().Count == 1 && gridArray[y, x].HasAntenna())
                     {
-                        AntennaPlaced(y, x);
+                        AddModuleVisual(y, x);
+
+                        gridArray[y, x].AddCellContent(toBePlaced);
+
+                        if (toBePlaced is Antenna)
+                        {
+                            AntennaPlaced(y, x);
+                        }
+                        else
+                        {
+                            UpdateNetwork();
+                        }
                     }
                     else
                     {
-                        UpdateNetwork();
+                        SetErrorMessage("A cell can only have a single building type in it.");
                     }
-
                 }
                 else
                 {
-                    SetErrorMessage("Can't place this module there.");
+                    SetErrorMessage("This cell already has an Antenna in it.");
                 }
             }
         }
@@ -740,14 +745,13 @@ public class GridManager : MonoBehaviour
     {
         foreach (Cell cell in gridArray)
         {
-            if (cell.GetAntenna() == null)
-            {
-                cell.ResetSignalStr();
-            }
-
-            if (cell.GetAntenna() != null)
+            if (cell.HasAntenna())
             {
                 cell.GetAntenna().ResetDemand();
+            }
+            else
+            {
+                cell.ResetSignalStr();
             }
         }
     }

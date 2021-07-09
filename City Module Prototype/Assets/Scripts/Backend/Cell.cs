@@ -92,6 +92,13 @@ public class Cell
     }
 
 
+    /// <returns>If this cell has an Antenna or not.</returns>
+    public bool HasAntenna()
+    {
+        return antenna != null;
+    }
+
+
     /// <summary>
     /// Resets the signal strength of this cell to 0 and removes its Direction object.
     /// </summary>

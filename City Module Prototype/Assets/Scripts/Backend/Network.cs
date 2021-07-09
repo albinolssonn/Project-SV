@@ -53,7 +53,7 @@ public class Network
 
         foreach (Cell cell in gridArray)
         {
-            if (cell.GetAntenna() != null)
+            if (cell.HasAntenna())
             {
                 BuildNetworkFromCell(cell);
             }
@@ -65,16 +65,16 @@ public class Network
     /// <summary>
     /// Spreads the network from the given Cell with the signal strength baseSignalStr.
     /// </summary>
-    /// <param name="cell">The cell to use as an origin for the network</param>
+    /// <param name="cell">The cell to use as an origin for the network.</param>
     public void BuildNetworkFromCell(Cell cell)
     {
-        List<Direction> directions = new List<Direction>() { new North_NorthEast(cell), new East_NorthEast(cell), new East_SouthEast(cell), new South_SouthEast(cell), new South_SouthWest(cell), new West_SouthWest(cell), new West_NorthWest(cell), new North_NorthWest(cell) };
+        startCell = cell;
 
-        startCell = gridArray[cell.GetY(), cell.GetX()];
+        List<Direction> directions = new List<Direction>() { new North_NorthEast(startCell), new East_NorthEast(startCell), new East_SouthEast(startCell), new South_SouthEast(startCell), new South_SouthWest(startCell), new West_SouthWest(startCell), new West_NorthWest(startCell), new North_NorthWest(startCell) };
 
         if (!(startCell.GetSignalDir() is Origin))
         {
-            startCell.SetSignalIfHigher(baseSignalStr, new Origin(cell, NextColorIndex(), networkColorsOccurences), false);
+            startCell.SetSignalIfHigher(baseSignalStr, new Origin(startCell, NextColorIndex(), networkColorsOccurences), false);
         }
 
         foreach (Direction direction in directions)
@@ -86,7 +86,7 @@ public class Network
 
 
     /// <summary>
-    /// This helper-method is called to perform a recursive depth-first search to spread the network accordingly.
+    /// Performs a recursive depth-first search to spread the network accordingly.
     /// </summary>
     /// <param name="direction">In which direction this iteration of the search is searching in. Possible directions extends the Direction class.</param>
     /// <param name="currentCell">The previous cell in the iteration.</param>
@@ -97,17 +97,15 @@ public class Network
 
         foreach (Cell nextCell in neighbours)
         {
-
             nextCell.SetSignalIfHigher(incomingSignalStr, direction, direction.IsDiagonally(nextCell, currentCell));
 
             SetSignalRecursively(direction, nextCell, GetNewStr(nextCell, incomingSignalStr));
-
         }
     }
 
 
     /// <summary>
-    /// This helper-method is called to calculate how much of the signal a cell will block for those behind it.
+    /// Calculates how much of the signal a cell will block for those behind it.
     /// </summary>
     /// <param name="blockingCell">The cell which the signal is passing through.</param>
     /// <param name="signalStrIn">The signal strength going into blockingCell.</param>
