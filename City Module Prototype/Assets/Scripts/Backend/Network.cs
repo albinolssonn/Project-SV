@@ -103,6 +103,11 @@ public class Network
 
         foreach (Cell nextCell in neighbours)
         {
+            if (nextCell.GetSignalDir() == direction && incomingSignalStr <= nextCell.GetSignalStr())
+            {
+                continue;
+            }
+
             nextCell.SetSignalIfHigher(incomingSignalStr, direction, direction.IsDiagonally(nextCell, currentCell));
 
             SetSignalRecursively(direction, nextCell, GetNewStr(nextCell, incomingSignalStr));
