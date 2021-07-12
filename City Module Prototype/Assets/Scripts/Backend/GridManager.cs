@@ -87,8 +87,7 @@ public class GridManager : MonoBehaviour
         antennaCells = new List<Cell>();
 
 
-        float ratio = (Screen.height - 100) / (rows * tileSize);
-        gridScale = new Vector3(ratio, ratio, 1f);
+        
 
         GenerateGrid();
         CenterGrid();
@@ -142,6 +141,8 @@ public class GridManager : MonoBehaviour
     {
         transform.parent.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
 
+        ScaleGrid();
+
         var scaledTileSize = tileSize * gridScale[0];
 
         float[] finalPosition = new float[2] { -scaledTileSize, 0 };
@@ -153,8 +154,6 @@ public class GridManager : MonoBehaviour
         finalPosition[0] = finalPosition[0] + gridHeight / 2;
 
         transform.localPosition = new Vector2(finalPosition[1], finalPosition[0]);
-
-        ScaleGrid();
     }
 
 
@@ -166,6 +165,7 @@ public class GridManager : MonoBehaviour
         float ratio = (Screen.height - 100) / (rows * tileSize);
         gridScale = new Vector3(ratio, ratio, 1f);
         transform.localScale = gridScale;
+
     }
 
 
@@ -798,10 +798,14 @@ public class GridManager : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Loads a pre-configured city, saves it in 'gridArray' and build the grid on the screen.
+    /// </summary>
+    /// <param name="index">The chosen city to build.</param>
     public void LoadPreconfigCity(int index)
     {
         DestroyGrid();
+        ResetGrid();
         totalAntennas = 0;
 
         gridArray = index switch

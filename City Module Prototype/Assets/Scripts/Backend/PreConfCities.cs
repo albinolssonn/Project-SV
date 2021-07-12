@@ -91,45 +91,49 @@ public static class PreConfCities
 
     public static Cell[,] GetConfig3(out int rows, out int cols)
     {
-        rows = 4;
-        cols = 8;
+        rows = 8;
+        cols = 4;
         Cell[,] config = GridUtils.BuildArray(rows, cols);
 
         config[0, 0].AddCellContent(new Park());
         config[0, 1].AddCellContent(new Park());
         config[0, 2].AddCellContent(new Park());
         config[0, 3].AddCellContent(new TallBuilding());
-        config[0, 4].AddCellContent(new TallBuilding());
-        config[0, 5].AddCellContent(new TallBuilding());
-        config[0, 6].AddCellContent(new TallBuilding());
-        config[0, 7].AddCellContent(new TallBuilding());
-
+        
         config[1, 0].AddCellContent(new PoliceStation());
         config[1, 1].AddCellContent(new Hospital());
         config[1, 2].AddCellContent(new Park());
         config[1, 3].AddCellContent(new FireDepartment());
-        config[1, 4].AddCellContent(new Park());
-        config[1, 5].AddCellContent(new Park());
-        config[1, 6].AddCellContent(new TallBuilding());
-        config[1, 7].AddCellContent(new TallBuilding());
         
         config[2, 0].AddCellContent(new House());
         config[2, 1].AddCellContent(new Park());
         config[2, 2].AddCellContent(new Park());
         config[2, 3].AddCellContent(new TallBuilding());
-        config[2, 4].AddCellContent(new TallBuilding());
-        config[2, 5].AddCellContent(new TallBuilding());
-        config[2, 6].AddCellContent(new TallBuilding());
-        config[2, 7].AddCellContent(new Park());
-
+        
         config[3, 0].AddCellContent(new House());
         config[3, 1].AddCellContent(new House());
         config[3, 2].AddCellContent(new TallBuilding());
         config[3, 3].AddCellContent(new TallBuilding());
-        config[3, 4].AddCellContent(new TallBuilding());
-        config[3, 5].AddCellContent(new Hospital());
-        config[3, 6].AddCellContent(new FireDepartment());
-        config[3, 7].AddCellContent(new PoliceStation());
+
+        config[4, 0].AddCellContent(new TallBuilding());
+        config[4, 1].AddCellContent(new TallBuilding());
+        config[4, 2].AddCellContent(new TallBuilding());
+        config[4, 3].AddCellContent(new TallBuilding());
+
+        config[5, 0].AddCellContent(new Park());
+        config[5, 1].AddCellContent(new Park());
+        config[5, 2].AddCellContent(new TallBuilding());
+        config[5, 3].AddCellContent(new TallBuilding());
+
+        config[6, 0].AddCellContent(new TallBuilding());
+        config[6, 1].AddCellContent(new TallBuilding());
+        config[6, 2].AddCellContent(new FireDepartment());
+        config[6, 3].AddCellContent(new PoliceStation());
+
+        config[7, 0].AddCellContent(new Hospital());
+        config[7, 1].AddCellContent(new TallBuilding());
+        config[7, 2].AddCellContent(new Park());
+        config[7, 3].AddCellContent(new Park());
 
         return config;
     }
