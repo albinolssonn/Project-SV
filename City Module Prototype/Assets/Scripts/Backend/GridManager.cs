@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 /// <summary>
@@ -104,6 +105,7 @@ public class GridManager : MonoBehaviour
 
         transform.localScale = gridScale;
         UpdateNetwork();
+
     }
 
 
@@ -784,6 +786,41 @@ public class GridManager : MonoBehaviour
     }
 
 
+
+    public void LoadPreconfigCity(int index)
+    {
+        DestroyGrid();
+        totalAntennas = 0;
+
+        switch (index)
+        {
+            case 0:
+                gridArray = PreConfCities.GetConfig0(out rows, out cols);
+                break;
+
+            case 1:
+                gridArray = PreConfCities.GetConfig1(out rows, out cols);
+                break;
+
+            case 2:
+                gridArray = PreConfCities.GetConfig2(out rows, out cols);
+                break;
+            default:
+                throw new System.Exception("This should be unreachable.");
+        }
+
+        GenerateGrid();
+        UpdateNetwork();
+        CenterGrid();
+    }
+
+
+    /// <summary>
+    /// Sets the grid to a new size by adding or subtracting cols and rows towards the right and down.
+    /// Transfers any modules from the old grid to the new which are within the new size bounds.
+    /// </summary>
+    /// <param name="newRows">Number of rows for the new grid.</param>
+    /// <param name="newCols">Number of cols for the new grid.</param>
     public void SetNewGridSize(int newRows, int newCols)
     {
         rows = newRows;
