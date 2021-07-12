@@ -19,15 +19,15 @@ public abstract class Bars : MonoBehaviour
     /// <summary>
     /// Sets the visuals of the bar to a new value.
     /// </summary>
-    /// <param name="signalStr">The value to set the bar to.</param>
+    /// <param name="value">The value to set the bar to.</param>
     /// <param name="colors">The color to display the bar in.</param>
-    public void SetValue(float signalStr, Colors colors)
+    public void SetValue(float value, Colors colors)
     {
-        signalStr = (float)System.Math.Round(signalStr, 1);
+        value = (float)System.Math.Round(value, 1);
 
-        slider.value = signalStr;
-        text.text = signalStr.ToString();
-        var rgbt = colors.GetGradientColor(signalStr);
+        slider.value = value;
+        text.text = value.ToString();
+        var rgbt = colors.GetGradientColor(value);
         slider.transform.GetChild(2).GetComponent<Image>().color = new Color(rgbt[0], rgbt[1], rgbt[2], 1f);
 
     }

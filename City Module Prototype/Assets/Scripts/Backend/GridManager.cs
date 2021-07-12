@@ -93,7 +93,7 @@ public class GridManager : MonoBehaviour
         CenterGrid();
 
         coverageBarScript.SetValue(0, colors["coverage"]);
-        capacityBarScript.SetValue(0, colors["capacity"]);
+        //capacityBarScript.SetValue(0, colors["capacity"]);
         criticalCoverageScript.SetValue(0, colors["coverage"]);
         criticalCapacityScript.SetValue(0, colors["capacity"]);
 
@@ -877,6 +877,7 @@ public class GridManager : MonoBehaviour
     /// and then updates the colors on the grid accordingly.
     /// </summary>
     /// <param name="mode">Which simulation mode to show.</param>
+    /// <remarks>The argument must be a string contained in the variable 'colors' in GridManager.</remarks>
     public void SetSimulationMode(string mode)
     {
         if (!colors.ContainsKey(mode))
@@ -899,12 +900,16 @@ public class GridManager : MonoBehaviour
     {
         informationScript.SetInformationText(error);
     }
-
+    
+    
+    /// <returns>The simulation mode currently selected.</returns>
     public string GetSimulationMode()
     {
         return simulationModeSelected; 
     }
 
+
+    /// <returns>If Critical mode is active or not.</returns>
     public bool GetCriticalMode()
     {
         return criticalMode; 

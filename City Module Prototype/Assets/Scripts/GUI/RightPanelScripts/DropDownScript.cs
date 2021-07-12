@@ -21,7 +21,6 @@ public class DropDownScript : MonoBehaviour
         switch (value)
         {
             case 0:
-                gridManager.SetSimulationMode("coverage");
                 capacityBar.SetActive(false);
                 coverageBar.SetActive(true);
 
@@ -31,10 +30,10 @@ public class DropDownScript : MonoBehaviour
                     criticalCoverageBar.SetActive(true);
                 }
 
+                gridManager.SetSimulationMode("coverage");
                 break;
 
             case 1:
-                gridManager.SetSimulationMode("capacity");
                 capacityBar.SetActive(true);
                 coverageBar.SetActive(false);
 
@@ -44,14 +43,16 @@ public class DropDownScript : MonoBehaviour
                     criticalCoverageBar.SetActive(false);
                 }
 
+                gridManager.SetSimulationMode("capacity");
                 break;
 
             case 2:
-                gridManager.SetSimulationMode("none");
                 capacityBar.SetActive(false);
                 coverageBar.SetActive(false);
                 criticalCapacityBar.SetActive(false);
                 criticalCoverageBar.SetActive(false);
+
+                gridManager.SetSimulationMode("none");
                 break;
 
 
