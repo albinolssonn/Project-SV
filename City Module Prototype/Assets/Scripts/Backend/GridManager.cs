@@ -792,22 +792,14 @@ public class GridManager : MonoBehaviour
         DestroyGrid();
         totalAntennas = 0;
 
-        switch (index)
+        gridArray = index switch
         {
-            case 0:
-                gridArray = PreConfCities.GetConfig0(out rows, out cols);
-                break;
-
-            case 1:
-                gridArray = PreConfCities.GetConfig1(out rows, out cols);
-                break;
-
-            case 2:
-                gridArray = PreConfCities.GetConfig2(out rows, out cols);
-                break;
-            default:
-                throw new System.Exception("This should be unreachable.");
-        }
+            1 => PreConfCities.GetConfig1(out rows, out cols),
+            2 => PreConfCities.GetConfig2(out rows, out cols),
+            3 => PreConfCities.GetConfig3(out rows, out cols),
+            4 => PreConfCities.GetConfig4(out rows, out cols),
+            _ => throw new System.Exception("This should be unreachable."),
+        };
 
         GenerateGrid();
         UpdateNetwork();
