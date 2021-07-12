@@ -36,9 +36,6 @@ public class GridSizeScript : MonoBehaviour
         cols_input.text = "";
         gridManager.SetNewGridSize(rows, cols);
 
-        settingsPageUi.SetActive(true);
-        gridSizeUi.SetActive(false); 
-        
 
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class PauseMenu : MonoBehaviour
 {
     public static bool GameIsPaused = false;
+    public static int pausedOnLayer = 0;
 
     public GameObject pauseMenuUi;
     public GameObject informationPageUi;
@@ -20,7 +21,28 @@ public class PauseMenu : MonoBehaviour
         {
             if (GameIsPaused)
             {
-                Resume();
+                switch (pausedOnLayer) 
+                {
+                    case 0:
+                        Resume(); 
+                        break;
+
+                    case 1:
+                        CloseInformationPage();
+                        CloseSettingsPage();
+                        pausedOnLayer = 0; 
+                        break;
+
+                    case 2:
+                        ClosePreCityPage();
+                        CloseGridSizePage();
+                        pausedOnLayer = 1; 
+                        break;
+
+                    default:
+                        throw new System.Exception("This should be unreachable.");
+                }
+
             }
             else
             {
@@ -48,6 +70,8 @@ public class PauseMenu : MonoBehaviour
     {
         informationPageUi.SetActive(true);
         pauseMenuUi.SetActive(false);
+        pausedOnLayer = 1;
+
     }
 
     public void CloseInformationPage()
@@ -60,6 +84,7 @@ public class PauseMenu : MonoBehaviour
     {
         settingsPageUi.SetActive(true);
         pauseMenuUi.SetActive(false);
+        pausedOnLayer = 1;
     }
 
     public void CloseSettingsPage()
@@ -72,6 +97,7 @@ public class PauseMenu : MonoBehaviour
     {
         gridSizeUi.SetActive(true);
         settingsPageUi.SetActive(false);
+        pausedOnLayer = 2;
     }
 
     public void CloseGridSizePage()
@@ -83,6 +109,7 @@ public class PauseMenu : MonoBehaviour
     {
         prebuiltCityUi.SetActive(true);
         settingsPageUi.SetActive(false);
+        pausedOnLayer = 2;
     }
 
     public void ClosePreCityPage()

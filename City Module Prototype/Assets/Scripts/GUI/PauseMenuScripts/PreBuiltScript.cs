@@ -4,30 +4,38 @@ using UnityEngine;
 
 public class PreBuiltScript : MonoBehaviour
 {
-    public GameObject button1;
-    public GameObject button2;
-    public GameObject button3;
-    public GameObject button4;
 
-    GridManager grid = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
+    private GridManager grid;
+    public GameObject prebuiltCityUi;
+    public GameObject pauseMenuUi;
+
+
+    public void Start()
+    {
+        grid =  GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
+    }
 
     public void PreCofigBtn1()
     {
-        grid.LoadPreconfigCity(0); 
+        grid.LoadPreconfigCity(1);
+
     }
 
     public void PreCofigBtn2()
     {
-        grid.LoadPreconfigCity(1);
+        grid.LoadPreconfigCity(2);
+
     }
 
     public void PreCofigBtn3()
     {
-        grid.LoadPreconfigCity(2);
+        grid.LoadPreconfigCity(3);
+
     }
 
     public void PreCofigBtn4()
     {
-        grid.LoadPreconfigCity(3);
+        grid.LoadPreconfigCity(4);
+
     }
 }
