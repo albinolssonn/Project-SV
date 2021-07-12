@@ -82,9 +82,12 @@ public class Network
             startCell.SetSignalIfHigher(baseSignalStr, new Origin(startCell, NextColorIndex(), networkColorsOccurences, directions), false);
         }
 
+        startCell.GetAntenna().AddDemand(startCell.GetCapacityDemand());
+
+
         foreach (Direction direction in directions)
         {
-            SetSignalRecursively(direction, startCell, startCell.GetSignalStr() - distancePenalty);
+            SetSignalRecursively(direction, startCell, startCell.GetSignalStr() - distancePenalty, 0);
         }
     }
 
@@ -97,20 +100,32 @@ public class Network
     /// <param name="currentCell">The previous cell in the iteration.</param>
     /// <param name="incomingSignalStr">The signal strength passing through the previous cell</param>
     /// <remarks>'gridArray' in this class must have been set prior to calling this method.</remarks>
-    private void SetSignalRecursively(Direction direction, Cell currentCell, double incomingSignalStr)
+    private void SetSignalRecursively(Direction direction, Cell currentCell, double incomingSignalStr, int diagonalSteps)
     {
         List<Cell> neighbours = direction.GetNearbyCells(currentCell, gridArray);
 
         foreach (Cell nextCell in neighbours)
         {
-            if (nextCell.GetSignalDir() == direction && incomingSignalStr <= nextCell.GetSignalStr())
+            double fixedIncomingSignalStr = incomingSignalStr;
+            
+            bool diagonal = direction.IsDiagonally(nextCell, currentCell);
+            if (diagonal)
+            {
+                diagonalSteps++;
+                if (diagonalSteps % 2 == 0)
+                {
+                    fixedIncomingSignalStr -= distancePenalty;
+                }
+            }
+
+            if (nextCell.GetSignalDir() == direction && fixedIncomingSignalStr <= nextCell.GetSignalStr())
             {
                 continue;
             }
 
-            nextCell.SetSignalIfHigher(incomingSignalStr, direction, direction.IsDiagonally(nextCell, currentCell));
+            nextCell.SetSignalIfHigher(fixedIncomingSignalStr, direction, diagonal);
 
-            SetSignalRecursively(direction, nextCell, GetNewStr(nextCell, incomingSignalStr));
+            SetSignalRecursively(direction, nextCell, GetNewStr(nextCell, fixedIncomingSignalStr), diagonalSteps);
         }
     }
 

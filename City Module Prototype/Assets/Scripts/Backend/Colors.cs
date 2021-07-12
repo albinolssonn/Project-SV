@@ -53,8 +53,8 @@ public class WhiteBlue : Colors
     public override float[] GetGradientColor(double value)
     {
         float k = (float)(1 / maxValue);
-        float rValue = (float)System.Math.Min(1, k * value);
-        float gValue = (float)System.Math.Min(1, k * value);
+        float rValue = (float)System.Math.Min(1, -k * value + 1);
+        float gValue = (float)System.Math.Min(1, -k * value + 1);
 
         return new float[4] { rValue, gValue, 1.00f, 0.50f };
     }

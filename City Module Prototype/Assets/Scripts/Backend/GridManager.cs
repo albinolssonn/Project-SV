@@ -40,7 +40,7 @@ public class GridManager : MonoBehaviour
     public static readonly double baseSignalStr = 10;
 
     /// <summary>The capacity of which an Antenna can supply users with.</summary>
-    public static readonly double baseCapacity = 20;
+    public static readonly double baseCapacity = 40;
 
     /// <summary>The reduction in signal strength for traveling one step in any direction.</summary>
     /// <remarks>Should be subtracted from the signal strength each time it travels from one cell to another.</remarks>
@@ -64,8 +64,8 @@ public class GridManager : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-        rows = 10;
-        cols = 10;
+        rows = 20;
+        cols = 20;
         tileSize = 110F;
         totalAntennas = 0;
         simulationModeSelected = "coverage";
@@ -88,9 +88,6 @@ public class GridManager : MonoBehaviour
 
         float ratio = (Screen.height - 100) / (rows * tileSize);
         gridScale = new Vector3(ratio, ratio, 1f);
-
-
-        Debug.Log("Height: " + Screen.height);
 
         GenerateGrid();
         CenterGrid();
@@ -709,6 +706,7 @@ public class GridManager : MonoBehaviour
         Origin originDirection = (Origin)cell.GetSignalDir().originCell.GetSignalDir();
         Renderer arrowRenderer = arrow.transform.GetChild(0).GetComponent<Renderer>();
 
+
         if (networkFlowColorsActive)
         {
             arrowRenderer.material.SetColor("_Color", Network.networkFlowColors[originDirection.networkFlowColorIndex]);
@@ -727,6 +725,9 @@ public class GridManager : MonoBehaviour
 
         var rotation = new Vector3(0, 0, cell.GetSignalDir().GetDirectionInDegrees(cell.GetSignalDirDiagonal()));
         arrow.transform.Rotate(rotation);
+
+        arrow.transform.localScale = new Vector3(.25f, .25f, 1f);
+
 
     }
 

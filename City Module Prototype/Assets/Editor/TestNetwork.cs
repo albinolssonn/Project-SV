@@ -9,6 +9,85 @@ public class TestNetwork
     private readonly double heightPenalty = GridManager.heightPenalty;
 
 
+    [Test]
+    public void EmptyGrid_Test()
+    {
+        Network network = new Network(baseStationStr, distancePenalty, heightPenalty);
+        int rows = 7;
+        int cols = 7;
+        Cell[,] gridArray = GridUtils.BuildArray(rows, cols);
+
+        gridArray[3, 3].AddCellContent(new Antenna());
+
+        List<Cell> antennaCells = new List<Cell> { gridArray[3, 3] };
+
+        network.BuildEntireNetwork(gridArray, antennaCells);
+
+        for (int row = 0; row < rows; row++)
+        {
+            Debug.Log(gridArray[row, 0].GetSignalStr() + "   " + gridArray[row, 1].GetSignalStr() + "   " + gridArray[row, 2].GetSignalStr() + "   " + gridArray[row, 3].GetSignalStr() + "   " + gridArray[row, 4].GetSignalStr() + "   " + gridArray[row, 5].GetSignalStr() + "   " + gridArray[row, 6].GetSignalStr());
+        }
+
+
+        Assert.AreEqual(6, gridArray[0, 0].GetSignalStr());
+        Assert.AreEqual(6, gridArray[0, 1].GetSignalStr());
+        Assert.AreEqual(7, gridArray[0, 2].GetSignalStr());
+        Assert.AreEqual(7, gridArray[0, 3].GetSignalStr());
+        Assert.AreEqual(7, gridArray[0, 4].GetSignalStr());
+        Assert.AreEqual(6, gridArray[0, 5].GetSignalStr());
+        Assert.AreEqual(6, gridArray[0, 6].GetSignalStr());
+
+        Assert.AreEqual(6, gridArray[1, 0].GetSignalStr());
+        Assert.AreEqual(7, gridArray[1, 1].GetSignalStr());
+        Assert.AreEqual(8, gridArray[1, 2].GetSignalStr());
+        Assert.AreEqual(8, gridArray[1, 3].GetSignalStr());
+        Assert.AreEqual(8, gridArray[1, 4].GetSignalStr());
+        Assert.AreEqual(7, gridArray[1, 5].GetSignalStr());
+        Assert.AreEqual(6, gridArray[1, 6].GetSignalStr());
+
+        Assert.AreEqual(7, gridArray[2, 0].GetSignalStr());
+        Assert.AreEqual(8, gridArray[2, 1].GetSignalStr());
+        Assert.AreEqual(9, gridArray[2, 2].GetSignalStr());
+        Assert.AreEqual(9, gridArray[2, 3].GetSignalStr());
+        Assert.AreEqual(9, gridArray[2, 4].GetSignalStr());
+        Assert.AreEqual(8, gridArray[2, 5].GetSignalStr());
+        Assert.AreEqual(7, gridArray[2, 6].GetSignalStr());
+
+        Assert.AreEqual(7, gridArray[3, 0].GetSignalStr());
+        Assert.AreEqual(8, gridArray[3, 1].GetSignalStr());
+        Assert.AreEqual(9, gridArray[3, 2].GetSignalStr());
+        Assert.AreEqual(10, gridArray[3, 3].GetSignalStr());
+        Assert.AreEqual(9, gridArray[3, 4].GetSignalStr());
+        Assert.AreEqual(8, gridArray[3, 5].GetSignalStr());
+        Assert.AreEqual(7, gridArray[3, 6].GetSignalStr());
+
+        Assert.AreEqual(7, gridArray[4, 0].GetSignalStr());
+        Assert.AreEqual(8, gridArray[4, 1].GetSignalStr());
+        Assert.AreEqual(9, gridArray[4, 2].GetSignalStr());
+        Assert.AreEqual(9, gridArray[4, 3].GetSignalStr());
+        Assert.AreEqual(9, gridArray[4, 4].GetSignalStr());
+        Assert.AreEqual(8, gridArray[4, 5].GetSignalStr());
+        Assert.AreEqual(7, gridArray[4, 6].GetSignalStr());
+
+        Assert.AreEqual(6, gridArray[5, 0].GetSignalStr());
+        Assert.AreEqual(7, gridArray[5, 1].GetSignalStr());
+        Assert.AreEqual(8, gridArray[5, 2].GetSignalStr());
+        Assert.AreEqual(8, gridArray[5, 3].GetSignalStr());
+        Assert.AreEqual(8, gridArray[5, 4].GetSignalStr());
+        Assert.AreEqual(7, gridArray[5, 5].GetSignalStr());
+        Assert.AreEqual(6, gridArray[5, 6].GetSignalStr());
+
+        Assert.AreEqual(6, gridArray[6, 0].GetSignalStr());
+        Assert.AreEqual(6, gridArray[6, 1].GetSignalStr());
+        Assert.AreEqual(7, gridArray[6, 2].GetSignalStr());
+        Assert.AreEqual(7, gridArray[6, 3].GetSignalStr());
+        Assert.AreEqual(7, gridArray[6, 4].GetSignalStr());
+        Assert.AreEqual(6, gridArray[6, 5].GetSignalStr());
+        Assert.AreEqual(6, gridArray[6, 6].GetSignalStr());
+
+
+    }
+
 
     [Test]
     public void TwoAntennas_Test()
@@ -40,7 +119,6 @@ public class TestNetwork
         for (int row = 0; row < rows; row++)
         {
             Debug.Log(gridArray[row, 0].GetSignalStr() + "   " + gridArray[row, 1].GetSignalStr() + "   " + gridArray[row, 2].GetSignalStr() + "   " + gridArray[row, 3].GetSignalStr() + "   " + gridArray[row, 4].GetSignalStr() + "   " + gridArray[row, 5].GetSignalStr());
-
         }
 
 
@@ -56,7 +134,7 @@ public class TestNetwork
         Assert.AreEqual(10, gridArray[1, 2].GetSignalStr());
         Assert.AreEqual(9, gridArray[1, 3].GetSignalStr());
         Assert.AreEqual(4, gridArray[1, 4].GetSignalStr());
-        Assert.AreEqual(4, gridArray[1, 5].GetSignalStr());
+        Assert.AreEqual(3, gridArray[1, 5].GetSignalStr());
 
         Assert.AreEqual(9, gridArray[2, 0].GetSignalStr());
         Assert.AreEqual(9, gridArray[2, 1].GetSignalStr());
@@ -76,7 +154,7 @@ public class TestNetwork
         Assert.AreEqual(9, gridArray[4, 1].GetSignalStr());
         Assert.AreEqual(8, gridArray[4, 2].GetSignalStr());
         Assert.AreEqual(7, gridArray[4, 3].GetSignalStr());
-        Assert.AreEqual(7, gridArray[4, 4].GetSignalStr());
+        Assert.AreEqual(6, gridArray[4, 4].GetSignalStr());
         Assert.AreEqual(5, gridArray[4, 5].GetSignalStr());
 
     }
@@ -215,7 +293,7 @@ public class TestNetwork
         Assert.AreEqual(5, gridArray[3, 0].GetSignalStr());
         Assert.AreEqual(5, gridArray[3, 1].GetSignalStr());
         Assert.AreEqual(8, gridArray[3, 2].GetSignalStr());
-        Assert.AreEqual(8, gridArray[3, 3].GetSignalStr());
+        Assert.AreEqual(7, gridArray[3, 3].GetSignalStr());
 
     }
 
@@ -265,7 +343,7 @@ public class TestNetwork
 
         Assert.AreEqual(3, gridArray[0, 0].GetSignalStr());
         Assert.AreEqual(5, gridArray[0, 1].GetSignalStr());
-        Assert.AreEqual(5, gridArray[0, 2].GetSignalStr());
+        Assert.AreEqual(4, gridArray[0, 2].GetSignalStr());
 
         Assert.AreEqual(9, gridArray[1, 0].GetSignalStr());
         Assert.AreEqual(9, gridArray[1, 1].GetSignalStr());
