@@ -103,7 +103,6 @@ public class GridManager : MonoBehaviour
         informationScript = GameObject.Find("Information_Label").GetComponent<InformationScript>();
 
 
-        transform.localScale = gridScale;
         UpdateNetwork();
 
     }
@@ -154,6 +153,19 @@ public class GridManager : MonoBehaviour
         finalPosition[0] = finalPosition[0] + gridHeight / 2;
 
         transform.localPosition = new Vector2(finalPosition[1], finalPosition[0]);
+
+        ScaleGrid();
+    }
+
+
+    /// <summary>
+    /// Scales the grid to fix the height of the screen.
+    /// </summary>
+    private void ScaleGrid()
+    {
+        float ratio = (Screen.height - 100) / (rows * tileSize);
+        gridScale = new Vector3(ratio, ratio, 1f);
+        transform.localScale = gridScale;
     }
 
 
