@@ -9,7 +9,9 @@ public class PauseMenu : MonoBehaviour
 
     public GameObject pauseMenuUi;
     public GameObject informationPageUi;
+    public GameObject gridSizeUi;
     public GameObject settingsPageUi;
+    public GameObject prebuiltCityUi;
 
     // Update is called once per frame
     public void Update()
@@ -64,6 +66,29 @@ public class PauseMenu : MonoBehaviour
     {
         settingsPageUi.SetActive(false);
         pauseMenuUi.SetActive(true);
+    }
+
+    public void GridSizePage()
+    {
+        gridSizeUi.SetActive(true);
+        settingsPageUi.SetActive(false);
+    }
+
+    public void CloseGridSizePage()
+    {
+        gridSizeUi.SetActive(false);
+        settingsPageUi.SetActive(true);
+    }
+    public void PreCityPage()
+    {
+        prebuiltCityUi.SetActive(true);
+        settingsPageUi.SetActive(false);
+    }
+
+    public void ClosePreCityPage()
+    {
+        prebuiltCityUi.SetActive(false);
+        settingsPageUi.SetActive(true);
     }
 
     public void Reset_btn()
