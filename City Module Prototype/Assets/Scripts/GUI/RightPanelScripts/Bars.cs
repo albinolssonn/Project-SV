@@ -5,15 +5,15 @@ using UnityEngine.UI;
 /// <summary>
 /// Contains the functionality of statistic bars visualized.
 /// </summary>
-public abstract class Bars : MonoBehaviour
+public abstract class Bars : MonoBehaviour 
 {
     public Slider slider;
     public TMP_Text text;
 
 
-    public void Start()
+    protected void SetMaxValue(float max)
     {
-        slider.maxValue = (float)GridManager.baseSignalStr;
+        slider.maxValue = max;
     }
 
     /// <summary>
