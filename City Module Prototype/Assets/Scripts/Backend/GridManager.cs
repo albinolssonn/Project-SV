@@ -92,10 +92,10 @@ public class GridManager : MonoBehaviour
         GenerateGrid();
         CenterGrid();
 
-        coverageBarScript.SetCoverage(0, colors["coverage"]);
-        capacityBarScript.SetCapacity(0, colors["capacity"]);
-        criticalCoverageScript.SetCoverage(0, colors["coverage"]);
-        criticalCapacityScript.SetCapacity(0, colors["capacity"]);
+        coverageBarScript.SetValue(0, colors["coverage"]);
+        capacityBarScript.SetValue(0, colors["capacity"]);
+        criticalCoverageScript.SetValue(0, colors["coverage"]);
+        criticalCapacityScript.SetValue(0, colors["capacity"]);
 
         antennaStatistics.setAntennaStatistics(totalAntennas, 0);
 
@@ -252,8 +252,8 @@ public class GridManager : MonoBehaviour
                 criticalCapacityCount = 1;
             }
 
-            criticalCoverageScript.SetCoverage(criticalCoverage / criticalCoverageCount, colors["coverage"]);
-            criticalCapacityScript.SetCapacity(criticalCapacity / criticalCapacityCount, colors["capacity"]);
+            criticalCoverageScript.SetValue(criticalCoverage / criticalCoverageCount, colors["coverage"]);
+            criticalCapacityScript.SetValue(criticalCapacity / criticalCapacityCount, colors["capacity"]);
 
         }
 
@@ -558,11 +558,11 @@ public class GridManager : MonoBehaviour
 
         if (criticalMode)
         {
-            criticalCoverageScript.SetCoverage(criticalCoverage / criticalCount, colors["coverage"]);
-            criticalCapacityScript.SetCapacity(criticalCapacity / criticalCount, colors["capacity"]);
+            criticalCoverageScript.SetValue(criticalCoverage / criticalCount, colors["coverage"]);
+            criticalCapacityScript.SetValue(criticalCapacity / criticalCount, colors["capacity"]);
         }
-        coverageBarScript.SetCoverage(totalCoverage / totalCount, colors["coverage"]);
-        capacityBarScript.SetCapacity(totalCapacity / totalCapacityCount, colors["capacity"]);
+        coverageBarScript.SetValue(totalCoverage / totalCount, colors["coverage"]);
+        capacityBarScript.SetValue(totalCapacity / totalCapacityCount, colors["capacity"]);
         antennaStatistics.setAntennaStatistics(totalAntennas, maxAntennas);
     }
 
