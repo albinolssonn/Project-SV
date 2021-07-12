@@ -12,7 +12,7 @@ public class GridManager : MonoBehaviour
     private float tileSize;
     private Module toBePlaced;
     private Module toBeRemoved;
-    private Vector3 newScale;
+    private Vector3 gridScale;
     private Network network;
     private Cell[,] gridArray;
     private List<GameObject> networkFlowVisuals;
@@ -84,8 +84,13 @@ public class GridManager : MonoBehaviour
         network = new Network(baseSignalStr, distancePenalty, heightPenalty);
         gridArray = GridUtils.BuildArray(rows, cols);
         antennaCells = new List<Cell>();
-        //newScale = new Vector3(0.6f, 0.6f, 1f);
-        newScale = new Vector3(1f, 1f, 1f);
+
+
+        float ratio = (Screen.height - 100) / (rows * tileSize);
+        gridScale = new Vector3(ratio, ratio, 1f);
+
+
+        Debug.Log("Height: " + Screen.height);
 
         GenerateGrid();
         CenterGrid();
@@ -100,7 +105,7 @@ public class GridManager : MonoBehaviour
         informationScript = GameObject.Find("Information_Label").GetComponent<InformationScript>();
 
 
-        transform.localScale = newScale;
+        transform.localScale = gridScale;
         UpdateNetwork();
     }
 
@@ -139,7 +144,7 @@ public class GridManager : MonoBehaviour
     {
         transform.parent.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
 
-        var scaledTileSize = tileSize * newScale[0];
+        var scaledTileSize = tileSize * gridScale[0];
 
         float[] finalPosition = new float[2] { -scaledTileSize, 0 };
 
@@ -778,12 +783,18 @@ public class GridManager : MonoBehaviour
     }
 
 
-    public void SetNewGridSize(int rows, int cols)
+    public void SetNewGridSize(int newRows, int newCols)
     {
-        this.rows = rows;
-        this.cols = cols;
+        rows = newRows;
+        cols = newCols;
         gridArray = GridUtils.ResizeGrid(gridArray, rows, cols, out antennaCells);
         totalAntennas = 0;
+
+        float ratio = (Screen.height - 100) / (rows * tileSize);
+        gridScale = new Vector3(ratio, ratio, 1f);
+
+        transform.localScale = gridScale;
+
         DestroyGrid();
         GenerateGrid();
         UpdateNetwork();
