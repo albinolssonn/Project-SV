@@ -31,9 +31,41 @@ public class ToggleScript : MonoBehaviour
 
     public void CriticalMode()
     {
-        bool value = gridManager.ToggleCritical();
-        criticalCoverageBar.SetActive(value);
-        criticalCapacityBar.SetActive(value);
+        bool toggle = gridManager.ToggleCritical();
+
+        switch (gridManager.GetSimulationMode())
+        {
+            case "coverage":
+                if (toggle)
+                {
+                    criticalCoverageBar.SetActive(true);
+                    criticalCapacityBar.SetActive(false);
+                }
+                else
+                {
+                    criticalCoverageBar.SetActive(false);
+                    criticalCapacityBar.SetActive(false);
+                }
+                
+                break;
+
+            case "capacity":
+                if (toggle)
+                {
+                    criticalCapacityBar.SetActive(true);
+                    criticalCoverageBar.SetActive(false);
+                }
+                else
+                {
+                    criticalCapacityBar.SetActive(false);
+                    criticalCoverageBar.SetActive(false);
+                }
+                
+                break;
+
+            default:
+                throw new System.Exception("This should be unreachable.");
+        }
 
     }
 

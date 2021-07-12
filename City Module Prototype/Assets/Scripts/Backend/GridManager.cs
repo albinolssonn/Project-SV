@@ -843,4 +843,14 @@ public class GridManager : MonoBehaviour
         informationScript.SetInformationText(error);
     }
 
+    public string GetSimulationMode()
+    {
+        return simulationModeSelected; 
+    }
+
+    public bool GetCriticalMode()
+    {
+        return criticalMode; 
+    }
+
 }
