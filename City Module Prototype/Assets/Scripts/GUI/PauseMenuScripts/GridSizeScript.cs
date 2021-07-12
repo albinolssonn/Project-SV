@@ -6,6 +6,8 @@ public class GridSizeScript : MonoBehaviour
 {
     public TMP_InputField rows_input;
     public TMP_InputField cols_input;
+    public GameObject pauseMenuUi;
+    public GameObject settingsPageUi; 
 
     private GridManager gridManager;
 
@@ -33,6 +35,10 @@ public class GridSizeScript : MonoBehaviour
         rows_input.text = "";
         cols_input.text = "";
         gridManager.SetNewGridSize(rows, cols);
+
+        pauseMenuUi.SetActive(true);
+        settingsPageUi.SetActive(false); 
+        
 
     }
 }
