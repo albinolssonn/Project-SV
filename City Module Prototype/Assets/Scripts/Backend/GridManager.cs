@@ -62,7 +62,7 @@ public class GridManager : MonoBehaviour
 
 
     // Start is called before the first frame update
-    private void Start()
+    public void Start()
     {
         rows = 10;
         cols = 10;
@@ -84,8 +84,8 @@ public class GridManager : MonoBehaviour
         network = new Network(baseSignalStr, distancePenalty, heightPenalty);
         gridArray = GridUtils.BuildArray(rows, cols);
         antennaCells = new List<Cell>();
-        newScale = new Vector3(0.6f, 0.6f, 1f);
-        //newScale = new Vector3(1f, 1f, 1f);
+        //newScale = new Vector3(0.6f, 0.6f, 1f);
+        newScale = new Vector3(1f, 1f, 1f);
 
         GenerateGrid();
         CenterGrid();
@@ -106,7 +106,7 @@ public class GridManager : MonoBehaviour
 
 
     // Update is called once per frame. It checks if the mouse has been clicked to place down a module.
-    private void Update()
+    public void Update()
     {
 
         if (!Input.GetKey(KeyCode.LeftShift) && shiftHeldDown)
@@ -203,25 +203,41 @@ public class GridManager : MonoBehaviour
 
         if (criticalMode)
         {
-            float criticalCount = 0;
-            float criticalTotal = 0;
+            float criticalCoverageCount = 0;
+            float criticalCapacityCount = 0;
+
+            float criticalCoverage = 0;
+            float criticalCapacity = 0;
 
             foreach (Cell cell in gridArray)
             {
                 if (cell.HasCriticalModule())
                 {
-                    criticalCount++;
-                    criticalTotal += (float)cell.GetSignalStr();
+                    criticalCoverageCount++;
+                    criticalCoverage += (float)cell.GetSignalStr();
+
+                    if(cell.GetAvailableCapacity() < baseCapacity)
+                    {
+                        criticalCapacityCount++;
+                        criticalCapacity += (float)cell.GetAvailableCapacity();
+                    }
+
                 }
             }
 
-            if (criticalCount == 0)
+            if (criticalCoverageCount == 0)
             {
-                criticalTotal = 0;
-                criticalCount = 1;
+                criticalCoverage = 0;
+                criticalCoverageCount = 1;
+            }
+            if(criticalCapacityCount == 0)
+            {
+                criticalCapacity = 0;
+                criticalCapacityCount = 1;
             }
 
-            criticalCoverageScript.SetCoverage(criticalTotal / criticalCount, colors["coverage"]);
+            criticalCoverageScript.SetCoverage(criticalCoverage / criticalCoverageCount, colors["coverage"]);
+            criticalCapacityScript.SetCapacity(criticalCapacity / criticalCapacityCount, colors["capacity"]);
 
         }
 
@@ -343,7 +359,7 @@ public class GridManager : MonoBehaviour
 
         GameObject tmpObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()), gridArray[y, x].GetTile().transform.position, Quaternion.identity);
         tmpObject.transform.SetParent(gridArray[y, x].GetTile().transform);
-        tmpObject.transform.localScale = newScale;
+        tmpObject.transform.localScale = new Vector3(0.5f, 0.5f, 1);
         toBePlaced.visualObject = tmpObject;
 
         SetLayerRecursive(tmpObject, LayerMask.NameToLayer("Module"));
