@@ -1113,9 +1113,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'This is information text about the Antennas
-
-'
+  m_text: "This is a measure of the amount of antennas that's placed in the city.
+    If the \"Limited Antennas\" mode is chosen, this section also shows how many
+    antenans that's placed set to the limitation. \n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1565,8 +1565,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -162, y: -193.36}
-  m_SizeDelta: {x: 255.8305, y: 100}
+  m_AnchoredPosition: {x: -162, y: -301.891}
+  m_SizeDelta: {x: 255, y: 317}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &272227900
 GameObject:
@@ -1912,9 +1912,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'This is information text about Critical Capaciaty
-
-'
+  m_text: Critical Capacity is a measure of how big amount of traffic that a network
+    can handle at any given time regarding to the critical infrastructure such as
+    hospitals, police stations and fire stations.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3635,8 +3635,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -162, y: -130}
-  m_SizeDelta: {x: 255.8305, y: 100}
+  m_AnchoredPosition: {x: -162, y: -189}
+  m_SizeDelta: {x: 255.8305, y: 218}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &572935875
 GameObject:
@@ -3927,8 +3927,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0013351, y: 0}
-  m_SizeDelta: {x: 255.83, y: 100}
+  m_AnchoredPosition: {x: 0.00024414062, y: 0.000015259}
+  m_SizeDelta: {x: 255.83, y: 325}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &605242411
 MonoBehaviour:
@@ -4424,8 +4424,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0013351, y: 0}
-  m_SizeDelta: {x: 255.83, y: 100}
+  m_AnchoredPosition: {x: -0.00024414, y: -0.52645}
+  m_SizeDelta: {x: 255, y: 298}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &724313572
 MonoBehaviour:
@@ -4499,8 +4499,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -162, y: -248}
-  m_SizeDelta: {x: 255.8305, y: 100}
+  m_AnchoredPosition: {x: -162, y: -359.19092}
+  m_SizeDelta: {x: 255, y: 322}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &738393450
 GameObject:
@@ -5022,8 +5022,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -162, y: -193}
-  m_SizeDelta: {x: 255.8305, y: 100}
+  m_AnchoredPosition: {x: -162, y: -292.57062}
+  m_SizeDelta: {x: 255.8305, y: 299.1414}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &854610108
 GameObject:
@@ -5059,8 +5059,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 0, y: -0.000010967}
+  m_SizeDelta: {x: 200, y: 158.5311}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &854610110
 MonoBehaviour:
@@ -5082,7 +5082,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: This is information text about Coverage
+  m_text: 'Signal coverage is a measure of the area in the city that''s covered by
+    the telecom network and how strong the given signal is. '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6501,8 +6502,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0013351, y: 0}
-  m_SizeDelta: {x: 255.83, y: 100}
+  m_AnchoredPosition: {x: -0.00024414, y: -0.000010967}
+  m_SizeDelta: {x: 255.83, y: 218}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1056895003
 MonoBehaviour:
@@ -8416,8 +8417,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0013351, y: 0}
-  m_SizeDelta: {x: 255.83, y: 100}
+  m_AnchoredPosition: {x: -0.0013351, y: -0.0000076293945}
+  m_SizeDelta: {x: 255.83, y: 317.06}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1315955060
 MonoBehaviour:
@@ -9657,8 +9658,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -6.2573e-10, y: -0.00001049}
+  m_SizeDelta: {x: 200, y: 295}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1530399543
 MonoBehaviour:
@@ -9680,7 +9681,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'This is information text about Capaciaty
+  m_text: 'Network capacity is the amount of traffic that a network can handle at
+    any given time. This includes the number of simultaneous voice calls and maximum
+    data speeds. Capacity varies by area.
 
 '
   m_isRightToLeft: 0
@@ -10257,8 +10260,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0013351, y: 0}
-  m_SizeDelta: {x: 255.83, y: 100}
+  m_AnchoredPosition: {x: -0.0013351, y: 0.00045776}
+  m_SizeDelta: {x: 255.83, y: 322.38}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1681371908
 MonoBehaviour:
@@ -11297,8 +11300,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -162, y: -130}
-  m_SizeDelta: {x: 255.8305, y: 100}
+  m_AnchoredPosition: {x: -162, y: -241.81989}
+  m_SizeDelta: {x: 255.8305, y: 325}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1765709223
 GameObject:
@@ -13997,8 +14000,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 0, y: -0.0000017881}
+  m_SizeDelta: {x: 200, y: 245}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2104207296
 MonoBehaviour:
@@ -14020,7 +14023,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "This is information text about Critical \nCoverage"
+  m_text: 'Critical Signal Coverage is a measure of how the given antennas manages
+    to give signal to the critical infrastructure as hospitals, police stations and
+    fire stations. '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
