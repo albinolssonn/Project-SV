@@ -86,24 +86,19 @@ public class GridManager : MonoBehaviour
         gridArray = GridUtils.BuildArray(rows, cols);
         antennaCells = new List<Cell>();
 
-
-        
-
         GenerateGrid();
         CenterGrid();
 
-        coverageBarScript.SetValue(0, colors["coverage"]);
-        //capacityBarScript.SetValue(0, colors["capacity"]);
-        criticalCoverageScript.SetValue(0, colors["coverage"]);
-        criticalCapacityScript.SetValue(0, colors["capacity"]);
+        coverageBarScript.Init(colors["coverage"]);
+        capacityBarScript.Init(colors["capacity"]);
+        criticalCoverageScript.Init(colors["coverage"]);
+        criticalCapacityScript.Init(colors["capacity"]);
 
         antennaStatistics.setAntennaStatistics(totalAntennas, 0);
 
         informationScript = GameObject.Find("Information_Label").GetComponent<InformationScript>();
 
-
         UpdateNetwork();
-
     }
 
 
@@ -162,7 +157,7 @@ public class GridManager : MonoBehaviour
     /// </summary>
     private void ScaleGrid()
     {
-        float ratio = (Screen.height - 100) / (rows * tileSize);
+        float ratio = (Screen.height - 100) / (System.Math.Max(rows, cols) * tileSize);
         gridScale = new Vector3(ratio, ratio, 1f);
         transform.localScale = gridScale;
 
@@ -889,6 +884,7 @@ public class GridManager : MonoBehaviour
         {
             SetTileColor(cell);
         }
+
     }
 
 

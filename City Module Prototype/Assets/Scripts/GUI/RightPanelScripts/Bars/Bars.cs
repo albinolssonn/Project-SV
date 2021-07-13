@@ -11,6 +11,10 @@ public abstract class Bars : MonoBehaviour
     public TMP_Text text;
 
 
+    /// <summary>
+    /// Sets the max value the slider should have.
+    /// </summary>
+    /// <param name="max">The max value to set.</param>
     protected void SetMaxValue(float max)
     {
         slider.maxValue = max;
@@ -31,4 +35,10 @@ public abstract class Bars : MonoBehaviour
         slider.transform.GetChild(2).GetComponent<Image>().color = new Color(rgbt[0], rgbt[1], rgbt[2], 1f);
 
     }
+
+
+    /// <summary>
+    /// Used to initialize the bar. Should be called at the start of the program.
+    /// </summary>
+    public abstract void Init(Colors color);
 }
