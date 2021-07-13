@@ -7,11 +7,11 @@ public class GridSizeScript : MonoBehaviour
     public TMP_InputField rows_input;
     public TMP_InputField cols_input;
     public GameObject gridSizeUi;
-    public GameObject settingsPageUi; 
+    public GameObject settingsPageUi;
 
     private GridManager gridManager;
 
-    private void Start()
+    public void Start()
     {
         gridManager = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
     }

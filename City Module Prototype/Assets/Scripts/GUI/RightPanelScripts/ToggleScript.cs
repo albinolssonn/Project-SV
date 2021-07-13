@@ -46,7 +46,7 @@ public class ToggleScript : MonoBehaviour
                     criticalCoverageBar.SetActive(false);
                     criticalCapacityBar.SetActive(false);
                 }
-                
+
                 break;
 
             case "capacity":
@@ -60,7 +60,7 @@ public class ToggleScript : MonoBehaviour
                     criticalCapacityBar.SetActive(false);
                     criticalCoverageBar.SetActive(false);
                 }
-                
+
                 break;
 
             default:

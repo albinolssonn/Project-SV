@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PreBuiltScript : MonoBehaviour
@@ -12,7 +10,7 @@ public class PreBuiltScript : MonoBehaviour
 
     public void Start()
     {
-        grid =  GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
+        grid = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
     }
 
     public void PreCofigBtn1()

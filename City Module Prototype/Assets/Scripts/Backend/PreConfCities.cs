@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public static class PreConfCities
 {
 
@@ -99,17 +94,17 @@ public static class PreConfCities
         config[0, 1].AddCellContent(new Park());
         config[0, 2].AddCellContent(new Park());
         config[0, 3].AddCellContent(new TallBuilding());
-        
+
         config[1, 0].AddCellContent(new PoliceStation());
         config[1, 1].AddCellContent(new Hospital());
         config[1, 2].AddCellContent(new Park());
         config[1, 3].AddCellContent(new FireDepartment());
-        
+
         config[2, 0].AddCellContent(new House());
         config[2, 1].AddCellContent(new Park());
         config[2, 2].AddCellContent(new Park());
         config[2, 3].AddCellContent(new TallBuilding());
-        
+
         config[3, 0].AddCellContent(new House());
         config[3, 1].AddCellContent(new House());
         config[3, 2].AddCellContent(new TallBuilding());
@@ -156,7 +151,7 @@ public static class PreConfCities
         config[0, 7].AddCellContent(new House());
         config[0, 8].AddCellContent(new House());
         config[0, 9].AddCellContent(new House());
-        
+
         config[1, 0].AddCellContent(new House());
         config[1, 1].AddCellContent(new PoliceStation());
         config[1, 2].AddCellContent(new House());
@@ -178,7 +173,7 @@ public static class PreConfCities
         config[2, 7].AddCellContent(new Park());
         config[2, 8].AddCellContent(new Park());
         config[2, 9].AddCellContent(new TallBuilding());
-        
+
         config[3, 0].AddCellContent(new TallBuilding());
         config[3, 1].AddCellContent(new FireDepartment());
         config[3, 2].AddCellContent(new TallBuilding());

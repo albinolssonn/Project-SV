@@ -21,22 +21,22 @@ public class PauseMenu : MonoBehaviour
         {
             if (GameIsPaused)
             {
-                switch (pausedOnLayer) 
+                switch (pausedOnLayer)
                 {
                     case 0:
-                        Resume(); 
+                        Resume();
                         break;
 
                     case 1:
                         CloseInformationPage();
                         CloseSettingsPage();
-                        pausedOnLayer = 0; 
+                        pausedOnLayer = 0;
                         break;
 
                     case 2:
                         ClosePreCityPage();
                         CloseGridSizePage();
-                        pausedOnLayer = 1; 
+                        pausedOnLayer = 1;
                         break;
 
                     default:

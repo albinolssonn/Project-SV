@@ -46,7 +46,7 @@ public static class GridUtils
                 {
                     newArray[row, col] = oldArray[row, col];
                     newArray[row, col].ResetSignalStr();
-                    if(newArray[row, col].HasAntenna())
+                    if (newArray[row, col].HasAntenna())
                     {
                         antennaCells.Add(newArray[row, col]);
                     }

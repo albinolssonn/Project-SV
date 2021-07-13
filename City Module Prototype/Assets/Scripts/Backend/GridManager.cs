@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 /// <summary>
@@ -227,7 +226,7 @@ public class GridManager : MonoBehaviour
                     criticalCoverageCount++;
                     criticalCoverage += (float)cell.GetSignalStr();
 
-                    if(cell.GetAvailableCapacity() < baseCapacity)
+                    if (cell.GetAvailableCapacity() < baseCapacity)
                     {
                         criticalCapacityCount++;
                         criticalCapacity += (float)cell.GetAvailableCapacity();
@@ -241,7 +240,7 @@ public class GridManager : MonoBehaviour
                 criticalCoverage = 0;
                 criticalCoverageCount = 1;
             }
-            if(criticalCapacityCount == 0)
+            if (criticalCapacityCount == 0)
             {
                 criticalCapacity = 0;
                 criticalCapacityCount = 1;
@@ -896,19 +895,19 @@ public class GridManager : MonoBehaviour
     {
         informationScript.SetInformationText(error);
     }
-    
-    
+
+
     /// <returns>The simulation mode currently selected.</returns>
     public string GetSimulationMode()
     {
-        return simulationModeSelected; 
+        return simulationModeSelected;
     }
 
 
     /// <returns>If Critical mode is active or not.</returns>
     public bool GetCriticalMode()
     {
-        return criticalMode; 
+        return criticalMode;
     }
 
 }

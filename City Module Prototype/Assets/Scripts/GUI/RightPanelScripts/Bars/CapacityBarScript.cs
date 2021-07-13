@@ -1,5 +1,4 @@
 
-
 public class CapacityBarScript : Bars
 {
     public override void Init(Colors color)

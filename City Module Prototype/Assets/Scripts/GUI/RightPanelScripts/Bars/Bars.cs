@@ -5,7 +5,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Contains the functionality of statistic bars visualized.
 /// </summary>
-public abstract class Bars : MonoBehaviour 
+public abstract class Bars : MonoBehaviour
 {
     public Slider slider;
     public TMP_Text text;
