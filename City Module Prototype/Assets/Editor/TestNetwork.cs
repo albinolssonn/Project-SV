@@ -10,7 +10,63 @@ public class TestNetwork
 
 
     [Test]
-    public void EmptyGrid_Test()
+    public void Capacity_Test()
+    {
+        Network network = new Network(baseStationStr, distancePenalty, heightPenalty);
+        int rows = 5;
+        int cols = 4;
+        Cell[,] gridArray = GridUtils.BuildArray(rows, cols);
+
+        gridArray[0, 0].AddCellContent(new Antenna());
+
+        gridArray[1, 2].AddCellContent(new Park());
+        gridArray[1, 3].AddCellContent(new TallBuilding());
+
+        gridArray[2, 0].AddCellContent(new Antenna());
+        gridArray[2, 1].AddCellContent(new Park());
+        gridArray[2, 2].AddCellContent(new Park());
+        gridArray[2, 3].AddCellContent(new TallBuilding());
+        gridArray[2, 3].AddCellContent(new Antenna());
+
+        gridArray[3, 2].AddCellContent(new Park());
+        gridArray[3, 3].AddCellContent(new TallBuilding());
+
+        gridArray[4, 0].AddCellContent(new Antenna());
+        gridArray[4, 0].AddCellContent(new House());
+
+        List<Cell> antennaCells = new List<Cell> { gridArray[0, 0], gridArray[2, 0], gridArray[2, 3], gridArray[4, 0] };
+
+        network.BuildEntireNetwork(gridArray, antennaCells);
+
+        for (int row = 0; row < rows; row++)
+        {
+            Debug.Log(gridArray[row, 0].GetAvailableCapacity() + "   " + gridArray[row, 1].GetAvailableCapacity() + "   " + gridArray[row, 2].GetAvailableCapacity() + "   " + gridArray[row, 3].GetAvailableCapacity());
+        }
+
+        Cell[] antennas = new Cell[4];
+        antennas[0] = gridArray[0, 0];
+        antennas[1] = gridArray[2, 0];
+        antennas[2] = gridArray[2, 3];
+        antennas[3] = gridArray[4, 0];
+
+        double[] demands = new double[4];
+        demands[0] = 0;
+        demands[1] = new Park().CapacityDemand();
+        demands[2] = 3 * new Park().CapacityDemand() + 3 * new TallBuilding().CapacityDemand();
+        demands[3] = new House().CapacityDemand();
+
+        Assert.AreEqual(GridManager.baseCapacity - demands[0], antennas[0].GetAvailableCapacity());
+        Assert.AreEqual(GridManager.baseCapacity - demands[1], antennas[1].GetAvailableCapacity());
+        Assert.AreEqual(GridManager.baseCapacity - demands[2], antennas[2].GetAvailableCapacity());
+        Assert.AreEqual(GridManager.baseCapacity - demands[3], antennas[3].GetAvailableCapacity());
+
+
+
+    }
+
+
+    [Test]
+    public void CoverageEmptyGrid_Test()
     {
         Network network = new Network(baseStationStr, distancePenalty, heightPenalty);
         int rows = 7;
@@ -90,7 +146,7 @@ public class TestNetwork
 
 
     [Test]
-    public void TwoAntennas_Test()
+    public void CoverageTwoAntennas_Test()
     {
         Network network = new Network(baseStationStr, distancePenalty, heightPenalty);
         int rows = 5;
@@ -160,7 +216,7 @@ public class TestNetwork
     }
 
     [Test]
-    public void SmallTown_Test1()
+    public void CoverageSmallTown_Test1()
     {
         Network network = new Network(baseStationStr, distancePenalty, heightPenalty);
         int rows = 3;
@@ -212,7 +268,7 @@ public class TestNetwork
     }
 
     [Test]
-    public void SmallTown_Test2()
+    public void CoverageSmallTown_Test2()
     {
         Network network = new Network(baseStationStr, distancePenalty, heightPenalty);
         int rows = 4;
@@ -298,7 +354,7 @@ public class TestNetwork
     }
 
     [Test]
-    public void Height_Test1()
+    public void CoverageHeight_Test1()
     {
 
         Network network = new Network(baseStationStr, distancePenalty, heightPenalty);
@@ -355,7 +411,7 @@ public class TestNetwork
     }
 
     [Test]
-    public void Height_Test2()
+    public void CoverageHeight_Test2()
     {
 
         Network network = new Network(baseStationStr, distancePenalty, heightPenalty);

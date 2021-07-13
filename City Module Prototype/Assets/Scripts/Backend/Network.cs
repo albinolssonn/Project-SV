@@ -82,9 +82,6 @@ public class Network
             startCell.SetSignalIfHigher(baseSignalStr, new Origin(startCell, NextColorIndex(), networkColorsOccurences, directions), false);
         }
 
-        startCell.GetAntenna().AddDemand(startCell.GetCapacityDemand());
-
-
         foreach (Direction direction in directions)
         {
             SetSignalRecursively(direction, startCell, startCell.GetSignalStr() - distancePenalty, 0);
