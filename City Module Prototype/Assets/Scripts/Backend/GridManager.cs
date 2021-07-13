@@ -152,7 +152,7 @@ public class GridManager : MonoBehaviour
 
 
     /// <summary>
-    /// Scales the grid to fix the height of the screen.
+    /// Scales the grid to fit the height of the screen.
     /// </summary>
     private void ScaleGrid()
     {
@@ -166,7 +166,7 @@ public class GridManager : MonoBehaviour
 
 
     /// <summary>
-    /// Toggles the visual of the network flow and then creates/removes the network flow visuals.
+    /// Toggles the visuals of the network flow and then creates/removes the network flow visuals.
     /// </summary>
     public void ToggleCreateNetworkArrows()
     {
@@ -204,7 +204,7 @@ public class GridManager : MonoBehaviour
 
 
     /// <summary>
-    /// Toggles if the gamification "Critical Coverage" is active or not.
+    /// Toggles if the gamification "Critical Mode" is active or not.
     /// </summary>
     /// <returns>The new state of the toggle.</returns>
     public bool ToggleCritical()
@@ -263,7 +263,7 @@ public class GridManager : MonoBehaviour
     /// When clicking a button to place a module, the module type to be placed should be set in the variable 'toBePlaced'.
     /// If one wants to place an Antenna, then set 'toBePlaced' to 'new Antenna()'.
     /// </summary>
-    /// <param name="toBePlaced">An instance of the Module one wants to place on the next mousclick.</param>
+    /// <param name="toBePlaced">An instance of the Module type one wants to be able to place.</param>
     public void SetToBePlaced(Module toBePlaced)
     {
         this.toBePlaced = toBePlaced;
@@ -272,8 +272,8 @@ public class GridManager : MonoBehaviour
 
 
     /// <summary>
-    /// When clicking a button to remove a module, the module type to be removed should be set in the variable 'toBeRemoved'.
-    /// If one wants to remove an Antenna, then set 'toBeRemoved' to 'new Antenna()'.
+    /// To remove a module, the module type to be removed should be set in the variable 'toBeRemoved'.
+    /// If one wants to remove a House, then set 'toBeRemoved' to 'new House()'.
     /// </summary>
     /// <param name="toBeRemoved">An instance of the Module one wants to remove on the next mousclick.</param>
     public void SetToBeRemoved(Module toBeRemoved)
@@ -283,7 +283,15 @@ public class GridManager : MonoBehaviour
 
 
     /// <summary>
-    /// Places a module on the clicked cell of the type that was set in the variable 'toBePlaced'.
+    /// 
+    /// </summary>
+    /// 
+    /// 
+    /// 
+
+
+    /// <summary>
+    /// Places a module of the type that was set in the variable 'toBePlaced' on the cell corresponding to the position given.
     /// </summary>
     /// <remarks>
     /// This method should only be called upon if the variable 'toBePlaced' has been set.
@@ -291,6 +299,8 @@ public class GridManager : MonoBehaviour
     /// <exception cref="System.ArgumentException">
     /// Throws if 'toBePlaced' has not been set.
     /// </exception>
+    /// <param name="y">The y-position of the cell to add the module to.</param>
+    /// <param name="x">The x-position of the cell to add the module to.</param>
     private void AddModule(int y, int x)
     {
         if (toBePlaced == null)
@@ -350,10 +360,10 @@ public class GridManager : MonoBehaviour
 
 
     /// <summary>
-    /// Places a GameObject of the module assigned to 'toBePlaced'.
+    /// Places a GameObject corresponding to the module assigned to 'toBePlaced'.
     /// </summary>
-    /// <param name="y">The y-coordinate for the cell to recieve the module.</param>
-    /// <param name="x">The x-coordinate for the cell to recieve the module.</param>
+    /// <param name="y">The y-coordinate of the cell to recieve the module.</param>
+    /// <param name="x">The x-coordinate of the cell to recieve the module.</param>
     /// <remarks>
     /// This method should only be called upon if the variable 'toBePlaced' has been set.
     /// </remarks>
@@ -379,7 +389,6 @@ public class GridManager : MonoBehaviour
             totalAntennas += 1;
         }
     }
-
 
 
     /// <summary>
@@ -445,10 +454,10 @@ public class GridManager : MonoBehaviour
 
 
     /// <summary>
-    /// Locates which cell corresponds to the mouse position and sets the out y and out x to the correct grid-coordinates.
+    /// Locates which cell corresponds to the mouse position and sets the out y and out x to the corresponding grid-coordinates.
     /// </summary>
-    /// <param name="y">This out variable will be set to the y coordinate of the grid corresponding to the position of the mouse.</param>
-    /// <param name="x">This out variable will be set to the x coordinate of the grid corresponding to the position of the mouse.</param>
+    /// <param name="y">This out variable will be set to the y-coordinate of the grid corresponding to the position of the mouse.</param>
+    /// <param name="x">This out variable will be set to the x-coordinate of the grid corresponding to the position of the mouse.</param>
     private void MouseToGridCoord(out int y, out int x)
     {
         Camera cam = Camera.main;
@@ -465,8 +474,8 @@ public class GridManager : MonoBehaviour
     /// Translates the world position to y- and x- coordinates.
     /// </summary>
     /// <param name="worldPosition">The position in world coordinates to be translated.</param>
-    /// <param name="y">This variable will be set to the y value of the grid corresponding to the position worldPosition.</param>
-    /// <param name="x">This variable will be set to the x value of the grid corresponding to the position worldPosition.</param>
+    /// <param name="y">This variable will be set to the y-coordinate of the grid corresponding to the position worldPosition.</param>
+    /// <param name="x">This variable will be set to the x-coordinate of the grid corresponding to the position worldPosition.</param>
     private void WorldPosToGridCoord(Vector3 worldPosition, out int y, out int x)
     {
         var tmp = transform.InverseTransformPoint(worldPosition);
@@ -485,7 +494,7 @@ public class GridManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Updates the network by rebuilding it using the Network class and then setting each tile to their correct color.
+    /// Updates the network by resetting and rebuilding it using the Network class and then setting each tile to their correct color and updating the statistics fields.
     /// </summary>
     public void UpdateNetwork()
     {
@@ -497,7 +506,9 @@ public class GridManager : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Updates the tile colors and the statistics fields.
+    /// </summary>
     private void UpdateStatistics()
     {
         float totalCoverage = 0;
@@ -564,7 +575,7 @@ public class GridManager : MonoBehaviour
 
 
     /// <summary>
-    /// Builds and displays the visual grid of tiles on the screen and stores them in their corresponding Cell object.
+    /// Builds and displays the visual grid of tiles from 'gridArray' on the screen and stores them in their corresponding Cell object.
     /// </summary>
     private void GenerateGrid()
     {

@@ -1,7 +1,15 @@
+/// <summary>
+/// This class contains different pre-configured cities one is able to load up in the program.
+/// </summary>
 public static class PreConfCities
 {
 
-
+    /// <summary>
+    /// One of several pre-configured cities to load up in the program.
+    /// </summary>
+    /// <param name="rows">This will be set to the number of rows of the resulting gridArray for the city.</param>
+    /// <param name="cols">This will be set to the number of columns of the resulting gridArray for the city.</param>
+    /// <returns>A gridArray of size (rows x cols) for the pre-configured city.</returns>
     public static Cell[,] GetConfig1(out int rows, out int cols)
     {
         rows = 7;
@@ -61,7 +69,12 @@ public static class PreConfCities
     }
 
 
-
+    /// <summary>
+    /// One of several pre-configured cities to load up in the program.
+    /// </summary>
+    /// <param name="rows">This will be set to the number of rows of the resulting gridArray for the city.</param>
+    /// <param name="cols">This will be set to the number of columns of the resulting gridArray for the city.</param>
+    /// <returns>A gridArray of size (rows x cols) for the pre-configured city.</returns>
     public static Cell[,] GetConfig2(out int rows, out int cols)
     {
         rows = 3;
@@ -84,6 +97,12 @@ public static class PreConfCities
     }
 
 
+    /// <summary>
+    /// One of several pre-configured cities to load up in the program.
+    /// </summary>
+    /// <param name="rows">This will be set to the number of rows of the resulting gridArray for the city.</param>
+    /// <param name="cols">This will be set to the number of columns of the resulting gridArray for the city.</param>
+    /// <returns>A gridArray of size (rows x cols) for the pre-configured city.</returns>
     public static Cell[,] GetConfig3(out int rows, out int cols)
     {
         rows = 8;
@@ -134,7 +153,12 @@ public static class PreConfCities
     }
 
 
-
+    /// <summary>
+    /// One of several pre-configured cities to load up in the program.
+    /// </summary>
+    /// <param name="rows">This will be set to the number of rows of the resulting gridArray for the city.</param>
+    /// <param name="cols">This will be set to the number of columns of the resulting gridArray for the city.</param>
+    /// <returns>A gridArray of size (rows x cols) for the pre-configured city.</returns>
     public static Cell[,] GetConfig4(out int rows, out int cols)
     {
         rows = 10;
@@ -254,9 +278,4 @@ public static class PreConfCities
 
         return config;
     }
-
-
-
-
-
 }

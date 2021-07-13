@@ -205,6 +205,9 @@ public class Network
 public abstract class Direction
 {
 
+    /// <summary>
+    /// The Cell from which this signal originates from.
+    /// </summary>
     public readonly Cell originCell;
 
     public Direction(Cell originCell)
@@ -214,7 +217,7 @@ public abstract class Direction
 
 
     /// <summary>
-    /// Checks if a signal can traverse from currentCell to nextCell.
+    /// Checks if the signal movement from currentCell to nextCell is diagonal.
     /// </summary>
     /// <param name="nextCell">The cell to travel to.</param>
     /// <param name="currentCell">The cell to travel from</param>
@@ -235,7 +238,7 @@ public abstract class Direction
 
 
     /// <summary>
-    /// Find all neighbours for the given cell in the direction matching the Direction type.
+    /// Find all neighbours for the given cell in the direction matching the Direction object.
     /// </summary>
     /// <param name="cell">The cell of which neighbours one is looking for.</param>
     /// <param name="gridArray">The grid where the cells are located in.</param>

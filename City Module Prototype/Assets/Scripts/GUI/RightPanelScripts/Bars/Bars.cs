@@ -40,5 +40,6 @@ public abstract class Bars : MonoBehaviour
     /// <summary>
     /// Used to initialize the bar. Should be called at the start of the program.
     /// </summary>
+    /// <param name="color">The color to instantiate the bar with.</param>
     public abstract void Init(Colors color);
 }

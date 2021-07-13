@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+
 /// <summary>
 /// Contains utitilies used by the gridManager.
 /// The reason these are in a class of their own is to be able to run automatic tests on them without having to start the entire program.

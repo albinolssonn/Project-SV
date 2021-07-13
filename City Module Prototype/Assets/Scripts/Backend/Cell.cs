@@ -28,8 +28,8 @@ public class Cell
     /// <summary>
     /// Represents a cell in the grid.
     /// </summary>
-    /// <param name="yCoord">The y-coordinate in the grid of this cell.</param>
-    /// <param name="xCoord">The x-coordinate in the grid of this cell.</param>
+    /// <param name="yCoord">The y-coordinate of this cell in the grid.</param>
+    /// <param name="xCoord">The x-coordinate of this cell in the grid.</param>
     public Cell(int yCoord, int xCoord)
     {
         signalStr = 0;
@@ -51,14 +51,14 @@ public class Cell
     /// <summary>
     /// Connects a game object to the cell used to visualize it.
     /// </summary>
-    /// <param name="tile">The game object to connect to the Cell.</param>
+    /// <param name="tile">The game object visualizing the Cell.</param>
     public void SetTile(GameObject tile)
     {
         this.tile = tile;
     }
 
 
-    /// <returns>The tile connected to this cell.</returns>
+    /// <returns>The game object visualizing this cell.</returns>
     public GameObject GetTile()
     {
         return tile;
@@ -79,13 +79,14 @@ public class Cell
     }
 
 
+    /// <returns>The signal strength being supplied to this cell.</returns>
     public double GetSignalStr()
     {
         return signalStr;
     }
 
 
-    /// <returns>The antenna contained in this cell. Null if none.</returns>
+    /// <returns>The Antenna contained in this cell. Null if none.</returns>
     public Antenna GetAntenna()
     {
         return antenna;
@@ -112,7 +113,7 @@ public class Cell
 
 
     /// <summary>
-    /// Sets the signal strength of this cell to a new value if the new value is larger.
+    /// Sets the signal strength of this cell to a new value if the new value is higher than the current.
     /// </summary>
     /// <param name="signalStr">The new signal strength.</param>
     /// <param name="cameFrom">Which direction this signal came from.</param>
@@ -143,7 +144,8 @@ public class Cell
         }
     }
 
-    /// <returns>The content of modules of this cell.</returns>
+
+    /// <returns>The content of Modules of this cell.</returns>
     public List<Module> GetCellContent()
     {
         return cellContent;
@@ -183,7 +185,7 @@ public class Cell
 
 
     /// <summary>
-    /// Adds a module to cellContent and sets the max height of this 
+    /// Adds a module to 'cellContent' and sets the max height of this 
     /// cell to the height of the module if its height is higher.
     /// </summary>
     /// <param name="content">The module object to add to this cell.</param>
@@ -211,9 +213,9 @@ public class Cell
 
 
     /// <summary>
-    /// Removes every Module instance matching the given type from this cell and sets the variable 'maxHeight' to its new correct value.
+    /// Removes the Module instance matching the given type from this cell and sets the variable 'maxHeight' to its new correct value.
     /// </summary>
-    /// <param name="module">The module type to remove every instance of from this cell.</param>
+    /// <param name="module">The module type to remove from this cell.</param>
     /// <returns>True if the Module was removed.</returns>
     public bool RemoveCellContent(Module module)
     {

@@ -1,8 +1,9 @@
 using UnityEngine;
 
-/*
- * This class contains the functionality of every button used to place and remove modules on the grid.
- */
+
+/// <summary>
+/// Contains the functionality of every button used to place and remove modules on the grid.
+/// </summary>
 public class BuildingPlacer : MonoBehaviour
 {
     GridManager grid;

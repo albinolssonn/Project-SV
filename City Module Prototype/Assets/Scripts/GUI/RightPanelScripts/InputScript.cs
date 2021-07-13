@@ -16,6 +16,10 @@ public class InputScript : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// Sends the input of maximum number of Antennas for the "Limited Antennas" mode from the input field to the grid manager.
+    /// </summary>
     public void EnterMaxValue()
     {
         string input = inputLimitedAntennas.GetComponentInChildren<Text>().text;

@@ -16,6 +16,10 @@ public class GridSizeScript : MonoBehaviour
         gridManager = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
     }
 
+
+    /// <summary>
+    /// Sets the grid to a new size with values taken from the fields 'rows_input' and 'cols_input'.
+    /// </summary>
     public void SetGridSize()
     {
         int rows = 0, cols = 0;

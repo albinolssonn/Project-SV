@@ -16,6 +16,10 @@ public class DropDownScript : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Sends the choice of game mode from the drop down menu to the grid manager and shows the corresponding statistic windows.
+    /// </summary>
+    /// <param name="value"></param>
     public void ChooseSimMode(int value)
     {
         switch (value)

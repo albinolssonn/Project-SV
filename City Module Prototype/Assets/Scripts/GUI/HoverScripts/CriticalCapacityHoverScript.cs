@@ -5,11 +5,21 @@ public class CriticalCapacityHoverScript : MonoBehaviour, IPointerEnterHandler, 
 {
     public GameObject criticalCapacityInfo;
 
+
+    /// <summary>
+    /// Displays informational text regarding the critical capacity bar.
+    /// </summary>
+    /// <param name="eventData">(Unused)</param>
     public void OnPointerEnter(PointerEventData eventData)
     {
         criticalCapacityInfo.SetActive(true);
     }
 
+
+    /// <summary>
+    /// Hides informational text regarding the critical capacity bar.
+    /// </summary>
+    /// <param name="eventData">(Unused)</param>
     public void OnPointerExit(PointerEventData eventData)
     {
         criticalCapacityInfo.SetActive(false);

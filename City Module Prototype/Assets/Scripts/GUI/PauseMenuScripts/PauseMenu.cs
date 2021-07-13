@@ -1,8 +1,6 @@
 using UnityEngine;
 
-/*
- * This class contains the functionality used for the pause menu (ESC).
- */
+
 public class PauseMenu : MonoBehaviour
 {
     public static bool GameIsPaused = false;
@@ -52,6 +50,10 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Closes the menu window.
+    /// </summary>
     public void Resume()
     {
         pauseMenuUi.SetActive(false);
@@ -59,6 +61,10 @@ public class PauseMenu : MonoBehaviour
         GameIsPaused = false;
     }
 
+
+    /// <summary>
+    /// Opens the menu window.
+    /// </summary>
     public void Pause()
     {
         pauseMenuUi.SetActive(true);
@@ -66,6 +72,10 @@ public class PauseMenu : MonoBehaviour
         GameIsPaused = true;
     }
 
+
+    /// <summary>
+    /// Opens the credits window.
+    /// </summary>
     public void InformationPage()
     {
         informationPageUi.SetActive(true);
@@ -74,12 +84,20 @@ public class PauseMenu : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// Closes the credits window.
+    /// </summary>
     public void CloseInformationPage()
     {
         informationPageUi.SetActive(false);
         pauseMenuUi.SetActive(true);
     }
 
+
+    /// <summary>
+    /// Opens the settings window.
+    /// </summary>
     public void SettingsPage()
     {
         settingsPageUi.SetActive(true);
@@ -87,12 +105,20 @@ public class PauseMenu : MonoBehaviour
         pausedOnLayer = 1;
     }
 
+
+    /// <summary>
+    /// Closes the settings window.
+    /// </summary>
     public void CloseSettingsPage()
     {
         settingsPageUi.SetActive(false);
         pauseMenuUi.SetActive(true);
     }
 
+
+    /// <summary>
+    /// Opens the grid size window.
+    /// </summary>
     public void GridSizePage()
     {
         gridSizeUi.SetActive(true);
@@ -100,11 +126,20 @@ public class PauseMenu : MonoBehaviour
         pausedOnLayer = 2;
     }
 
+
+    /// <summary>
+    /// Closes the grid size window.
+    /// </summary>
     public void CloseGridSizePage()
     {
         gridSizeUi.SetActive(false);
         settingsPageUi.SetActive(true);
     }
+
+
+    /// <summary>
+    /// Opens the pre-configured cities window.
+    /// </summary>
     public void PreCityPage()
     {
         prebuiltCityUi.SetActive(true);
@@ -112,12 +147,20 @@ public class PauseMenu : MonoBehaviour
         pausedOnLayer = 2;
     }
 
+
+    /// <summary>
+    /// Closes the pre-configured cities window.
+    /// </summary>
     public void ClosePreCityPage()
     {
         prebuiltCityUi.SetActive(false);
         settingsPageUi.SetActive(true);
     }
 
+
+    /// <summary>
+    /// Resets the grid.
+    /// </summary>
     public void Reset_btn()
     {
         GridManager grid = GameObject.FindGameObjectsWithTag("Grid")[0].GetComponent<GridManager>();
@@ -125,11 +168,19 @@ public class PauseMenu : MonoBehaviour
         Resume();
     }
 
+
+    /// <summary>
+    /// Opens the menu window.
+    /// </summary>
     public void Menu_Btn()
     {
         Pause();
     }
 
+
+    /// <summary>
+    /// Quits the application.
+    /// </summary>
     public void Quit_btn()
     {
         Debug.Log("Quit Application");

@@ -16,11 +16,19 @@ public class ToggleScript : MonoBehaviour
         gridManager = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
     }
 
+
+    /// <summary>
+    /// Toggles to show the network flow arrows or not.
+    /// </summary>
     public void ShowNetworkDirection()
     {
         gridManager.ToggleCreateNetworkArrows();
     }
 
+
+    /// <summary>
+    /// Toggles to activate or diactivate the mode "Limited Antennas" or not.
+    /// </summary>
     public void LimitedAntennasMode()
     {
         bool toggleCheck = gridManager.ToggleLimitedAntennas();
@@ -29,6 +37,10 @@ public class ToggleScript : MonoBehaviour
         inputLimitedAntennas.Select();
     }
 
+
+    /// <summary>
+    /// Toggles to activate the mode "Critical Mode" or not.
+    /// </summary>
     public void CriticalMode()
     {
         bool toggle = gridManager.ToggleCritical();
