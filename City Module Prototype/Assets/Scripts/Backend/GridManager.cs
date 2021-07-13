@@ -94,7 +94,7 @@ public class GridManager : MonoBehaviour
         criticalCoverageScript.Init(colors["coverage"]);
         criticalCapacityScript.Init(colors["capacity"]);
 
-        antennaStatistics.setAntennaStatistics(totalAntennas, 0);
+        antennaStatistics.SetAntennaStatistics(totalAntennas, 0);
 
         informationScript = GameObject.Find("Information_Label").GetComponent<InformationScript>();
 
@@ -197,7 +197,7 @@ public class GridManager : MonoBehaviour
 
         if (!limitedAntennasMode)
         {
-            antennaStatistics.setAntennaStatistics(totalAntennas, maxAntennas);
+            antennaStatistics.SetAntennaStatistics(totalAntennas, maxAntennas);
         }
 
         return limitedAntennasMode;
@@ -558,7 +558,7 @@ public class GridManager : MonoBehaviour
         }
         coverageBarScript.SetValue(totalCoverage / totalCount, colors["coverage"]);
         capacityBarScript.SetValue(totalCapacity / totalCapacityCount, colors["capacity"]);
-        antennaStatistics.setAntennaStatistics(totalAntennas, maxAntennas);
+        antennaStatistics.SetAntennaStatistics(totalAntennas, maxAntennas);
     }
 
 
@@ -862,7 +862,7 @@ public class GridManager : MonoBehaviour
     public void SetAndUpdateMaxAntennas(int maxAntennas)
     {
         this.maxAntennas = maxAntennas;
-        antennaStatistics.setAntennaStatistics(totalAntennas, maxAntennas);
+        antennaStatistics.SetAntennaStatistics(totalAntennas, maxAntennas);
 
     }
 

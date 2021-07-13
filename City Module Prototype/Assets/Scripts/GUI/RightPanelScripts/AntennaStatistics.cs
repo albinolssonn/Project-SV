@@ -7,7 +7,7 @@ public class AntennaStatistics : MonoBehaviour
     public TMP_Text text;
 
 
-    public void setAntennaStatistics(int value, int maxValue)
+    public void SetAntennaStatistics(int value, int maxValue)
     {
         if (GridManager.limitedAntennasMode)
         {
@@ -24,6 +24,7 @@ public class AntennaStatistics : MonoBehaviour
         else
         {
             text.text = value.ToString();
+            text.color = Color.white;
         }
     }
 }
