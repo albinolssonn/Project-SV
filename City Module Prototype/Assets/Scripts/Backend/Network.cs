@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using System.Diagnostics;
 
 /// <summary>
 /// Used to build a network across a grid.
@@ -84,7 +85,6 @@ public class Network
 
         startCell.GetAntenna().AddDemand(startCell.GetCapacityDemand());
 
-
         foreach (Direction direction in directions)
         {
             SetSignalRecursively(direction, startCell, startCell.GetSignalStr() - distancePenalty, 0);
@@ -125,7 +125,12 @@ public class Network
 
             nextCell.SetSignalIfHigher(fixedIncomingSignalStr, direction, diagonal);
 
-            SetSignalRecursively(direction, nextCell, GetNewStr(nextCell, fixedIncomingSignalStr), diagonalSteps);
+            double outgoingSignalStr = GetNewStr(nextCell, fixedIncomingSignalStr);
+
+            if(outgoingSignalStr > 0)
+            {
+                SetSignalRecursively(direction, nextCell, outgoingSignalStr, diagonalSteps);
+            }
         }
     }
 
