@@ -1,8 +1,9 @@
 using UnityEngine;
 
-//HACK: If you want to add any button to place any additional modules you create, create the button method here.
-//Create a method where you call 'grid.SetToBePlaced(new MODULE())' with MODULE being the module you've created.
-//Then attach LeftSide_Panel to your button and call the method you created here on click and it's done.
+// HACK: Place module buttons.
+// If you want to add any button to place any additional modules you create, create the button method here.
+// Create a method where you call 'grid.SetToBePlaced(new MODULE())' with MODULE being the module class you've created.
+// Then attach LeftSide_Panel to your button in Unity and call the method you created here on click and it's done.
 
 /// <summary>
 /// Contains the functionality of every button used to place and remove modules on the grid.

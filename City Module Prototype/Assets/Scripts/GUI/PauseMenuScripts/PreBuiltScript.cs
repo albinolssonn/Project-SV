@@ -1,8 +1,10 @@
 using UnityEngine;
 
-// HACK: Here you can add button methods to create additional pre-configured cities.
+// HACK: Create pre-configured city button.
+// Here you can add button methods to create additional pre-configured cities.
 // First create a method in the class 'PreConfCities' as instructed in the method 'LoadPreconfigCity'
 // and then call on 'LoadPreconfigCity' with the correct index as you define in the switch case.
+// Then attach PrebuiltCities_Panel to your button in Unity and call the method you created here on click and it's done.
 
 public class PreBuiltScript : MonoBehaviour
 {

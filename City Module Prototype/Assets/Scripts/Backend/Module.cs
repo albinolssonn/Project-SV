@@ -1,9 +1,9 @@
 using UnityEngine;
 
-//HACK: In this file you can with ease create additional modules to place on the grid.
-//For new module to be legal in the program, it has to inherit from the abstract class Module below
-//and implement the required methods. Then it is just to add the newly created module to the grid
-//as any other pre-existing module!
+// HACK: Create additional modules to place on the grid.
+// For new module to be legal in the program, it has to inherit from the abstract class Module below
+// and implement the required methods. Then it is just to add the newly created module to the grid
+// as any other pre-existing module.
 
 
 /// <summary>

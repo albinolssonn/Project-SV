@@ -1,4 +1,5 @@
-//HACK: If you want any other color gradients in the program, add them here and inherit Colors.
+// HACK: Add more color gradients.
+// If you want any other color gradients in the program, add them here and inherit Colors.
 
 /// <summary>
 /// Contains the color codes for the colors used in the program.

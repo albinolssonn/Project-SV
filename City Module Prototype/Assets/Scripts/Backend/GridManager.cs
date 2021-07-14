@@ -47,7 +47,7 @@ public class GridManager : MonoBehaviour
 
 
 
-    //HACK: Here you can alter the base value used to realize the network.
+    // HACK: Alter the base value used to realize the network.
 
     /// <summary>The strength of which an Antenna transmits a signal with.</summary>
     public static readonly double baseSignalStr = 10;
@@ -67,7 +67,7 @@ public class GridManager : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-        //HACK: Here you can change the standard grid size at startup.
+        // HACK: Change the standard grid size at startup.
         rows = 20;
         cols = 20;
         //
@@ -830,8 +830,9 @@ public class GridManager : MonoBehaviour
         ResetGrid();
         totalAntennas = 0;
 
-        //HACK: If you want to add or change which pre-configured cities.
-        //Create a corresponding method in PreConfCities and then add it to this switch-case.
+        // HACK: Add or change available pre-configured cities.
+        // Create a corresponding method in PreConfCities and then add it to this switch-case
+        // to be add them as available pre-configuerd citites.
         gridArray = index switch
         {
             1 => PreConfCities.GetConfig1(out rows, out cols),
