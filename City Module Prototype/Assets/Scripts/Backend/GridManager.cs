@@ -189,6 +189,17 @@ public class GridManager : MonoBehaviour
 
     }
 
+    public void ToggleSetNetworkColors()
+    {
+        networkFlowColorsActive = !networkFlowColorsActive;
+
+        DestroyNetworkFlow();
+        foreach (Cell cell in gridArray)
+        {
+            CreateNetworkFlow(cell); 
+        }
+    }
+
 
     /// <summary>
     /// Toggles if the gamification "Limited Antennas" is active or not.

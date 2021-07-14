@@ -25,6 +25,11 @@ public class ToggleScript : MonoBehaviour
         gridManager.ToggleCreateNetworkArrows();
     }
 
+    public void SetNetworkDirectionColor()
+    {
+        gridManager.ToggleSetNetworkColors();
+    }
+
 
     /// <summary>
     /// Toggles to activate or diactivate the mode "Limited Antennas" or not.
