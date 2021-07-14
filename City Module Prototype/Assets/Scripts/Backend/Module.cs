@@ -1,5 +1,10 @@
 using UnityEngine;
 
+//HACK: In this file you can with ease create additional modules to place on the grid.
+//For new module to be legal in the program, it has to inherit from the abstract class Module below
+//and implement the required methods. Then it is just to add the newly created module to the grid
+//as any other pre-existing module!
+
 
 /// <summary>
 /// Used to represent the different modules guests will be able to place upon a city tile.
@@ -304,6 +309,7 @@ public class Antenna : Module
     }
 
 
+    /// <returns>The available capacity of this antenna.</returns>
     public double AvailableCapacity()
     {
         return GridManager.baseCapacity - currentCapacityDemand;

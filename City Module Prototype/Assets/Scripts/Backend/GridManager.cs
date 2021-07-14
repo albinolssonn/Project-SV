@@ -9,7 +9,7 @@ public class GridManager : MonoBehaviour
 {
     private int rows;
     private int cols;
-    private float tileSize;
+    private readonly float tileSize = 110F;
     private Module toBePlaced;
     private Module toBeRemoved;
     private Vector3 gridScale;
@@ -26,6 +26,15 @@ public class GridManager : MonoBehaviour
     private int totalAntennas;
     private int maxAntennas;
 
+    private bool shiftHeldDown;
+    private bool createNetworkArrows;
+
+    public AntennaStatistics antennaStatistics;
+    public SignalBarScript coverageBarScript;
+    public CapacityBarScript capacityBarScript;
+    public CriticalCoverageScript criticalCoverageScript;
+    public CriticalCapacityScript criticalCapacityScript;
+
 
     /// <summary>Set to true if game mode of limited antennas is wanted.</summary>
     public static bool limitedAntennasMode = false;
@@ -35,6 +44,10 @@ public class GridManager : MonoBehaviour
 
     /// <summary>Set to false if colored network flow arrows is not wanted.</summary>
     public static bool networkFlowColorsActive = true;
+
+
+
+    //HACK: Here you can alter the base value used to realize the network.
 
     /// <summary>The strength of which an Antenna transmits a signal with.</summary>
     public static readonly double baseSignalStr = 10;
@@ -49,24 +62,15 @@ public class GridManager : MonoBehaviour
     /// <summary>The reduction in signal strength for traveling through a cell with a higher max height than the cell which the antenna is located in.</summary>
     public static readonly double heightPenalty = 2;
 
-    private bool shiftHeldDown;
-    private bool createNetworkArrows;
-
-    public AntennaStatistics antennaStatistics;
-
-    public SignalBarScript coverageBarScript;
-    public CapacityBarScript capacityBarScript;
-    public CriticalCoverageScript criticalCoverageScript;
-    public CriticalCapacityScript criticalCapacityScript;
-
 
 
     // Start is called before the first frame update
     public void Start()
     {
+        //HACK: Here you can change the standard grid size at startup.
         rows = 20;
         cols = 20;
-        tileSize = 110F;
+        //
         totalAntennas = 0;
         simulationModeSelected = "coverage";
         shiftHeldDown = false;
@@ -152,7 +156,7 @@ public class GridManager : MonoBehaviour
 
 
     /// <summary>
-    /// Scales the grid to fit the height of the screen.
+    /// Scales the grid based on the height of the screen.
     /// </summary>
     private void ScaleGrid()
     {
@@ -245,7 +249,10 @@ public class GridManager : MonoBehaviour
                 criticalCapacity = 0;
                 criticalCapacityCount = 1;
             }
-
+            
+            
+            // HACK; This is where statistics are calculated. 
+            // Change the methods called here, or add additional ones, to send the statistics elsewhere.
             criticalCoverageScript.SetValue(criticalCoverage / criticalCoverageCount, colors["coverage"]);
             criticalCapacityScript.SetValue(criticalCapacity / criticalCapacityCount, colors["capacity"]);
 
@@ -254,9 +261,6 @@ public class GridManager : MonoBehaviour
 
         return criticalMode;
     }
-
-
-
 
 
     /// <summary>
@@ -270,7 +274,6 @@ public class GridManager : MonoBehaviour
     }
 
 
-
     /// <summary>
     /// To remove a module, the module type to be removed should be set in the variable 'toBeRemoved'.
     /// If one wants to remove a House, then set 'toBeRemoved' to 'new House()'.
@@ -280,14 +283,6 @@ public class GridManager : MonoBehaviour
     {
         this.toBeRemoved = toBeRemoved;
     }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// 
-    /// 
-    /// 
 
 
     /// <summary>
@@ -324,7 +319,7 @@ public class GridManager : MonoBehaviour
                         if (toBePlaced is Antenna)
                         {
                             antennaCells.Add(gridArray[y, x]);
-                            AntennaPlaced(y, x);
+                            AntennaPlaced(gridArray[y, x]);
                         }
                         else
                         {
@@ -484,14 +479,24 @@ public class GridManager : MonoBehaviour
 
     }
 
-    public void AntennaPlaced(int y, int x)
+
+    /// <summary>
+    /// Updates the network according to the added Antenna.
+    /// </summary>
+    /// <param name="cell">The cell which the Antenna was added to.</param>
+    public void AntennaPlaced(Cell cell)
     {
+        if (!cell.HasAntenna())
+        {
+            throw new System.ArgumentException("The given cell does not have an Antenna in it.");
+        }
         DestroyNetworkFlow();
 
-        network.BuildSingleNetwork(gridArray[y, x], gridArray);
+        network.BuildSingleNetwork(cell, gridArray);
 
         UpdateStatistics();
     }
+
 
     /// <summary>
     /// Updates the network by resetting and rebuilding it using the Network class and then setting each tile to their correct color and updating the statistics fields.
@@ -561,6 +566,9 @@ public class GridManager : MonoBehaviour
             totalCapacity = 0;
         }
 
+
+        // HACK: This is where statistics are calculated.
+        // Change the methods called here, or add additional ones, to send the statistics elsewhere.
         if (criticalMode)
         {
             criticalCoverageScript.SetValue(criticalCoverage / criticalCount, colors["coverage"]);
@@ -570,8 +578,6 @@ public class GridManager : MonoBehaviour
         capacityBarScript.SetValue(totalCapacity / totalCapacityCount, colors["capacity"]);
         antennaStatistics.SetAntennaStatistics(totalAntennas, maxAntennas);
     }
-
-
 
 
     /// <summary>
@@ -813,6 +819,8 @@ public class GridManager : MonoBehaviour
         ResetGrid();
         totalAntennas = 0;
 
+        //HACK: If you want to add or change which pre-configured cities.
+        //Create a corresponding method in PreConfCities and then add it to this switch-case.
         gridArray = index switch
         {
             1 => PreConfCities.GetConfig1(out rows, out cols),
@@ -873,7 +881,6 @@ public class GridManager : MonoBehaviour
     {
         this.maxAntennas = maxAntennas;
         antennaStatistics.SetAntennaStatistics(totalAntennas, maxAntennas);
-
     }
 
 
@@ -899,7 +906,7 @@ public class GridManager : MonoBehaviour
 
 
     /// <summary>
-    /// Prints a string on the screen for the user.
+    /// Prints a string on the screen for the user for a short time.
     /// </summary>
     /// <param name="error">The text to print out.</param>
     public void SetErrorMessage(string error)

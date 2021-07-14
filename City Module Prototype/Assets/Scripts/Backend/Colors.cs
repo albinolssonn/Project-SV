@@ -1,3 +1,5 @@
+//HACK: If you want any other color gradients in the program, add them here and inherit Colors.
+
 /// <summary>
 /// Contains the color codes for the colors used in the program.
 /// </summary>
@@ -22,7 +24,7 @@ public abstract class Colors
     /// <summary>
     /// Calculates the RGB value [0,1] based on the input in relation to 'maxValue'.
     /// </summary>
-    /// <param name="signalStr">The value to create a corresponding color for.</param>
+    /// <param name="value">The value to create a corresponding color for.</param>
     /// <returns>A color from a gradient scale based on 'value'.</returns>
     public abstract float[] GetGradientColor(double value);
 }

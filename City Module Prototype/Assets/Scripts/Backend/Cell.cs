@@ -108,7 +108,6 @@ public class Cell
         signalStr = 0;
         signalDirDiagonal = false;
         signalDirection = null;
-
     }
 
 
