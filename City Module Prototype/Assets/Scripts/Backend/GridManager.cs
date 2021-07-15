@@ -12,6 +12,7 @@ public class GridManager : MonoBehaviour
     private readonly float tileSize = 110F;
     private Module toBePlaced;
     private Module toBeRemoved;
+    private GameObject ghostObject;
     private Vector3 gridScale;
     private Network network;
     private Cell[,] gridArray;
@@ -114,6 +115,9 @@ public class GridManager : MonoBehaviour
             shiftHeldDown = false;
             toBePlaced = null;
             toBeRemoved = null;
+
+            Destroy(ghostObject);
+            ghostObject = null;
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -128,6 +132,13 @@ public class GridManager : MonoBehaviour
             {
                 RemoveModule();
             }
+        }
+
+        if(ghostObject != null)
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            ghostObject.transform.position = new Vector2(mousePosition.x, mousePosition.y);
         }
     }
 
@@ -278,10 +289,26 @@ public class GridManager : MonoBehaviour
     /// When clicking a button to place a module, the module type to be placed should be set in the variable 'toBePlaced'.
     /// If one wants to place an Antenna, then set 'toBePlaced' to 'new Antenna()'.
     /// </summary>
+    /// <remarks>This method also creates the 'chostObject' following the mouse.</remarks>
     /// <param name="toBePlaced">An instance of the Module type one wants to be able to place.</param>
-    public void SetToBePlaced(Module toBePlaced)
+    public void SelectToBePlaced(Module toBePlaced)
     {
         this.toBePlaced = toBePlaced;
+
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        ghostObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()));
+        
+        Color color = ghostObject.transform.GetChild(0).GetComponent<Renderer>().material.color;
+
+        ghostObject.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(color.r, color.g, color.b, 0.5f);
+
+        ghostObject.transform.GetChild(0).localPosition = new Vector3(0f, 0f, 0f);
+
+        ghostObject.transform.localScale = new Vector3(0.5f * ghostObject.transform.localScale.x, 0.5f * ghostObject.transform.localScale.y, 1f);
+
+        ghostObject.transform.position = new Vector2(mousePosition.x + ghostObject.transform.GetChild(0).localPosition.x, mousePosition.y + ghostObject.transform.GetChild(0).localPosition.y);
+
     }
 
 
@@ -356,6 +383,8 @@ public class GridManager : MonoBehaviour
         if (!Input.GetKey(KeyCode.LeftShift))
         {
             toBePlaced = null;
+            Destroy(ghostObject);
+            ghostObject = null;
         }
         else
         {

@@ -22,7 +22,7 @@ public class BuildingPlacer : MonoBehaviour
 
     public void Antenna_Btn()
     {
-        grid.SetToBePlaced(new Antenna());
+        grid.SelectToBePlaced(new Antenna());
     }
 
     public void RemoveAntenna_Btn()
@@ -34,7 +34,7 @@ public class BuildingPlacer : MonoBehaviour
 
     public void House_Btn()
     {
-        grid.SetToBePlaced(new House());
+        grid.SelectToBePlaced(new House());
     }
 
     public void RemoveHouse_Btn()
@@ -46,7 +46,7 @@ public class BuildingPlacer : MonoBehaviour
 
     public void TallBuilding_Btn()
     {
-        grid.SetToBePlaced(new TallBuilding());
+        grid.SelectToBePlaced(new TallBuilding());
     }
 
     public void RemoveTallBuilding_Btn()
@@ -58,7 +58,7 @@ public class BuildingPlacer : MonoBehaviour
 
     public void Park_Btn()
     {
-        grid.SetToBePlaced(new Park());
+        grid.SelectToBePlaced(new Park());
     }
 
     public void RemovePark_Btn()
@@ -70,7 +70,7 @@ public class BuildingPlacer : MonoBehaviour
 
     public void Hospital_Btn()
     {
-        grid.SetToBePlaced(new Hospital());
+        grid.SelectToBePlaced(new Hospital());
     }
 
     public void RemoveHospital_Btn()
@@ -82,7 +82,7 @@ public class BuildingPlacer : MonoBehaviour
 
     public void PoliceStation_Btn()
     {
-        grid.SetToBePlaced(new PoliceStation());
+        grid.SelectToBePlaced(new PoliceStation());
     }
 
     public void RemovePoliceStation_Btn()
@@ -94,7 +94,7 @@ public class BuildingPlacer : MonoBehaviour
 
     public void FireDepartment_Btn()
     {
-        grid.SetToBePlaced(new FireDepartment());
+        grid.SelectToBePlaced(new FireDepartment());
     }
 
     public void RemoveFireDepartment_Btn()
