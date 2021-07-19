@@ -311,6 +311,8 @@ public class GridManager : MonoBehaviour
 
         ghostObject.transform.localScale = new Vector3(gridScale[0] * ghostObject.transform.localScale.x, gridScale[1] * ghostObject.transform.localScale.y, 1f);
 
+        SetLayerRecursive(ghostObject, LayerMask.NameToLayer("Module"));
+
         ghostObject.transform.position = new Vector2(mousePosition.x + ghostObject.transform.GetChild(0).localPosition.x, mousePosition.y + ghostObject.transform.GetChild(0).localPosition.y);
 
     }
