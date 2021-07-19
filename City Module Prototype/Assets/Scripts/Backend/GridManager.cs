@@ -309,7 +309,7 @@ public class GridManager : MonoBehaviour
 
         ghostObject.transform.GetChild(0).localPosition = new Vector3(0f, 0f, 0f);
 
-        ghostObject.transform.localScale = new Vector3(0.5f * ghostObject.transform.localScale.x, 0.5f * ghostObject.transform.localScale.y, 1f);
+        ghostObject.transform.localScale = new Vector3(gridScale[0] * ghostObject.transform.localScale.x, gridScale[1] * ghostObject.transform.localScale.y, 1f);
 
         ghostObject.transform.position = new Vector2(mousePosition.x + ghostObject.transform.GetChild(0).localPosition.x, mousePosition.y + ghostObject.transform.GetChild(0).localPosition.y);
 
