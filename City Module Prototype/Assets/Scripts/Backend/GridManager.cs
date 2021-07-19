@@ -271,12 +271,16 @@ public class GridManager : MonoBehaviour
                 criticalCapacity = 0;
                 criticalCapacityCount = 1;
             }
-            
-            
+
+
             // HACK; This is where statistics are calculated. 
             // Change the methods called here, or add additional ones, to send the statistics elsewhere.
-            criticalCoverageScript.SetValue(criticalCoverage / criticalCoverageCount, colors["coverage"]);
-            criticalCapacityScript.SetValue(criticalCapacity / criticalCapacityCount, colors["capacity"]);
+
+            float criticalCoverageResult = criticalCoverage / criticalCoverageCount;
+            float criticalCapacityResult = criticalCapacity / criticalCapacityCount;
+
+            criticalCoverageScript.SetValue(criticalCoverageResult, colors["coverage"]);
+            criticalCapacityScript.SetValue(criticalCapacityResult, colors["capacity"]);
 
         }
 
@@ -609,13 +613,19 @@ public class GridManager : MonoBehaviour
 
         // HACK: This is where statistics are calculated.
         // Change the methods called here, or add additional ones, to send the statistics elsewhere.
+
+        float criticalCoverageResult = criticalCoverage / criticalCount;
+        float criticalCapacityResult = criticalCapacity / criticalCount;
+        float totalCoverageResult = totalCoverage / totalCount;
+        float totalCapacityResult = totalCapacity / totalCapacityCount;
+
         if (criticalMode)
         {
-            criticalCoverageScript.SetValue(criticalCoverage / criticalCount, colors["coverage"]);
-            criticalCapacityScript.SetValue(criticalCapacity / criticalCount, colors["capacity"]);
+            criticalCoverageScript.SetValue(criticalCoverageResult, colors["coverage"]);
+            criticalCapacityScript.SetValue(criticalCapacityResult, colors["capacity"]);
         }
-        coverageBarScript.SetValue(totalCoverage / totalCount, colors["coverage"]);
-        capacityBarScript.SetValue(totalCapacity / totalCapacityCount, colors["capacity"]);
+        coverageBarScript.SetValue(totalCoverageResult, colors["coverage"]);
+        capacityBarScript.SetValue(totalCapacityResult, colors["capacity"]);
         antennaStatistics.SetAntennaStatistics(totalAntennas, maxAntennas);
     }
 
