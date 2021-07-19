@@ -110,7 +110,7 @@ public class GridManager : MonoBehaviour
     public void Update()
     {
 
-        if ((!Input.GetKey(KeyCode.LeftShift) && shiftHeldDown) || Input.GetMouseButtonDown(1))
+        if ((!Input.GetKey(KeyCode.LeftShift) && shiftHeldDown) || Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape))
         {
             shiftHeldDown = false;
             toBePlaced = null;

@@ -79,7 +79,7 @@ public class Network
         {
             directions = new List<Direction>() { new North_NorthEast(startCell), new East_NorthEast(startCell), new East_SouthEast(startCell), new South_SouthEast(startCell), new South_SouthWest(startCell), new West_SouthWest(startCell), new West_NorthWest(startCell), new North_NorthWest(startCell) };
 
-            startCell.SetSignalIfHigher(baseSignalStr, new Origin(startCell, NextColorIndex(), networkColorsOccurences, directions), false);
+            startCell.SetSignalIfStronger(baseSignalStr, new Origin(startCell, NextColorIndex(), networkColorsOccurences, directions), false);
         }
 
         foreach (Direction direction in directions)
@@ -120,7 +120,7 @@ public class Network
                 continue;
             }
 
-            nextCell.SetSignalIfHigher(fixedIncomingSignalStr, direction, diagonal);
+            nextCell.SetSignalIfStronger(fixedIncomingSignalStr, direction, diagonal);
 
             double outgoingSignalStr = GetNewStr(nextCell, fixedIncomingSignalStr);
 

@@ -120,14 +120,17 @@ public class Cell
     /// <exception cref="System.ArgumentException">
     /// Throws if cameFrom was passed as null.
     /// </exception>
-    public void SetSignalIfHigher(double signalStr, Direction cameFrom, bool wasDiagonal)
+    public void SetSignalIfStronger(double signalStr, Direction cameFrom, bool wasDiagonal)
     {
         if (cameFrom == null)
         {
             throw new System.ArgumentException("cameFrom was null.");
         }
 
-        if (this.signalStr < signalStr)
+        if (this.signalStr < signalStr || 
+            (signalDirection != null && 
+            this.signalStr == signalStr && 
+            signalDirection.originCell.GetAntenna().AvailableCapacity() + capacityDemand < cameFrom.originCell.GetAntenna().AvailableCapacity() - capacityDemand))
         {
             if (signalDirection != null)
             {
@@ -139,7 +142,6 @@ public class Cell
             signalDirDiagonal = wasDiagonal;
 
             signalDirection.originCell.GetAntenna().AddDemand(capacityDemand);
-
         }
     }
 
