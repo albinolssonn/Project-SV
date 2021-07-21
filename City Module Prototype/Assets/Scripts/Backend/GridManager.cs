@@ -415,7 +415,7 @@ public class GridManager : MonoBehaviour
     {
         if (toBePlaced == null)
         {
-            throw new System.ArgumentException("'toBeRemoved' has not been set prior to calling this method.");
+            throw new System.ArgumentException("'toBePlaced' has not been set prior to calling this method.");
         }
 
         GameObject tmpObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()), gridArray[y, x].GetTile().transform.position, Quaternion.identity);
