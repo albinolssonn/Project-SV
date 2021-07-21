@@ -344,7 +344,7 @@ public class GridManager : MonoBehaviour
     {
         if (toBePlaced == null)
         {
-            throw new System.ArgumentException("'toBeRemoved' has not been set prior to calling this method.");
+            throw new System.ArgumentException("'toBePlaced' has not been set prior to calling this method.");
         }
 
         if (!(limitedAntennasMode && toBePlaced is Antenna && maxAntennas <= totalAntennas))
