@@ -127,9 +127,9 @@ public class Cell
             throw new System.ArgumentException("cameFrom was null.");
         }
 
-        if (this.signalStr < signalStr || 
-            (signalDirection != null && 
-            this.signalStr == signalStr && 
+        if (this.signalStr < signalStr ||
+            (signalDirection != null &&
+            this.signalStr == signalStr &&
             signalDirection.originCell.GetAntenna().AvailableCapacity() + capacityDemand < cameFrom.originCell.GetAntenna().AvailableCapacity() - capacityDemand))
         {
             if (signalDirection != null)
@@ -206,6 +206,7 @@ public class Cell
         maxHeight = System.Math.Max(maxHeight, content.Height());
     }
 
+
     /// <returns>The height of this cell.</returns>
     public double GetHeight()
     {
@@ -214,7 +215,7 @@ public class Cell
 
 
     /// <summary>
-    /// Removes the Module instance matching the given type from this cell and sets the variable 'maxHeight' to its new correct value.
+    /// Removes the Module instance matching the given type from this cell.
     /// </summary>
     /// <param name="module">The module type to remove from this cell.</param>
     /// <returns>True if the Module was removed.</returns>

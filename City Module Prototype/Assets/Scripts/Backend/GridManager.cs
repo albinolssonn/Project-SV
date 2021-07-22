@@ -22,6 +22,7 @@ public class GridManager : MonoBehaviour
     private InformationScript informationScript;
     private List<Cell> antennaCells;
 
+    //Statistics results.
     private float totalCoverageResult;
     private float totalCapacityResult;
     private float criticalCoverageResult;
@@ -139,7 +140,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        if(ghostObject != null)
+        if (ghostObject != null)
         {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -216,7 +217,7 @@ public class GridManager : MonoBehaviour
         DestroyNetworkFlow();
         foreach (Cell cell in gridArray)
         {
-            CreateNetworkFlow(cell); 
+            CreateNetworkFlow(cell);
         }
     }
 
@@ -282,7 +283,7 @@ public class GridManager : MonoBehaviour
             }
 
 
-            
+
 
             criticalCoverageResult = criticalCoverage / criticalCoverageCount;
             criticalCapacityResult = criticalCapacity / criticalCapacityCount;
@@ -315,10 +316,10 @@ public class GridManager : MonoBehaviour
 
 
     /// <summary>
-    /// When clicking a button to place a module, the module type to be placed should be set in the variable 'toBePlaced'.
+    /// Sets the module type to be placed in the variable 'toBePlaced'.
     /// If one wants to place an Antenna, then set 'toBePlaced' to 'new Antenna()'.
     /// </summary>
-    /// <remarks>This method also creates the 'chostObject' following the mouse.</remarks>
+    /// <remarks>This method also creates the 'ghost object' following the mouse.</remarks>
     /// <param name="toBePlaced">An instance of the Module type one wants to be able to place.</param>
     public void SelectToBePlaced(Module toBePlaced)
     {
@@ -327,7 +328,7 @@ public class GridManager : MonoBehaviour
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         ghostObject = (GameObject)Instantiate(Resources.Load(toBePlaced.GetResourcePath()));
-        
+
         Color color = ghostObject.transform.GetChild(0).GetComponent<Renderer>().material.color;
 
         ghostObject.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(color.r, color.g, color.b, 0.5f);
@@ -344,7 +345,7 @@ public class GridManager : MonoBehaviour
 
 
     /// <summary>
-    /// To remove a module, the module type to be removed should be set in the variable 'toBeRemoved'.
+    /// Sets the module type to be removed in the variable 'toBeRemoved'.
     /// If one wants to remove a House, then set 'toBeRemoved' to 'new House()'.
     /// </summary>
     /// <param name="toBeRemoved">An instance of the Module one wants to remove on the next mousclick.</param>
@@ -532,22 +533,9 @@ public class GridManager : MonoBehaviour
         Vector3 mouseWorldPosition = cam.ScreenToWorldPoint(worldPoint);
         mouseWorldPosition.z = 0f;
 
-        WorldPosToGridCoord(mouseWorldPosition, out y, out x);
-    }
-
-
-    /// <summary>
-    /// Translates the world position to y- and x- coordinates.
-    /// </summary>
-    /// <param name="worldPosition">The position in world coordinates to be translated.</param>
-    /// <param name="y">This variable will be set to the y-coordinate of the grid corresponding to the position worldPosition.</param>
-    /// <param name="x">This variable will be set to the x-coordinate of the grid corresponding to the position worldPosition.</param>
-    private void WorldPosToGridCoord(Vector3 worldPosition, out int y, out int x)
-    {
-        var tmp = transform.InverseTransformPoint(worldPosition);
+        var tmp = transform.InverseTransformPoint(mouseWorldPosition);
         x = Mathf.FloorToInt(tmp[0] / tileSize);
         y = -Mathf.FloorToInt(tmp[1] / tileSize);
-
     }
 
 
@@ -561,10 +549,9 @@ public class GridManager : MonoBehaviour
         {
             throw new System.ArgumentException("The given cell does not have an Antenna in it.");
         }
+
         DestroyNetworkFlow();
-
         network.BuildSingleNetwork(cell, gridArray);
-
         UpdateStatistics();
     }
 
@@ -646,11 +633,11 @@ public class GridManager : MonoBehaviour
     }
 
 
-    
+
 
 
     /// <summary>
-    /// Builds and displays the visual grid of tiles from 'gridArray' on the screen and stores them in their corresponding Cell object.
+    /// Creates and displays the visual grid of tiles from 'gridArray' on the screen and stores them in their corresponding Cell object.
     /// </summary>
     private void GenerateGrid()
     {
@@ -683,7 +670,7 @@ public class GridManager : MonoBehaviour
 
 
     /// <summary>
-    /// Sets the color of a given cell's tile based on cell's signal strength.
+    /// Sets the color of a given cell's tile based on its signal strength.
     /// </summary>
     /// <param name="cell">The cell corresponding to the tile to change color of.</param>
     public void SetTileColor(Cell cell)
@@ -762,7 +749,7 @@ public class GridManager : MonoBehaviour
 
 
     /// <summary>
-    /// Visualizes the networkflow through the given cell.
+    /// Visualizes the network flow through the given cell.
     /// </summary>
     /// <param name="cell">The cell to visualize the network flow in.</param>
     /// <exception cref="System.ArgumentException">
@@ -772,23 +759,10 @@ public class GridManager : MonoBehaviour
     {
         if (cell.GetSignalDir() == null ^ cell.GetSignalStr() == 0)
         {
-            throw new System.ArgumentException("Direction and signalStr doesn't match.");
+            throw new System.ArgumentException("Direction and signalStr don't match.");
         }
 
-        var oldChild = gridArray[cell.GetY(), cell.GetX()].GetTile().transform.Find("Arrow(Clone)");
-        if (oldChild != null)
-        {
-            Destroy(oldChild.gameObject);
-        }
-        else
-        {
-            oldChild = gridArray[cell.GetY(), cell.GetX()].GetTile().transform.Find("Dot(Clone)");
-            if (oldChild != null)
-            {
-                Destroy(oldChild.gameObject);
-            }
-        }
-
+        DestroyOldNetworkFlowArrow(cell);
 
         if (cell.GetSignalDir() == null)
         {
@@ -800,7 +774,6 @@ public class GridManager : MonoBehaviour
         Origin originDirection = (Origin)cell.GetSignalDir().originCell.GetSignalDir();
         Renderer arrowRenderer = arrow.transform.GetChild(0).GetComponent<Renderer>();
 
-
         if (networkFlowColorsActive)
         {
             arrowRenderer.material.SetColor("_Color", Network.networkFlowColors[originDirection.networkFlowColorIndex]);
@@ -808,7 +781,6 @@ public class GridManager : MonoBehaviour
         else
         {
             arrowRenderer.material.SetColor("_Color", Color.black);
-
         }
 
         networkFlowVisuals.Add(arrow);
@@ -823,6 +795,28 @@ public class GridManager : MonoBehaviour
         arrow.transform.localScale = new Vector3(.25f, .25f, 1f);
 
 
+    }
+
+
+    /// <summary>
+    /// Destroys the current network flow object attached to the given cell if there is any.
+    /// </summary>
+    /// <param name="cell">The parent cell of the network flow object to remove.</param>
+    private void DestroyOldNetworkFlowArrow(Cell cell)
+    {
+        var oldChild = gridArray[cell.GetY(), cell.GetX()].GetTile().transform.Find("Arrow(Clone)");
+        if (oldChild != null)
+        {
+            Destroy(oldChild.gameObject);
+        }
+        else
+        {
+            oldChild = gridArray[cell.GetY(), cell.GetX()].GetTile().transform.Find("Dot(Clone)");
+            if (oldChild != null)
+            {
+                Destroy(oldChild.gameObject);
+            }
+        }
     }
 
 
@@ -859,7 +853,7 @@ public class GridManager : MonoBehaviour
 
 
     /// <summary>
-    /// Resets the signal strength of every Cell and the demand of every Antenna in the grid.
+    /// Resets the signal strength of every cell and the demand of every Antenna in the grid.
     /// </summary>
     /// <param name="andAntennas">If to reset cells with Antennas as well or not.</param>
     private void ResetNetwork()
@@ -897,7 +891,7 @@ public class GridManager : MonoBehaviour
             2 => PreConfCities.GetConfig2(out rows, out cols),
             3 => PreConfCities.GetConfig3(out rows, out cols),
             4 => PreConfCities.GetConfig4(out rows, out cols),
-            _ => throw new System.Exception("This should be unreachable."),
+            _ => throw new System.ArgumentException("This should be unreachable."),
         };
 
         GenerateGrid();
@@ -911,7 +905,7 @@ public class GridManager : MonoBehaviour
     /// Transfers any modules from the old grid to the new which are within the new size bounds.
     /// </summary>
     /// <param name="newRows">Number of rows for the new grid.</param>
-    /// <param name="newCols">Number of cols for the new grid.</param>
+    /// <param name="newCols">Number of columns for the new grid.</param>
     public void SetNewGridSize(int newRows, int newCols)
     {
         rows = newRows;
@@ -960,6 +954,9 @@ public class GridManager : MonoBehaviour
     /// </summary>
     /// <param name="mode">Which simulation mode to show.</param>
     /// <remarks>The argument must be a string contained in the variable 'colors' in GridManager.</remarks>
+    /// <exception cref="System.ArgumentException">
+    /// Throws if the mode does not exist.
+    /// </exception>
     public void SetSimulationMode(string mode)
     {
         if (!colors.ContainsKey(mode))
