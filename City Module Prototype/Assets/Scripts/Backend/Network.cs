@@ -12,7 +12,6 @@ using System.Linq;
 /// </remarks>
 public class Network
 {
-    private Cell[,] gridArray;
     private Cell startCell;
     private readonly List<int> networkColorsOccurences;
 
@@ -29,7 +28,7 @@ public class Network
     /// Used to build a network across a grid.
     /// </summary>
     /// <param name="baseSignalStr">The strength of which an Antenna transmits a signal with</param>
-    /// <param name="distancePenalty">The reduction in signal strength for traveling one step in any direction.</param>
+    /// <param name="distancePenalty">The reduction in signal strength for traveling from one cell to another.</param>
     /// <param name="heightPenalty">The reduction in signal strength for traveling through a cell with a higher max height than the cell which the antenna is located in.</param>
     public Network(double baseSignalStr, double distancePenalty, double heightPenalty)
     {
@@ -65,7 +64,6 @@ public class Network
 
     public void BuildSingleNetwork(Cell cell, Cell[,] gridArray)
     {
-        this.gridArray = gridArray;
 
         startCell = cell;
 
@@ -84,7 +82,7 @@ public class Network
 
         foreach (Direction direction in directions)
         {
-            SetSignalRecursively(direction, startCell, startCell.GetSignalStr() - distancePenalty, 0);
+            SetSignalRecursively(direction, startCell, startCell.GetSignalStr() - distancePenalty, 0, gridArray);
         }
     }
 
@@ -94,10 +92,10 @@ public class Network
     /// Performs a recursive depth-first search to spread the network accordingly.
     /// </summary>
     /// <param name="direction">In which direction this iteration of the search is searching in. Possible directions extends the Direction class.</param>
-    /// <param name="currentCell">The previous cell in the iteration.</param>
-    /// <param name="incomingSignalStr">The signal strength passing through the previous cell</param>
-    /// <remarks>'gridArray' in this class must have been set prior to calling this method.</remarks>
-    private void SetSignalRecursively(Direction direction, Cell currentCell, double incomingSignalStr, int diagonalSteps)
+    /// <param name="currentCell">The current cell in the iteration.</param>
+    /// <param name="incomingSignalStr">The signal strength coming in to the current cell</param>
+    /// <remarks>'gridArray' in this object must have been set prior to calling this method.</remarks>
+    private void SetSignalRecursively(Direction direction, Cell currentCell, double incomingSignalStr, int diagonalSteps, Cell[,] gridArray)
     {
         List<Cell> neighbours = direction.GetNearbyCells(currentCell, gridArray);
 
@@ -126,7 +124,7 @@ public class Network
 
             if (outgoingSignalStr > 0)
             {
-                SetSignalRecursively(direction, nextCell, outgoingSignalStr, diagonalSteps);
+                SetSignalRecursively(direction, nextCell, outgoingSignalStr, diagonalSteps, gridArray);
             }
         }
     }
@@ -161,9 +159,6 @@ public class Network
     }
 
 
-    /// <summary>
-    /// Calculates the next index of the least used network flow color.
-    /// </summary>
     /// <returns>The index of the least used network flow color.</returns>
     private int NextColorIndex()
     {
@@ -210,6 +205,13 @@ public abstract class Direction
     /// </summary>
     public readonly Cell originCell;
 
+
+    /// <summary>
+    /// Possible direction of which a signal can traverse through the network is restricted by those implementing this class.
+    /// </summary>
+    /// <remarks>
+    /// The y-axis of the coordinate system is inverted along y-axis. Going north results in decrease in y, going east results in increase in x.
+    /// </remarks>
     public Direction(Cell originCell)
     {
         this.originCell = originCell;
@@ -220,9 +222,8 @@ public abstract class Direction
     /// Checks if the signal movement from currentCell to nextCell is diagonal.
     /// </summary>
     /// <param name="nextCell">The cell to travel to.</param>
-    /// <param name="currentCell">The cell to travel from</param>
-    /// 
-    /// <returns>True if the movement was possible given the direction, otherwise false.</returns>
+    /// <param name="currentCell">The cell to travel from</param> 
+    /// <returns>True if the movement is diagonal given the direction, otherwise false.</returns>
     public abstract bool IsDiagonally(Cell nextCell, Cell currentCell);
 
 
@@ -238,11 +239,11 @@ public abstract class Direction
 
 
     /// <summary>
-    /// Find all neighbours for the given cell in the direction matching the Direction object.
+    /// Find all neighbours for the given cell in the direction matching the object 'this'.
     /// </summary>
     /// <param name="cell">The cell of which neighbours one is looking for.</param>
     /// <param name="gridArray">The grid where the cells are located in.</param>
-    /// <returns>A List containing all the neighbouring Cells for the given cell.</returns>
+    /// <returns>A List containing all the neighbouring Cells for the given cell towards the correspodning direction.</returns>
     public abstract List<Cell> GetNearbyCells(Cell cell, Cell[,] gridArray);
 
 

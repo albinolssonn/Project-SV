@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using System.Collections.Generic;
 
 public class TestGridUtils
 {
@@ -24,7 +23,7 @@ public class TestGridUtils
 
 
     [Test]
-    public void ResizeArray_Test()
+    public void ResizeGrid_Test()
     {
         Cell[,] grid = GridUtils.BuildArray(10, 5);
         int rows = grid.GetLength(0);
@@ -71,7 +70,7 @@ public class TestGridUtils
         rows = 8;
         cols = 5;
         newGrid = GridUtils.ResizeGrid(grid, rows, cols, out _);
-        
+
         newRows = newGrid.GetLength(0);
         newCols = newGrid.GetLength(1);
         Assert.AreEqual(8, newRows);
@@ -86,7 +85,7 @@ public class TestGridUtils
         {
             for (int col = 0; col < cols; col++)
             {
-                if((row != 0 && col != 0) || (row != 2 && col != 0))
+                if ((row != 0 && col != 0) || (row != 2 && col != 0))
                 {
                     Assert.AreEqual(0, newGrid[row, col].GetCellContent().Count);
                 }

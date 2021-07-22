@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // HACK: Create additional modules to place on the grid.
-// For new module to be legal in the program, it has to inherit from the abstract class Module below
+// For new module to be legal in the program, it has to inherit from the abstract class 'Module' below
 // and implement the required methods. Then it is just to add the newly created module to the grid
 // as any other pre-existing module.
 
@@ -22,7 +22,7 @@ public abstract class Module
     public abstract double BlockIndex();
 
 
-    /// <returns>The capacity demand of this module.</returns>
+    /// <returns>The capacity demand of the module.</returns>
     public abstract double CapacityDemand();
 
 
@@ -30,7 +30,7 @@ public abstract class Module
     public abstract double Height();
 
 
-    /// <returns>The path where the resource for the visual model is located on the device.</returns>
+    /// <returns>The path where the resource for the visual model is located on the project.</returns>
     public abstract string GetResourcePath();
     //Should return: "Modules/MODELNAME" where MODELNAME is the filename of the resource.
 
