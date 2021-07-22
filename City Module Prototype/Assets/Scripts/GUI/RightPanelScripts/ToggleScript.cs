@@ -25,6 +25,9 @@ public class ToggleScript : MonoBehaviour
         gridManager.ToggleCreateNetworkArrows();
     }
 
+    /// <summary>
+    /// Toggles to show colors on network flow arrows or not.
+    /// </summary>
     public void SetNetworkDirectionColor()
     {
         gridManager.ToggleSetNetworkColors();

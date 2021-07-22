@@ -1,5 +1,4 @@
 
-
 public class CriticalCoverageScript : Bars
 {
     public override void Init(Colors color)
