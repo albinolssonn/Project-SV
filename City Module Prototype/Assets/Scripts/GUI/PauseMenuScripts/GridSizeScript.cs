@@ -22,7 +22,7 @@ public class GridSizeScript : MonoBehaviour
     /// </summary>
     public void SetGridSize()
     {
-        int rows = 0, cols = 0;
+        int rows, cols;
 
         try
         {
@@ -34,12 +34,11 @@ public class GridSizeScript : MonoBehaviour
             rows_input.text = "";
             cols_input.text = "";
             gridManager.SetErrorMessage("Invalid grid size.");
+            return;
         }
 
         rows_input.text = "";
         cols_input.text = "";
         gridManager.SetNewGridSize(rows, cols);
-
-
     }
 }
