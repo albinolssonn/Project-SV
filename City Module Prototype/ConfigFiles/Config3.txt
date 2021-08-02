@@ -33,4 +33,3 @@ cols,8
 7,1 TallBuilding
 7,2 Park
 7,3 Park
-

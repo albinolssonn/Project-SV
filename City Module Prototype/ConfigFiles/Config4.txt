@@ -31,7 +31,7 @@ cols,10
 2,8 Park
 2,9 TallBuilding
 3,0 TallBuilding
-3,1 FireDepartment
+3,1 FireStation
 3,2 TallBuilding
 3,3 House
 3,4 Park
