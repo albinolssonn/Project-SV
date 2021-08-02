@@ -939,25 +939,15 @@ public class GridManager : MonoBehaviour
     /// <summary>
     /// Loads a pre-configured city, saves it in 'gridArray' and build the grid on the screen.
     /// </summary>
-    /// <param name="index">The chosen city to build.</param>
-    public void LoadPreconfigCity(int index)
+    /// <param name="filename">Filename of file to load.</param>
+    public void LoadPreconfigCity(string filename)
     {
         DestroyGrid();
         ResetGrid();
+
         totalAntennas = 0;
 
-        // HACK: Add or change available pre-configured cities.
-        // Create a corresponding method in PreConfCities and then add it to this switch-case
-        // to be add them as available pre-configuerd citites.
-        gridArray = index switch
-        {
-            1 => PreConfCities.GetConfig1(out rows, out cols, out antennaCells, this),
-            2 => PreConfCities.GetConfig2(out rows, out cols),
-            3 => PreConfCities.GetConfig3(out rows, out cols),
-            4 => PreConfCities.GetConfig4(out rows, out cols),
-            _ => throw new System.ArgumentException("This should be unreachable."),
-        };
-
+        gridArray = PreConfCities.LoadFromFile(out rows, out cols, out antennaCells, this, filename);
 
 
         GenerateGrid();
@@ -970,7 +960,7 @@ public class GridManager : MonoBehaviour
     {
         try
         {
-            FileStream filestream = File.Open(Directory.GetCurrentDirectory() + "/Configfiles/" + configFile + ".txt", FileMode.Append, FileAccess.Write);
+            FileStream filestream = File.Open(Directory.GetCurrentDirectory() + "/Configfiles/" + configFile + ".txt", FileMode.Create, FileAccess.Write);
             StreamWriter writer = new StreamWriter(filestream);
 
             writer.WriteLine("rows," + rows);
@@ -987,9 +977,9 @@ public class GridManager : MonoBehaviour
                     }
                 }
             }
+            writer.Flush();
+            writer.Close();
         }
-
-
         catch (IOException)
         {
 

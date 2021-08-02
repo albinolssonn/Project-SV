@@ -1,0 +1,12 @@
+rows,3
+cols,3
+0,0 TallBuilding
+0,1 House
+0,2 House
+1,0 Park
+1,1 House
+1,2 Hospital
+1,2 Antenna
+2,0 FireStation
+2,1 House
+2,2 PoliceStation

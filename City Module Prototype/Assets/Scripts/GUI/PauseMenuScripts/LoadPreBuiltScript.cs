@@ -6,12 +6,10 @@ using UnityEngine;
 // and then call on 'LoadPreconfigCity' with the correct index as you define in the switch case.
 // Then attach PrebuiltCities_Panel to your button in Unity and call the method you created here on click and it's done.
 
-public class PreBuiltScript : MonoBehaviour
+public class LoadPreBuiltScript : MonoBehaviour
 {
 
     private GridManager grid;
-    public GameObject prebuiltCityUi;
-    public GameObject pauseMenuUi;
 
 
     public void Start()
@@ -25,7 +23,7 @@ public class PreBuiltScript : MonoBehaviour
     /// </summary>
     public void PreCofigBtn1()
     {
-        grid.LoadPreconfigCity(1);
+        grid.LoadPreconfigCity("Config1");
 
     }
 
@@ -35,7 +33,7 @@ public class PreBuiltScript : MonoBehaviour
     /// </summary>
     public void PreCofigBtn2()
     {
-        grid.LoadPreconfigCity(2);
+        grid.LoadPreconfigCity("Config2");
 
     }
 
@@ -45,7 +43,7 @@ public class PreBuiltScript : MonoBehaviour
     /// </summary>
     public void PreCofigBtn3()
     {
-        grid.LoadPreconfigCity(3);
+        grid.LoadPreconfigCity("Config3");
 
     }
 
@@ -55,7 +53,7 @@ public class PreBuiltScript : MonoBehaviour
     /// </summary>
     public void PreCofigBtn4()
     {
-        grid.LoadPreconfigCity(4);
+        grid.LoadPreconfigCity("Config4");
 
     }
 }

@@ -1,0 +1,36 @@
+rows,4
+cols,8
+0,0 Park
+0,1 Park
+0,2 Park
+0,3 TallBuilding
+1,0 PoliceStation
+1,1 Hospital
+1,2 Park
+1,3 FireStation
+2,0 House
+2,1 Park
+2,2 Park
+2,3 TallBuilding
+2,3 Antenna
+3,0 House
+3,1 House
+3,2 TallBuilding
+3,3 TallBuilding
+4,0 TallBuilding
+4,1 TallBuilding
+4,2 TallBuilding
+4,3 TallBuilding
+5,0 Park
+5,1 Park
+5,2 TallBuilding
+5,3 TallBuilding
+6,0 TallBuilding
+6,1 TallBuilding
+6,2 FireStation
+6,3 PoliceStation
+7,0 Hospital
+7,1 TallBuilding
+7,2 Park
+7,3 Park
+
