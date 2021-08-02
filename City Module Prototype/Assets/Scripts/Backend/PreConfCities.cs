@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 
 /// <summary>
-/// This class loads pre-configured cities one is able to load up in the program.
+/// This class loads pre-configured cities from text files.
 /// </summary>
 public static class PreConfCities
 {

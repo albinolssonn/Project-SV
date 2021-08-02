@@ -71,10 +71,13 @@ public class GridManager : MonoBehaviour
     /// <summary>The reduction in signal strength for traveling through a cell with a higher max height than the cell which the antenna is located in.</summary>
     public static readonly double heightPenalty = 2;
 
-    /// <summary>
-    /// Size variables for the visualized grid.</summary>
+    /// <summary>Line width for the visualized grid.</summary>
     private readonly float lineWidth = 10f;
+
+    /// <summary>Size of the cells for the visualized grid.</summary>
     private readonly float cellSize = 100f;
+
+    /// <summary>The total size of a cell plus lines.</summary>
     private float tileSize;
 
 
@@ -249,10 +252,13 @@ public class GridManager : MonoBehaviour
     {
         networkFlowColorsActive = !networkFlowColorsActive;
 
-        DestroyNetworkFlow();
-        foreach (Cell cell in gridArray)
+        if (createNetworkArrows)
         {
-            CreateNetworkFlow(cell);
+            DestroyNetworkFlow();
+            foreach (Cell cell in gridArray)
+            {
+                CreateNetworkFlow(cell);
+            }
         }
     }
 
@@ -956,11 +962,15 @@ public class GridManager : MonoBehaviour
     }
 
 
-    public void SavePreconfigCity(string configFile)
+    /// <summary>
+    /// Saves the current setup of the grid in a file with the given file name.
+    /// </summary>
+    /// <param name="fileName">Name of the file to save in.</param>
+    public void SavePreconfigCity(string fileName)
     {
         try
         {
-            FileStream filestream = File.Open(Directory.GetCurrentDirectory() + "/Configfiles/" + configFile + ".txt", FileMode.Create, FileAccess.Write);
+            FileStream filestream = File.Open(Directory.GetCurrentDirectory() + "/Configfiles/" + fileName + ".txt", FileMode.Create, FileAccess.Write);
             StreamWriter writer = new StreamWriter(filestream);
 
             writer.WriteLine("rows," + rows);
