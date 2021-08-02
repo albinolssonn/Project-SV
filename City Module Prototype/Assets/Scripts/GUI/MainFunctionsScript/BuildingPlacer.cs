@@ -94,12 +94,12 @@ public class BuildingPlacer : MonoBehaviour
 
     public void FireDepartment_Btn()
     {
-        grid.SelectToBePlaced(new FireDepartment());
+        grid.SelectToBePlaced(new FireStation());
     }
 
     public void RemoveFireDepartment_Btn()
     {
-        grid.SetToBeRemoved(new FireDepartment());
+        grid.SetToBeRemoved(new FireStation());
     }
 
     //------------------------------------------------------

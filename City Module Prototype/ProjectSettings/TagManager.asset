@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Grid
   - Toggle
+  - NVGrid
   layers:
   - Default
   - TransparentFX

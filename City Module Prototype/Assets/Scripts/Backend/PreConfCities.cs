@@ -1,3 +1,6 @@
+using System.IO;
+using UnityEngine;
+
 // HACK: Definie or change pre-configured cities.
 // Here you can alter existing pre-configured cities or create new ones.
 // To create a new, simply create a new method and follow the pattern
@@ -16,62 +19,76 @@ public static class PreConfCities
     /// <param name="rows">This will be set to the number of rows of the resulting gridArray for the city.</param>
     /// <param name="cols">This will be set to the number of columns of the resulting gridArray for the city.</param>
     /// <returns>A gridArray of size (rows x cols) for the pre-configured city.</returns>
-    public static Cell[,] GetConfig1(out int rows, out int cols)
+    public static Cell[,] GetConfig1(out int rows, out int cols, GridManager gridManager)
     {
-        rows = 7;
-        cols = 6;
+        
+        StreamReader inputStream = new StreamReader(Directory.GetCurrentDirectory() + "/ConfigFiles/TestConfig.txt");
+        if (!inputStream.EndOfStream)
+        {
+            rows = int.Parse(inputStream.ReadLine().Split(',')[1]);
+
+            cols = int.Parse(inputStream.ReadLine().Split(',')[1]);
+        } 
+        else
+        {
+            throw new EndOfStreamException("File was empty.");
+        }
+
         Cell[,] gridArray = GridUtils.BuildArray(rows, cols);
 
-        gridArray[0, 0].AddCellContent(new House());
-        gridArray[0, 1].AddCellContent(new House());
-        gridArray[0, 2].AddCellContent(new House());
-        gridArray[0, 3].AddCellContent(new Hospital());
-        gridArray[0, 4].AddCellContent(new House());
-        gridArray[0, 5].AddCellContent(new House());
 
-        gridArray[1, 0].AddCellContent(new House());
-        gridArray[1, 1].AddCellContent(new House());
-        gridArray[1, 2].AddCellContent(new House());
-        gridArray[1, 3].AddCellContent(new Park());
-        gridArray[1, 4].AddCellContent(new Park());
-        gridArray[1, 5].AddCellContent(new House());
+        while (!inputStream.EndOfStream)
+        {
+            string inputLine = inputStream.ReadLine();
+            string[] inputs = inputLine.Split(' ');
 
-        gridArray[2, 0].AddCellContent(new TallBuilding());
-        gridArray[2, 1].AddCellContent(new TallBuilding());
-        gridArray[2, 2].AddCellContent(new TallBuilding());
-        gridArray[2, 3].AddCellContent(new TallBuilding());
-        gridArray[2, 4].AddCellContent(new TallBuilding());
-        gridArray[2, 5].AddCellContent(new PoliceStation());
+            int x = int.Parse(inputs[0].Split(',')[0]);
+            int y = int.Parse(inputs[0].Split(',')[0]);
 
-        gridArray[3, 0].AddCellContent(new TallBuilding());
-        gridArray[3, 1].AddCellContent(new Park());
-        gridArray[3, 2].AddCellContent(new TallBuilding());
-        gridArray[3, 3].AddCellContent(new House());
-        gridArray[3, 4].AddCellContent(new House());
-        gridArray[3, 5].AddCellContent(new House());
+            string moduleInput = inputs[1];
+            Module module = ToModule(moduleInput, gridManager);
+            
 
-        gridArray[4, 0].AddCellContent(new TallBuilding());
-        gridArray[4, 1].AddCellContent(new TallBuilding());
-        gridArray[4, 2].AddCellContent(new TallBuilding());
-        gridArray[4, 3].AddCellContent(new TallBuilding());
-        gridArray[4, 4].AddCellContent(new TallBuilding());
-        gridArray[4, 5].AddCellContent(new FireDepartment());
+            if(module != null)
+            {
+                gridArray[x, y].AddCellContent(module);
+            }
+        }
 
-        gridArray[5, 0].AddCellContent(new TallBuilding());
-        gridArray[5, 1].AddCellContent(new Hospital());
-        gridArray[5, 2].AddCellContent(new TallBuilding());
-        gridArray[5, 3].AddCellContent(new Park());
-        gridArray[5, 4].AddCellContent(new House());
-        gridArray[5, 5].AddCellContent(new House());
-
-        gridArray[6, 0].AddCellContent(new FireDepartment());
-        gridArray[6, 1].AddCellContent(new House());
-        gridArray[6, 2].AddCellContent(new House());
-        gridArray[6, 3].AddCellContent(new House());
-        gridArray[6, 4].AddCellContent(new House());
-        gridArray[6, 5].AddCellContent(new House());
+        inputStream.Close();
 
         return gridArray;
+    }
+
+
+    private static Module ToModule(string moduleString, GridManager gridManager)
+    {
+        switch (moduleString)
+        {
+            case "Park":
+                return new Park();
+
+            case "House":
+                return new House();
+
+            case "TallBuilding":
+                return new TallBuilding();
+
+            case "Hospital":
+                return new Hospital();
+            case "PoliceStation":
+                return new PoliceStation();
+
+            case "FireStation":
+                return new FireStation();
+
+            case "Antenna":
+                return new Antenna();
+
+            default:
+                gridManager.SetErrorMessage("The module \"" + moduleString + "\" is not defined in the program.");
+                return null;
+        }
     }
 
 
@@ -95,7 +112,7 @@ public static class PreConfCities
         gridArray[1, 1].AddCellContent(new House());
         gridArray[1, 2].AddCellContent(new Hospital());
 
-        gridArray[2, 0].AddCellContent(new FireDepartment());
+        gridArray[2, 0].AddCellContent(new FireStation());
         gridArray[2, 1].AddCellContent(new House());
         gridArray[2, 2].AddCellContent(new PoliceStation());
 
@@ -123,7 +140,7 @@ public static class PreConfCities
         gridArray[1, 0].AddCellContent(new PoliceStation());
         gridArray[1, 1].AddCellContent(new Hospital());
         gridArray[1, 2].AddCellContent(new Park());
-        gridArray[1, 3].AddCellContent(new FireDepartment());
+        gridArray[1, 3].AddCellContent(new FireStation());
 
         gridArray[2, 0].AddCellContent(new House());
         gridArray[2, 1].AddCellContent(new Park());
@@ -147,7 +164,7 @@ public static class PreConfCities
 
         gridArray[6, 0].AddCellContent(new TallBuilding());
         gridArray[6, 1].AddCellContent(new TallBuilding());
-        gridArray[6, 2].AddCellContent(new FireDepartment());
+        gridArray[6, 2].AddCellContent(new FireStation());
         gridArray[6, 3].AddCellContent(new PoliceStation());
 
         gridArray[7, 0].AddCellContent(new Hospital());
@@ -205,7 +222,7 @@ public static class PreConfCities
         gridArray[2, 9].AddCellContent(new TallBuilding());
 
         gridArray[3, 0].AddCellContent(new TallBuilding());
-        gridArray[3, 1].AddCellContent(new FireDepartment());
+        gridArray[3, 1].AddCellContent(new FireStation());
         gridArray[3, 2].AddCellContent(new TallBuilding());
         gridArray[3, 3].AddCellContent(new House());
         gridArray[3, 4].AddCellContent(new Park());
@@ -249,7 +266,7 @@ public static class PreConfCities
         gridArray[6, 8].AddCellContent(new TallBuilding());
         gridArray[6, 9].AddCellContent(new TallBuilding());
 
-        gridArray[7, 0].AddCellContent(new FireDepartment());
+        gridArray[7, 0].AddCellContent(new FireStation());
         gridArray[7, 1].AddCellContent(new House());
         gridArray[7, 2].AddCellContent(new House());
         gridArray[7, 3].AddCellContent(new House());

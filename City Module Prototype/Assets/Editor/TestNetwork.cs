@@ -225,7 +225,7 @@ public class TestNetwork
 
 
 
-        gridArray[0, 0].AddCellContent(new FireDepartment());
+        gridArray[0, 0].AddCellContent(new FireStation());
 
         gridArray[0, 1].AddCellContent(new TallBuilding());
 
@@ -276,7 +276,7 @@ public class TestNetwork
         Cell[,] gridArray = GridUtils.BuildArray(rows, cols);
 
 
-        gridArray[0, 0].AddCellContent(new FireDepartment());
+        gridArray[0, 0].AddCellContent(new FireStation());
 
         gridArray[0, 1].AddCellContent(new TallBuilding());
 
@@ -373,7 +373,7 @@ public class TestNetwork
         gridArray[1, 0].AddCellContent(new House());
         gridArray[1, 0].AddCellContent(new House());
 
-        gridArray[1, 1].AddCellContent(new FireDepartment());
+        gridArray[1, 1].AddCellContent(new FireStation());
 
         gridArray[1, 2].AddCellContent(new House());
         gridArray[1, 2].AddCellContent(new House());
@@ -427,7 +427,7 @@ public class TestNetwork
         gridArray[0, 2].AddCellContent(new TallBuilding());
         gridArray[0, 2].AddCellContent(new TallBuilding());
 
-        gridArray[1, 0].AddCellContent(new FireDepartment());
+        gridArray[1, 0].AddCellContent(new FireStation());
 
         gridArray[1, 1].AddCellContent(new TallBuilding());
         gridArray[1, 1].AddCellContent(new TallBuilding());

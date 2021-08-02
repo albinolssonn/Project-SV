@@ -14,6 +14,7 @@ public class Cell
     private double maxHeight;
     private Antenna antenna;
     private GameObject tile;
+    private GameObject NVTile;
     private bool hasCriticalModule;
     private double capacityDemand;
 
@@ -58,10 +59,27 @@ public class Cell
     }
 
 
+    /// <summary>
+    /// Connects a game object to the cell used to visualize it in the Network View.
+    /// </summary>
+    /// <param name="tile">The game object visualizing the Cell.</param>
+    public void SetNVTile(GameObject tile)
+    {
+        NVTile = tile;
+    }
+
+
     /// <returns>The game object visualizing this cell.</returns>
     public GameObject GetTile()
     {
         return tile;
+    }
+
+
+    /// <returns>The Network View tile used to visualize the tile in the network view.</returns>
+    public GameObject GetNVTile()
+    {
+        return NVTile;
     }
 
 

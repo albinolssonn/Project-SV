@@ -225,7 +225,7 @@ public class PoliceStation : Module
 
 //---------------------------------------------------------------------
 
-public class FireDepartment : Module
+public class FireStation : Module
 {
 
     public override double BlockIndex()
@@ -250,7 +250,7 @@ public class FireDepartment : Module
 
     public override Module Copy()
     {
-        return new FireDepartment();
+        return new FireStation();
     }
 
     public override bool IsCritical()

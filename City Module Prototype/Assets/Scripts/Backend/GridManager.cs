@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 /// <summary>
@@ -9,11 +10,11 @@ public class GridManager : MonoBehaviour
 {
     private int rows;
     private int cols;
-    private readonly float tileSize = 110F;
     private Module toBePlaced;
     private Module toBeRemoved;
     private GameObject ghostObject;
     private Vector3 gridScale;
+    private Vector3 gridScaleNV;
     private Network network;
     private Cell[,] gridArray;
     private List<GameObject> networkFlowVisuals;
@@ -29,6 +30,7 @@ public class GridManager : MonoBehaviour
     private float criticalCapacityResult;
 
     private GameObject gridManager;
+    private GameObject gridNV;
 
     private int totalAntennas;
     private int maxAntennas;
@@ -69,6 +71,12 @@ public class GridManager : MonoBehaviour
     /// <summary>The reduction in signal strength for traveling through a cell with a higher max height than the cell which the antenna is located in.</summary>
     public static readonly double heightPenalty = 2;
 
+    /// <summary>
+    /// Size variables for the visualized grid.</summary>
+    private readonly float lineWidth = 10f;
+    private readonly float cellSize = 100f;
+    private float tileSize;
+
 
 
     // Start is called before the first frame update
@@ -78,12 +86,14 @@ public class GridManager : MonoBehaviour
         rows = 20;
         cols = 20;
         //
+        tileSize = cellSize + lineWidth;
         totalAntennas = 0;
         simulationModeSelected = "coverage";
         shiftHeldDown = false;
         createNetworkArrows = false;
         networkFlowVisuals = new List<GameObject>();
-        gridManager = GameObject.FindGameObjectsWithTag("Grid")[0];
+        gridManager = GameObject.FindGameObjectWithTag("Grid");
+        gridNV = GameObject.FindGameObjectWithTag("NVGrid");
 
         colors = new Dictionary<string, Colors>
         {
@@ -109,13 +119,14 @@ public class GridManager : MonoBehaviour
         informationScript = GameObject.Find("Information_Label").GetComponent<InformationScript>();
 
         UpdateNetwork();
+
+        
     }
 
 
     // Update is called once per frame. It checks if the mouse has been clicked to place down a module.
     public void Update()
     {
-
         if ((!Input.GetKey(KeyCode.LeftShift) && shiftHeldDown) || Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape))
         {
             shiftHeldDown = false;
@@ -154,7 +165,12 @@ public class GridManager : MonoBehaviour
     /// </summary>
     private void CenterGrid()
     {
-        transform.parent.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
+        transform.parent.transform.position = Camera.allCameras[0].ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
+        if(Camera.allCamerasCount >= 2)
+        {
+            gridNV.transform.parent.transform.position = Camera.allCameras[1].ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
+        }
+
 
         ScaleGrid();
 
@@ -169,6 +185,21 @@ public class GridManager : MonoBehaviour
         finalPosition[0] = finalPosition[0] + gridHeight / 2;
 
         transform.localPosition = new Vector2(finalPosition[1], finalPosition[0]);
+
+
+
+        scaledTileSize = cellSize * gridScaleNV[0];
+
+        finalPosition = new float[2] { -scaledTileSize, 0 };
+
+        gridWidth = cols * scaledTileSize;
+        gridHeight = rows * scaledTileSize;
+
+        finalPosition[1] = finalPosition[1] - gridWidth / 2;
+        finalPosition[0] = finalPosition[0] + gridHeight / 2;
+
+        gridNV.transform.localPosition = new Vector2(finalPosition[1], finalPosition[0]);
+
     }
 
 
@@ -180,6 +211,10 @@ public class GridManager : MonoBehaviour
         float ratio = (Screen.height - 100) / (System.Math.Max(rows, cols) * tileSize);
         gridScale = new Vector3(ratio, ratio, 1f);
         transform.localScale = gridScale;
+
+        ratio = (Screen.height - 100) / (System.Math.Max(rows, cols) * cellSize);
+        gridScaleNV = new Vector3(ratio, ratio, 1f);
+        gridNV.transform.localScale = gridScaleNV;
 
     }
 
@@ -656,6 +691,19 @@ public class GridManager : MonoBehaviour
 
                 tile.transform.localPosition = new Vector2(posX, posY);
 
+
+
+                tile = (GameObject)Instantiate(referenceTile, gridNV.transform);
+                tile.transform.SetParent(gridNV.transform);
+                gridArray[row, col].SetNVTile(tile);
+
+                posX = col * cellSize;
+                posY = row * -cellSize;
+
+                tile.transform.localPosition = new Vector2(posX, posY);
+
+
+
                 foreach (Module module in gridArray[row, col].GetCellContent())
                 {
                     toBePlaced = module;
@@ -675,11 +723,24 @@ public class GridManager : MonoBehaviour
     /// <param name="cell">The cell corresponding to the tile to change color of.</param>
     public void SetTileColor(Cell cell)
     {
-        float[] rgbt = GetColor(cell);
+        float[] rgbt = GetColor(cell, out bool isGray);
 
         var tileRenderer = cell.GetTile().transform.GetChild(0).GetComponent<Renderer>();
-
         tileRenderer.material.SetColor("_Color", new Color(rgbt[0], rgbt[1], rgbt[2], rgbt[3]));
+
+
+
+        var tileRendererNV = cell.GetNVTile().transform.GetChild(0).GetComponent<Renderer>();
+        if (isGray)
+        {
+            tileRendererNV.material.SetColor("_Color", new Color(0f, 0f, 0f, 0f));
+        }
+        else
+        {
+            tileRendererNV.material.SetColor("_Color", new Color(rgbt[0], rgbt[1], rgbt[2], rgbt[3]));
+        }
+        
+        
 
     }
 
@@ -689,9 +750,10 @@ public class GridManager : MonoBehaviour
     /// </summary>
     /// <param name="cell">The cell to create the color for.</param>
     /// <returns>The rgbt color code for this cell.</returns>
-    private float[] GetColor(Cell cell)
+    private float[] GetColor(Cell cell, out bool isGray)
     {
         Colors color;
+        isGray = false;
         try
         {
             color = colors[simulationModeSelected];
@@ -715,6 +777,7 @@ public class GridManager : MonoBehaviour
                 else
                 {
                     rgbt = Colors.gray;
+                    isGray = true;
                 }
                 break;
 
@@ -727,6 +790,7 @@ public class GridManager : MonoBehaviour
                 else
                 {
                     rgbt = Colors.gray;
+                    isGray = true;
                 }
                 break;
 
@@ -887,7 +951,7 @@ public class GridManager : MonoBehaviour
         // to be add them as available pre-configuerd citites.
         gridArray = index switch
         {
-            1 => PreConfCities.GetConfig1(out rows, out cols),
+            1 => PreConfCities.GetConfig1(out rows, out cols, this),
             2 => PreConfCities.GetConfig2(out rows, out cols),
             3 => PreConfCities.GetConfig3(out rows, out cols),
             4 => PreConfCities.GetConfig4(out rows, out cols),
