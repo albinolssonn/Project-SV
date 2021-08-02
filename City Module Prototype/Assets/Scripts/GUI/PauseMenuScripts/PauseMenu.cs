@@ -30,14 +30,12 @@ public class PauseMenu : MonoBehaviour
                     case 1:
                         CloseInformationPage();
                         CloseSettingsPage();
-                        pausedOnLayer = 0;
                         break;
 
                     case 2:
                         CloseLoadPreCityPage();
                         CloseSavePreCityPage(); 
                         CloseGridSizePage();
-                        pausedOnLayer = 1;
                         break;
 
                     default:
@@ -95,6 +93,8 @@ public class PauseMenu : MonoBehaviour
     {
         informationPageUi.SetActive(false);
         pauseMenuUi.SetActive(true);
+        pausedOnLayer = 0;
+
     }
 
 
@@ -116,6 +116,8 @@ public class PauseMenu : MonoBehaviour
     {
         settingsPageUi.SetActive(false);
         pauseMenuUi.SetActive(true);
+        pausedOnLayer = 0;
+
     }
 
 
@@ -137,6 +139,8 @@ public class PauseMenu : MonoBehaviour
     {
         gridSizeUi.SetActive(false);
         settingsPageUi.SetActive(true);
+        pausedOnLayer = 1;
+
     }
 
 
@@ -158,6 +162,8 @@ public class PauseMenu : MonoBehaviour
     {
         loadPrebuiltCityUi.SetActive(false);
         settingsPageUi.SetActive(true);
+        pausedOnLayer = 1;
+
     }
 
     /// <summary>
@@ -177,6 +183,8 @@ public class PauseMenu : MonoBehaviour
     {
         savePrebuiltCityUi.SetActive(false);
         settingsPageUi.SetActive(true);
+        pausedOnLayer = 1;
+
     }
 
 
