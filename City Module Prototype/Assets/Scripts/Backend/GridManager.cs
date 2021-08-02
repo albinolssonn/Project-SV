@@ -966,6 +966,40 @@ public class GridManager : MonoBehaviour
     }
 
 
+    public void SavePreconfigCity(string configFile)
+    {
+        try
+        {
+            FileStream filestream = File.Open(Directory.GetCurrentDirectory() + "/Configfiles/" + configFile + ".txt", FileMode.Append, FileAccess.Write);
+            StreamWriter writer = new StreamWriter(filestream);
+
+            writer.WriteLine("rows," + rows);
+            writer.WriteLine("cols," + cols);
+
+            for (int row = 0; row < rows; row++)
+            {
+                for (int col = 0; col < cols; col++)
+                {
+                    List<Module> content = gridArray[row, col].GetCellContent();
+                    foreach (Module elem in content)
+                    {
+                        writer.WriteLine(col + "," + row + " " + elem); 
+                    }
+                }
+            }
+        }
+
+
+        catch (IOException)
+        {
+
+            SetErrorMessage("Could not save."); 
+        }
+
+       
+    }
+
+
     /// <summary>
     /// Sets the grid to a new size by adding or subtracting cols and rows towards the right and down.
     /// Transfers any modules from the old grid to the new which are within the new size bounds.
