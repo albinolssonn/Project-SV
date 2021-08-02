@@ -81,11 +81,11 @@ public static class PreConfCities
             gridManager.SetErrorMessage("Could not load file.");
             return Crashed(out rows, out cols, out antennaCells);
         }
-        /*catch (System.FormatException)
+        catch (System.FormatException)
         {
             gridManager.SetErrorMessage("Config file was in wrong format.");
             return Crashed(out rows, out cols, out antennaCells);
-        }*/
+        }
 
     }
 
