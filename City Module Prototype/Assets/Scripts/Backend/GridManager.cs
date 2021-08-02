@@ -951,12 +951,14 @@ public class GridManager : MonoBehaviour
         // to be add them as available pre-configuerd citites.
         gridArray = index switch
         {
-            1 => PreConfCities.GetConfig1(out rows, out cols, this),
+            1 => PreConfCities.GetConfig1(out rows, out cols, out antennaCells, this),
             2 => PreConfCities.GetConfig2(out rows, out cols),
             3 => PreConfCities.GetConfig3(out rows, out cols),
             4 => PreConfCities.GetConfig4(out rows, out cols),
             _ => throw new System.ArgumentException("This should be unreachable."),
         };
+
+
 
         GenerateGrid();
         UpdateNetwork();

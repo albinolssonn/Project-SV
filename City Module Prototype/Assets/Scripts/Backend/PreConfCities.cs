@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ public static class PreConfCities
     /// <param name="rows">This will be set to the number of rows of the resulting gridArray for the city.</param>
     /// <param name="cols">This will be set to the number of columns of the resulting gridArray for the city.</param>
     /// <returns>A gridArray of size (rows x cols) for the pre-configured city.</returns>
-    public static Cell[,] GetConfig1(out int rows, out int cols, GridManager gridManager)
+    public static Cell[,] GetConfig1(out int rows, out int cols, out List<Cell> antennaCells, GridManager gridManager)
     {
         
         StreamReader inputStream = new StreamReader(Directory.GetCurrentDirectory() + "/ConfigFiles/TestConfig.txt");
@@ -34,16 +35,19 @@ public static class PreConfCities
             throw new EndOfStreamException("File was empty.");
         }
 
-        Cell[,] gridArray = GridUtils.BuildArray(rows, cols);
 
+        Cell[,] gridArray = GridUtils.BuildArray(rows, cols);
+        antennaCells = new List<Cell>();
 
         while (!inputStream.EndOfStream)
         {
             string inputLine = inputStream.ReadLine();
             string[] inputs = inputLine.Split(' ');
 
-            int x = int.Parse(inputs[0].Split(',')[0]);
-            int y = int.Parse(inputs[0].Split(',')[0]);
+            string[] xy = inputs[0].Split(',');
+            int x = int.Parse(xy[0]);
+            int y = int.Parse(xy[1]);
+
 
             string moduleInput = inputs[1];
             Module module = ToModule(moduleInput, gridManager);
@@ -51,7 +55,11 @@ public static class PreConfCities
 
             if(module != null)
             {
-                gridArray[x, y].AddCellContent(module);
+                gridArray[y, x].AddCellContent(module);
+                if(module is Antenna)
+                {
+                    antennaCells.Add(gridArray[y, x]);
+                }
             }
         }
 
