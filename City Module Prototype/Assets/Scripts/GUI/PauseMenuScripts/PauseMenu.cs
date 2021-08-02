@@ -10,7 +10,9 @@ public class PauseMenu : MonoBehaviour
     public GameObject informationPageUi;
     public GameObject gridSizeUi;
     public GameObject settingsPageUi;
-    public GameObject prebuiltCityUi;
+    public GameObject loadPrebuiltCityUi;
+    public GameObject savePrebuiltCityUi;
+
 
     // Update is called once per frame
     public void Update()
@@ -32,7 +34,8 @@ public class PauseMenu : MonoBehaviour
                         break;
 
                     case 2:
-                        ClosePreCityPage();
+                        CloseLoadPreCityPage();
+                        CloseSavePreCityPage(); 
                         CloseGridSizePage();
                         pausedOnLayer = 1;
                         break;
@@ -140,9 +143,9 @@ public class PauseMenu : MonoBehaviour
     /// <summary>
     /// Opens the pre-configured cities window.
     /// </summary>
-    public void PreCityPage()
+    public void LoadPreCityPage()
     {
-        prebuiltCityUi.SetActive(true);
+        loadPrebuiltCityUi.SetActive(true);
         settingsPageUi.SetActive(false);
         pausedOnLayer = 2;
     }
@@ -151,9 +154,28 @@ public class PauseMenu : MonoBehaviour
     /// <summary>
     /// Closes the pre-configured cities window.
     /// </summary>
-    public void ClosePreCityPage()
+    public void CloseLoadPreCityPage()
     {
-        prebuiltCityUi.SetActive(false);
+        loadPrebuiltCityUi.SetActive(false);
+        settingsPageUi.SetActive(true);
+    }
+
+    /// <summary>
+    /// Opens the save pre-configured cities window.
+    /// </summary>
+    public void SavePreCityPage()
+    {
+        savePrebuiltCityUi.SetActive(true);
+        settingsPageUi.SetActive(false);
+        pausedOnLayer = 2;
+    }
+
+    /// <summary>
+    /// Closes the save pre-configured cities window.
+    /// </summary>
+    public void CloseSavePreCityPage()
+    {
+        savePrebuiltCityUi.SetActive(false);
         settingsPageUi.SetActive(true);
     }
 
