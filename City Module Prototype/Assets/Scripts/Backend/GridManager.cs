@@ -122,8 +122,6 @@ public class GridManager : MonoBehaviour
         informationScript = GameObject.Find("Information_Label").GetComponent<InformationScript>();
 
         UpdateNetwork();
-
-        
     }
 
 
@@ -169,7 +167,7 @@ public class GridManager : MonoBehaviour
     private void CenterGrid()
     {
         transform.parent.transform.position = Camera.allCameras[0].ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
-        if(Camera.allCamerasCount >= 2)
+        if (Camera.allCamerasCount >= 2)
         {
             gridNV.transform.parent.transform.position = Camera.allCameras[1].ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
         }
@@ -745,8 +743,8 @@ public class GridManager : MonoBehaviour
         {
             tileRendererNV.material.SetColor("_Color", new Color(rgbt[0], rgbt[1], rgbt[2], rgbt[3]));
         }
-        
-        
+
+
 
     }
 
@@ -983,7 +981,7 @@ public class GridManager : MonoBehaviour
                     List<Module> content = gridArray[row, col].GetCellContent();
                     foreach (Module elem in content)
                     {
-                        writer.WriteLine(col + "," + row + " " + elem); 
+                        writer.WriteLine(col + "," + row + " " + elem);
                     }
                 }
             }
@@ -993,10 +991,10 @@ public class GridManager : MonoBehaviour
         catch (IOException)
         {
 
-            SetErrorMessage("Could not save."); 
+            SetErrorMessage("Could not save.");
         }
 
-       
+
     }
 
 
