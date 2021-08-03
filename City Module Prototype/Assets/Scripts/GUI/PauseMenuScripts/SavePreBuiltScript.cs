@@ -1,35 +1,58 @@
+using System.IO;
+using TMPro;
 using UnityEngine;
 
 public class SavePreBuiltScript : MonoBehaviour
 {
-    private GridManager grid;
+    private GridManager gridManager;
+    public TMP_Dropdown dropdown;
+    public TMP_InputField inputField; 
+
 
     public void Start()
     {
-        grid = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
+        gridManager = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
     }
 
-    public void SaveCofigBtn1()
+    /// <summary>
+    /// Loads dropdown menu with menu options.
+    /// </summary>
+    public void LoadDropdown()
     {
-        grid.SavePreconfigCity("City1");
+        dropdown.options.Clear();
 
+        string[] configFiles = Directory.GetFiles(Directory.GetCurrentDirectory() + "/ConfigFiles/");
+
+
+        foreach (string file in configFiles)
+        {
+            dropdown.options.Add(new TMP_Dropdown.OptionData() { text = Path.GetFileNameWithoutExtension(file) });
+        }
+
+        dropdown.onValueChanged.AddListener(delegate { DropDownItemSelected(); }); 
     }
 
-    public void SaveCofigBtn2()
+    /// <summary>
+    /// Takes value from dropdown menu and inserts to inputfield. 
+    /// </summary>
+    private void DropDownItemSelected()
     {
-        grid.SavePreconfigCity("City2");
-
+        inputField.text = dropdown.options[dropdown.value].text; 
     }
 
-    public void SaveCofigBtn3()
+    /// <summary>
+    /// Takes input string from inputfield and passes into gridmanager.
+    /// </summary>
+    public void SaveBtn()
     {
-        grid.SavePreconfigCity("City3");
+        if(inputField.text.Length == 0)
+        {
+            gridManager.SetErrorMessage("Write filename or chose an existing file.");
+            return; 
+        }
 
-    }
-
-    public void SaveCofigBtn4()
-    {
-        grid.SavePreconfigCity("City4");
+        gridManager.SavePreconfigCity(inputField.text);
+        gridManager.SetErrorMessage("City saved.");
 
     }
 }

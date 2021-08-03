@@ -12,7 +12,8 @@ public class PauseMenu : MonoBehaviour
     public GameObject settingsPageUi;
     public GameObject loadPrebuiltCityUi;
     public GameObject savePrebuiltCityUi;
-    public GameObject loadDropDown; 
+    public GameObject loadDropDown;
+    public GameObject saveDropDown;
 
 
     // Update is called once per frame
@@ -178,6 +179,7 @@ public class PauseMenu : MonoBehaviour
     /// </summary>
     public void SavePreCityPage()
     {
+        saveDropDown.GetComponent<SavePreBuiltScript>().LoadDropdown();
         savePrebuiltCityUi.SetActive(true);
         settingsPageUi.SetActive(false);
         pausedOnLayer = 2;

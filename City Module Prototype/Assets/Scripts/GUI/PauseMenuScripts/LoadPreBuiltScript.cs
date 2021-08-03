@@ -1,9 +1,6 @@
-using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 // HACK: Create pre-configured city button.
 // Here you can add button methods to create additional pre-configured cities.
@@ -14,43 +11,28 @@ using UnityEngine.UI;
 public class LoadPreBuiltScript : MonoBehaviour
 {
 
-    private GridManager grid;
+    private GridManager gridManager;
     public TMP_Dropdown dropdown;
 
 
 
     public void Start()
     {
-        grid = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
-
-        //DropdownItemSelected(); 
-
-
-        //OnPointerClick();
-        //dropdown.onValueChanged.AddListener(delegate { DropdownItemSelected(dropdown); }); 
-
-
-
+        gridManager = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
     }
 
-    /* void DropdownItemSelected(Dropdown dropdown)
-    {
-        int index = dropdown.value;  
-    } */
-
+    /// <summary>
+    /// Loads dropdown menu with menu options.
+    /// </summary>
     public void LoadDropdown()
     {
         dropdown.options.Clear();
 
         string[] configFiles = Directory.GetFiles(Directory.GetCurrentDirectory() + "/ConfigFiles/");
 
-
         foreach (string file in configFiles)
         {
-
             dropdown.options.Add(new TMP_Dropdown.OptionData() { text = Path.GetFileNameWithoutExtension(file) });
-
-
         }
         dropdown.RefreshShownValue();
     }
@@ -62,17 +44,12 @@ public class LoadPreBuiltScript : MonoBehaviour
     {
         if(dropdown.options.Count > 0)
         {
-            grid.LoadPreconfigCity(dropdown.options[dropdown.value].text);
-            Debug.Log(dropdown.options[dropdown.value].text);
-
+            gridManager.LoadPreconfigCity(dropdown.options[dropdown.value].text);
         }
 
         else
         {
-            grid.SetErrorMessage("There are no save files."); 
+            gridManager.SetErrorMessage("There are no save files."); 
         }
-
     }
-
-
 }
