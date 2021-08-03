@@ -1,4 +1,9 @@
+using System.Collections.Generic;
+using System.IO;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 // HACK: Create pre-configured city button.
 // Here you can add button methods to create additional pre-configured cities.
@@ -10,13 +15,46 @@ public class LoadPreBuiltScript : MonoBehaviour
 {
 
     private GridManager grid;
+    private TMP_Dropdown dropdown; 
+
 
 
     public void Start()
     {
         grid = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
+        dropdown = transform.GetComponent<TMP_Dropdown>();
+        
+        //DropdownItemSelected(); 
+
+
+        //OnPointerClick();
+        //dropdown.onValueChanged.AddListener(delegate { DropdownItemSelected(dropdown); }); 
+
+        
+
     }
 
+    /* void DropdownItemSelected(Dropdown dropdown)
+    {
+        int index = dropdown.value;  
+    } */
+
+    public void LoadDropdown()  
+    {
+        dropdown.options.Clear();
+
+        string[] configFiles = Directory.GetFiles(Directory.GetCurrentDirectory() + "/ConfigFiles/"); 
+
+
+        foreach(string file in configFiles)
+        {
+            
+            dropdown.options.Add(new TMP_Dropdown.OptionData() { text = Path.GetFileNameWithoutExtension(file) });
+
+
+        }
+        dropdown.RefreshShownValue();   
+    }
 
     /// <summary>
     /// Loads a pre-configured city.
@@ -56,4 +94,6 @@ public class LoadPreBuiltScript : MonoBehaviour
         grid.LoadPreconfigCity("Config4");
 
     }
+
+
 }
