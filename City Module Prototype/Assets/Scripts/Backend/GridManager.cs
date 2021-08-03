@@ -987,6 +987,7 @@ public class GridManager : MonoBehaviour
             }
             writer.Flush();
             writer.Close();
+            SetErrorMessage("City has been saved in " + fileName + "."); ; 
         }
         catch (IOException)
         {

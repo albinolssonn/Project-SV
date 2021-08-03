@@ -13,25 +13,25 @@ public class SavePreBuiltScript : MonoBehaviour
 
     public void SaveCofigBtn1()
     {
-        grid.SavePreconfigCity("Config1");
+        grid.SavePreconfigCity("City1");
 
     }
 
     public void SaveCofigBtn2()
     {
-        grid.SavePreconfigCity("Config2");
+        grid.SavePreconfigCity("City2");
 
     }
 
     public void SaveCofigBtn3()
     {
-        grid.SavePreconfigCity("Config3");
+        grid.SavePreconfigCity("City3");
 
     }
 
     public void SaveCofigBtn4()
     {
-        grid.SavePreconfigCity("Config4");
+        grid.SavePreconfigCity("City4");
 
     }
 }
