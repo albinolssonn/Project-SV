@@ -15,22 +15,21 @@ public class LoadPreBuiltScript : MonoBehaviour
 {
 
     private GridManager grid;
-    private TMP_Dropdown dropdown; 
+    public TMP_Dropdown dropdown;
 
 
 
     public void Start()
     {
         grid = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridManager>();
-        dropdown = transform.GetComponent<TMP_Dropdown>();
-        
+
         //DropdownItemSelected(); 
 
 
         //OnPointerClick();
         //dropdown.onValueChanged.AddListener(delegate { DropdownItemSelected(dropdown); }); 
 
-        
+
 
     }
 
@@ -39,59 +38,39 @@ public class LoadPreBuiltScript : MonoBehaviour
         int index = dropdown.value;  
     } */
 
-    public void LoadDropdown()  
+    public void LoadDropdown()
     {
         dropdown.options.Clear();
 
-        string[] configFiles = Directory.GetFiles(Directory.GetCurrentDirectory() + "/ConfigFiles/"); 
+        string[] configFiles = Directory.GetFiles(Directory.GetCurrentDirectory() + "/ConfigFiles/");
 
 
-        foreach(string file in configFiles)
+        foreach (string file in configFiles)
         {
-            
+
             dropdown.options.Add(new TMP_Dropdown.OptionData() { text = Path.GetFileNameWithoutExtension(file) });
 
 
         }
-        dropdown.RefreshShownValue();   
+        dropdown.RefreshShownValue();
     }
 
     /// <summary>
     /// Loads a pre-configured city.
     /// </summary>
-    public void PreCofigBtn1()
+    public void LoadBtn()
     {
-        grid.LoadPreconfigCity("Config1");
+        if(dropdown.options.Count > 0)
+        {
+            grid.LoadPreconfigCity(dropdown.options[dropdown.value].text);
+            Debug.Log(dropdown.options[dropdown.value].text);
 
-    }
+        }
 
-
-    /// <summary>
-    /// Loads a pre-configured city.
-    /// </summary>
-    public void PreCofigBtn2()
-    {
-        grid.LoadPreconfigCity("Config2");
-
-    }
-
-
-    /// <summary>
-    /// Loads a pre-configured city.
-    /// </summary>
-    public void PreCofigBtn3()
-    {
-        grid.LoadPreconfigCity("Config3");
-
-    }
-
-
-    /// <summary>
-    /// Loads a pre-configured city.
-    /// </summary>
-    public void PreCofigBtn4()
-    {
-        grid.LoadPreconfigCity("Config4");
+        else
+        {
+            grid.SetErrorMessage("There are no save files."); 
+        }
 
     }
 

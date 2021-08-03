@@ -61,6 +61,8 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUi.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
+        pausedOnLayer = 0;
+
     }
 
 
@@ -72,6 +74,8 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUi.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
+        pausedOnLayer = 0;
+
     }
 
 
