@@ -7,6 +7,7 @@ public class PauseMenu : MonoBehaviour
     public static int pausedOnLayer = 0;
 
     public GameObject pauseMenuUi;
+    public GameObject mainPageUi;
     public GameObject informationPageUi;
     public GameObject gridSizeUi;
     public GameObject settingsPageUi;
@@ -14,6 +15,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject savePrebuiltCityUi;
     public GameObject loadDropDown;
     public GameObject saveDropDown;
+    
 
 
     // Update is called once per frame
@@ -38,6 +40,9 @@ public class PauseMenu : MonoBehaviour
                         CloseLoadPreCityPage();
                         CloseSavePreCityPage(); 
                         CloseGridSizePage();
+                        break;
+
+                    case 3:
                         break;
 
                     default:
@@ -86,7 +91,7 @@ public class PauseMenu : MonoBehaviour
     public void InformationPage()
     {
         informationPageUi.SetActive(true);
-        pauseMenuUi.SetActive(false);
+        mainPageUi.SetActive(false);
         pausedOnLayer = 1;
 
     }
@@ -98,7 +103,7 @@ public class PauseMenu : MonoBehaviour
     public void CloseInformationPage()
     {
         informationPageUi.SetActive(false);
-        pauseMenuUi.SetActive(true);
+        mainPageUi.SetActive(true);
         pausedOnLayer = 0;
 
     }
@@ -110,7 +115,7 @@ public class PauseMenu : MonoBehaviour
     public void SettingsPage()
     {
         settingsPageUi.SetActive(true);
-        pauseMenuUi.SetActive(false);
+        mainPageUi.SetActive(false);
         pausedOnLayer = 1;
     }
 
@@ -121,7 +126,7 @@ public class PauseMenu : MonoBehaviour
     public void CloseSettingsPage()
     {
         settingsPageUi.SetActive(false);
-        pauseMenuUi.SetActive(true);
+        mainPageUi.SetActive(true);
         pausedOnLayer = 0;
 
     }
@@ -196,6 +201,8 @@ public class PauseMenu : MonoBehaviour
 
     }
 
+
+ 
 
     /// <summary>
     /// Resets the grid.

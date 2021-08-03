@@ -437,18 +437,18 @@ public class GridManager : MonoBehaviour
                     }
                     else
                     {
-                        SetErrorMessage("A cell can only have a single building type in it.");
+                        SetMessage("A cell can only have a single building type in it.");
                     }
                 }
                 else
                 {
-                    SetErrorMessage("This cell already has an Antenna in it.");
+                    SetMessage("This cell already has an Antenna in it.");
                 }
             }
         }
         else
         {
-            SetErrorMessage("Maximum number of antennas already placed.");
+            SetMessage("Maximum number of antennas already placed.");
         }
 
         if (!Input.GetKey(KeyCode.LeftShift))
@@ -987,12 +987,12 @@ public class GridManager : MonoBehaviour
             }
             writer.Flush();
             writer.Close();
-            SetErrorMessage("City has been saved in " + fileName + "."); ; 
+            SetMessage("City has been saved in " + fileName + "."); ; 
         }
         catch (IOException)
         {
 
-            SetErrorMessage("Could not save.");
+            SetMessage("Could not save.");
         }
 
 
@@ -1075,7 +1075,7 @@ public class GridManager : MonoBehaviour
     /// Prints a string on the screen for the user for a short time.
     /// </summary>
     /// <param name="error">The text to print out.</param>
-    public void SetErrorMessage(string error)
+    public void SetMessage(string error)
     {
         informationScript.SetInformationText(error);
     }

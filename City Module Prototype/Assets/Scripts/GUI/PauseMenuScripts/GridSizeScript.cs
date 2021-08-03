@@ -33,7 +33,7 @@ public class GridSizeScript : MonoBehaviour
         {
             rows_input.text = "";
             cols_input.text = "";
-            gridManager.SetErrorMessage("Invalid grid size.");
+            gridManager.SetMessage("Invalid grid size.");
             return;
         }
 

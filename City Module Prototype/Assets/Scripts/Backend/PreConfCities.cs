@@ -30,7 +30,7 @@ public static class PreConfCities
             }
             else
             {
-                gridManager.SetErrorMessage("Config file was empty.");
+                gridManager.SetMessage("Config file was empty.");
                 return Crashed(out rows, out cols, out antennaCells);
             }
 
@@ -68,22 +68,22 @@ public static class PreConfCities
         }
         catch (DirectoryNotFoundException)
         {
-            gridManager.SetErrorMessage("A directory in the given path was not found.");
+            gridManager.SetMessage("A directory in the given path was not found.");
             return Crashed(out rows, out cols, out antennaCells);
         }
         catch (FileNotFoundException)
         {
-            gridManager.SetErrorMessage("File was not found.");
+            gridManager.SetMessage("File was not found.");
             return Crashed(out rows, out cols, out antennaCells);
         }
         catch (IOException)
         {
-            gridManager.SetErrorMessage("Could not load file.");
+            gridManager.SetMessage("Could not load file.");
             return Crashed(out rows, out cols, out antennaCells);
         }
         catch (System.FormatException)
         {
-            gridManager.SetErrorMessage("Config file was in wrong format.");
+            gridManager.SetMessage("Config file was in wrong format.");
             return Crashed(out rows, out cols, out antennaCells);
         }
 
@@ -137,7 +137,7 @@ public static class PreConfCities
                 return new Antenna();
 
             default:
-                gridManager.SetErrorMessage("The module \"" + moduleString + "\" is not defined in the program.");
+                gridManager.SetMessage("The module \"" + moduleString + "\" is not defined in the program.");
                 return null;
         }
     }

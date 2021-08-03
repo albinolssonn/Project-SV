@@ -15,6 +15,10 @@ public class LoadPreBuiltScript : MonoBehaviour
     public TMP_Dropdown dropdown;
 
 
+    public GameObject deleteMenuUi;
+    public TMP_Text deleteMenuText;
+
+
 
     public void Start()
     {
@@ -35,6 +39,7 @@ public class LoadPreBuiltScript : MonoBehaviour
             dropdown.options.Add(new TMP_Dropdown.OptionData() { text = Path.GetFileNameWithoutExtension(file) });
         }
         dropdown.RefreshShownValue();
+        dropdown.value = 0;
     }
 
     /// <summary>
@@ -45,11 +50,69 @@ public class LoadPreBuiltScript : MonoBehaviour
         if(dropdown.options.Count > 0)
         {
             gridManager.LoadPreconfigCity(dropdown.options[dropdown.value].text);
+            gridManager.SetMessage("Load successful.");
         }
-
         else
         {
-            gridManager.SetErrorMessage("There are no save files."); 
+            gridManager.SetMessage("There are no save files."); 
         }
     }
+
+    public void DeleteCity()
+    {
+        if (dropdown.options[dropdown.value].text.Length == 0)
+        {
+            gridManager.SetMessage("Choose a file to delete.");
+            return;
+        }
+
+        int filesBefore = Directory.GetFiles(Directory.GetCurrentDirectory() + "/ConfigFiles/").Length;
+        try
+        {
+            File.Delete(Directory.GetCurrentDirectory() + "/ConfigFiles/" + dropdown.options[dropdown.value].text + ".txt");
+        }
+        catch (System.ArgumentException)
+        {
+            gridManager.SetMessage("Invalid file location.");
+        }
+        catch (DirectoryNotFoundException)
+        {
+            gridManager.SetMessage("Unreachable file path.");
+        }
+        catch (IOException)
+        {
+            gridManager.SetMessage("The specified file is in use.");
+        }
+
+        int filesAfter = Directory.GetFiles(Directory.GetCurrentDirectory() + "/ConfigFiles/").Length;
+
+        if (filesAfter < filesBefore)
+        {
+            gridManager.SetMessage("City '" + dropdown.options[dropdown.value].text + "' has been deleted.");
+            LoadDropdown();
+        }
+        else
+        {
+            gridManager.SetMessage("City '" + dropdown.options[dropdown.value].text + "' could not be deleted.");
+        }
+    }
+
+
+
+    public void OpenDeleteMenu()
+    {
+        deleteMenuUi.SetActive(true);
+        deleteMenuText.text = "Are you sure you want to delete '" + dropdown.options[dropdown.value].text + "'?";
+        PauseMenu.pausedOnLayer = 3;
+    }
+
+    public void CloseDeleteMenu()
+    {
+        deleteMenuUi.SetActive(false);
+        PauseMenu.pausedOnLayer = 2;
+    }
+
+
+
+
 }
