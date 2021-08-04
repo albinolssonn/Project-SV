@@ -16108,8 +16108,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 10.3845215, y: 22}
-  m_SizeDelta: {x: 764.7692, y: 880.3231}
+  m_AnchoredPosition: {x: 10.3845215, y: 181.37778}
+  m_SizeDelta: {x: 764.7692, y: 561.5675}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1478932543
 MonoBehaviour:
@@ -16131,27 +16131,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "All icons in this program is provided by https://www.svgrepo.com/. \n\nLorem
-    ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-    ut labore et dolore magna aliqua. Phasellus faucibus scelerisque eleifend donec
-    pretium. Nunc sed blandit libero volutpat sed. Vulputate eu scelerisque felis
-    imperdiet proin. Nec feugiat in fermentum posuere urna nec. Ornare arcu dui vivamus
-    arcu felis bibendum ut tristique. Purus non enim praesent elementum facilisis
-    leo vel fringilla. Fames ac turpis egestas integer eget aliquet nibh praesent.
-    Ullamcorper a lacus vestibulum sed. Consequat ac felis donec et odio pellentesque
-    diam volutpat commodo. Sit amet tellus cras adipiscing enim eu. Fermentum posuere
-    urna nec tincidunt praesent semper. Erat imperdiet sed euismod nisi porta lorem.
-    Non enim praesent elementum facilisis. Dis parturient montes nascetur ridiculus
-    mus. Diam vel quam elementum pulvinar.\n\n\nOdio ut enim blandit volutpat maecenas
-    volutpat blandit aliquam etiam. Varius duis at consectetur lorem donec massa
-    sapien faucibus et. Arcu felis bibendum ut tristique et egestas. Hac habitasse
-    platea dictumst quisque sagittis purus sit amet. Vitae auctor eu augue ut. Tortor
-    pretium viverra suspendisse potenti nullam ac tortor vitae. Bibendum enim facilisis
-    gravida neque convallis a cras. Ut enim blandit volutpat maecenas volutpat blandit.
-    Sed augue lacus viverra vitae congue eu. Neque gravida in fermentum et sollicitudin
-    ac orci. Amet nulla facilisi morbi tempus iaculis urna id. Vel orci porta non
-    pulvinar. Orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt
-    tortor."
+  m_text: "All icons in this program is provided by https://www.svgrepo.com/. \n\nProgram
+    is constructed under \n\"Unity Personal License\". Therefore this program can
+    not be commercialized in any way unless another license is activated. \n\n\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -18990,7 +18972,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: TITLE OF THIS PAGE
+  m_text: CREDITS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
