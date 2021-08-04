@@ -989,6 +989,10 @@ public class GridManager : MonoBehaviour
             writer.Close();
             SetMessage("City has been saved in " + fileName + "."); ; 
         }
+        catch (DirectoryNotFoundException)
+        {
+            SetMessage("Could not find save directory.");
+        }
         catch (IOException)
         {
 

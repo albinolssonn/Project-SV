@@ -29,8 +29,17 @@ public class SavePreBuiltScript : MonoBehaviour
     {
         dropdown.options.Clear();
 
-        string[] configFiles = Directory.GetFiles(Directory.GetCurrentDirectory() + "/ConfigFiles/");
+        string[] configFiles;
 
+        try
+        {
+            configFiles = Directory.GetFiles(Directory.GetCurrentDirectory() + "/ConfigFiles/");
+        }
+        catch (DirectoryNotFoundException)
+        {
+            Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/Configfiles");
+            configFiles = Directory.GetFiles(Directory.GetCurrentDirectory() + "/ConfigFiles/");
+        }
 
         foreach (string file in configFiles)
         {
@@ -107,7 +116,7 @@ public class SavePreBuiltScript : MonoBehaviour
         }
         catch (DirectoryNotFoundException)
         {
-            gridManager.SetMessage("Unreachable file path.");
+            gridManager.SetMessage("Could not find save directory.");
         }
         catch (IOException)
         {
