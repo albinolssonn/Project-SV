@@ -37,7 +37,7 @@ public class SavePreBuiltScript : MonoBehaviour
         }
         catch (DirectoryNotFoundException)
         {
-            Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/Configfiles");
+            Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/ConfigFiles");
             configFiles = Directory.GetFiles(Directory.GetCurrentDirectory() + "/ConfigFiles/");
         }
 

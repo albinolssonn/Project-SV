@@ -968,7 +968,7 @@ public class GridManager : MonoBehaviour
     {
         try
         {
-            FileStream filestream = File.Open(Directory.GetCurrentDirectory() + "/Configfiles/" + fileName + ".txt", FileMode.Create, FileAccess.Write);
+            FileStream filestream = File.Open(Directory.GetCurrentDirectory() + "/ConfigFiles/" + fileName + ".txt", FileMode.Create, FileAccess.Write);
             StreamWriter writer = new StreamWriter(filestream);
 
             writer.WriteLine("rows," + rows);
