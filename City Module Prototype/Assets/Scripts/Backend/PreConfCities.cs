@@ -64,6 +64,8 @@ public static class PreConfCities
 
             inputStream.Close();
 
+            gridManager.SetMessage("Load successful.");
+
             return gridArray;
         }
         catch (DirectoryNotFoundException)
@@ -127,6 +129,7 @@ public static class PreConfCities
 
             case "Hospital":
                 return new Hospital();
+
             case "PoliceStation":
                 return new PoliceStation();
 

@@ -79,20 +79,16 @@ public class SavePreBuiltScript : MonoBehaviour
     /// </summary>
     public void SaveBtn()
     {
-        if(inputField.text.Length == 0)
+        if (inputField.text.Length == 0)
         {
             gridManager.SetMessage("Write filename or choose an existing file.");
-            return; 
+            return;
         }
 
         gridManager.SavePreconfigCity(inputField.text);
         inputField.text = "";
         dropdown.value = 0;
         LoadDropdown();
-        gridManager.SetMessage("City saved.");
-
-
-
     }
 
 
@@ -125,25 +121,25 @@ public class SavePreBuiltScript : MonoBehaviour
 
         int filesAfter = Directory.GetFiles(Directory.GetCurrentDirectory() + "/ConfigFiles/").Length;
 
-        if(filesAfter < filesBefore)
+        if (filesAfter < filesBefore)
         {
-            gridManager.SetMessage("City '" + inputField.text + "' has been deleted.");
+            gridManager.SetMessage("City \"" + inputField.text + "\" has been deleted.");
             inputField.text = "";
-            LoadDropdown(); 
+            LoadDropdown();
         }
         else
         {
-            gridManager.SetMessage("City '" + inputField.text + "' could not be deleted." );
+            gridManager.SetMessage("City \"" + inputField.text + "\" could not be deleted.");
         }
     }
 
 
     public void OpenDeleteMenu()
     {
-        if(inputField.text.Length > 0)
+        if (inputField.text.Length > 0)
         {
             deleteMenuUi.SetActive(true);
-            deleteMenuText.text = "Are you sure you want to delete '" + inputField.text + "'?";
+            deleteMenuText.text = "Are you sure you want to delete \"" + inputField.text + "\"?";
             PauseMenu.pausedOnLayer = 3;
         }
         else

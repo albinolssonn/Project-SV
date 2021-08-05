@@ -65,7 +65,7 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {
         pauseMenuUi.SetActive(false);
-        Time.timeScale = 1f;
+        //Time.timeScale = 1f; //HACK: Uncomment this line if you want time to pause as well.
         GameIsPaused = false;
         pausedOnLayer = 0;
 
@@ -78,7 +78,7 @@ public class PauseMenu : MonoBehaviour
     public void Pause()
     {
         pauseMenuUi.SetActive(true);
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f; //HACK: Uncomment this line if you want time to pause as well.
         GameIsPaused = true;
         pausedOnLayer = 0;
 

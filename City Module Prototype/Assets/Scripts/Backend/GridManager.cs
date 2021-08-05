@@ -54,6 +54,15 @@ public class GridManager : MonoBehaviour
     /// <summary>Set to false if colored network flow arrows is not wanted.</summary>
     public static bool networkFlowColorsActive = true;
 
+    /// <summary>Line width for the visualized grid.</summary>
+    private readonly float lineWidth = 10f;
+
+    /// <summary>Size of the cells for the visualized grid.</summary>
+    private readonly float cellSize = 100f;
+
+    /// <summary>The total size of a cell plus lines.</summary>
+    private float tileSize;
+
 
 
     // HACK: Alter the base value used to realize the network.
@@ -71,14 +80,6 @@ public class GridManager : MonoBehaviour
     /// <summary>The reduction in signal strength for traveling through a cell with a higher max height than the cell which the antenna is located in.</summary>
     public static readonly double heightPenalty = 2;
 
-    /// <summary>Line width for the visualized grid.</summary>
-    private readonly float lineWidth = 10f;
-
-    /// <summary>Size of the cells for the visualized grid.</summary>
-    private readonly float cellSize = 100f;
-
-    /// <summary>The total size of a cell plus lines.</summary>
-    private float tileSize;
 
 
 
@@ -941,7 +942,7 @@ public class GridManager : MonoBehaviour
 
 
     /// <summary>
-    /// Loads a pre-configured city, saves it in 'gridArray' and build the grid on the screen.
+    /// Loads a pre-configured city, saves it in 'gridArray' and builds the grid on the screen.
     /// </summary>
     /// <param name="filename">Filename of file to load.</param>
     public void LoadPreconfigCity(string filename)
@@ -987,7 +988,7 @@ public class GridManager : MonoBehaviour
             }
             writer.Flush();
             writer.Close();
-            SetMessage("City has been saved in " + fileName + "."); ; 
+            SetMessage("City has been saved in \"" + fileName + "\"."); ;
         }
         catch (DirectoryNotFoundException)
         {
@@ -995,7 +996,6 @@ public class GridManager : MonoBehaviour
         }
         catch (IOException)
         {
-
             SetMessage("Could not save.");
         }
 
@@ -1078,10 +1078,10 @@ public class GridManager : MonoBehaviour
     /// <summary>
     /// Prints a string on the screen for the user for a short time.
     /// </summary>
-    /// <param name="error">The text to print out.</param>
-    public void SetMessage(string error)
+    /// <param name="text">The text to print out.</param>
+    public void SetMessage(string text)
     {
-        informationScript.SetInformationText(error);
+        informationScript.SetInformationText(text);
     }
 
 

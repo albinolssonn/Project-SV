@@ -58,14 +58,13 @@ public class LoadPreBuiltScript : MonoBehaviour
     /// </summary>
     public void LoadBtn()
     {
-        if(dropdown.options.Count > 0)
+        if (dropdown.options.Count > 0)
         {
             gridManager.LoadPreconfigCity(dropdown.options[dropdown.value].text);
-            gridManager.SetMessage("Load successful.");
         }
         else
         {
-            gridManager.SetMessage("There are no save files."); 
+            gridManager.SetMessage("There are no save files.");
         }
     }
 

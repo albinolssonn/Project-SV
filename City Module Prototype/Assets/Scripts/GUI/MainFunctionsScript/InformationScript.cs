@@ -1,10 +1,17 @@
 using UnityEngine;
 using TMPro;
-
+using System.Collections.Generic;
+using System.Collections;
 
 public class InformationScript : MonoBehaviour
 {
     public TMP_Text informationText;
+    private Queue<string> queue;
+
+    public void Start()
+    {
+        queue = new Queue<string>();
+    }
 
 
     /// <summary>
@@ -13,19 +20,27 @@ public class InformationScript : MonoBehaviour
     /// <param name="input">The string to display on the screen.</param>
     public void SetInformationText(string input)
     {
-        informationText.text = input;
-        Invoke("DisableText", 5f);
+        if (queue.Count == 0)
+        {
+            queue.Enqueue(input);
+            StartCoroutine(ShowText());
+        }
+        queue.Enqueue(input);
     }
 
-
     /// <summary>
-    /// Resets the textfield.
+    /// Shows the next message in queue.
     /// </summary>
-    /*
-     * It is said to be unused, but is called using Invoke() from the method above!
-     */
-    private void DisableText()
+    private IEnumerator ShowText()
     {
+        informationText.text = queue.Peek();
+        yield return new WaitForSeconds(3);
         informationText.text = "";
+
+        queue.Dequeue();
+        if (queue.Count > 0)
+        {
+            StartCoroutine(ShowText());
+        }
     }
 }
