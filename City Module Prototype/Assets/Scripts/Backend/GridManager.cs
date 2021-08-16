@@ -1037,6 +1037,13 @@ public class GridManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+
+        
+        foreach(Transform child in gridNV.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        
     }
 
 

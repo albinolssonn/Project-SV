@@ -40,6 +40,7 @@ public class Cell
         maxHeight = 0;
         antenna = null;
         tile = null;
+        NVTile = null;
         hasCriticalModule = false;
         capacityDemand = 0;
 
